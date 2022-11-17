@@ -11,7 +11,7 @@ import SwiftUI
 struct SplitWeasleyApp: App {
     var body: some Scene {
         WindowGroup {
-            EmptyView()
+            TransactionScreenView()
         }
     }
 }

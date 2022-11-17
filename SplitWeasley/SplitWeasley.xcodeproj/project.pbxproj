@@ -10,6 +10,9 @@
 		B67DE958292583F0008C6400 /* SplitWeasleyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE957292583F0008C6400 /* SplitWeasleyApp.swift */; };
 		B67DE95C292583F1008C6400 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B67DE95B292583F1008C6400 /* Assets.xcassets */; };
 		B67DE95F292583F1008C6400 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B67DE95E292583F1008C6400 /* Preview Assets.xcassets */; };
+		B67DE96B2925852B008C6400 /* TransactionScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE96A2925852B008C6400 /* TransactionScreenView.swift */; };
+		B67DE96F2925858C008C6400 /* PaidAndSplitBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE96E2925858C008C6400 /* PaidAndSplitBarView.swift */; };
+		B67DE97129258B32008C6400 /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE97029258B32008C6400 /* RoundButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -17,6 +20,9 @@
 		B67DE957292583F0008C6400 /* SplitWeasleyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitWeasleyApp.swift; sourceTree = "<group>"; };
 		B67DE95B292583F1008C6400 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B67DE95E292583F1008C6400 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		B67DE96A2925852B008C6400 /* TransactionScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionScreenView.swift; sourceTree = "<group>"; };
+		B67DE96E2925858C008C6400 /* PaidAndSplitBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaidAndSplitBarView.swift; sourceTree = "<group>"; };
+		B67DE97029258B32008C6400 /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,7 +55,8 @@
 		B67DE956292583F0008C6400 /* SplitWeasley */ = {
 			isa = PBXGroup;
 			children = (
-				B67DE957292583F0008C6400 /* SplitWeasleyApp.swift */,
+				B67DE9682925850F008C6400 /* App */,
+				B67DE96629258505008C6400 /* UI */,
 				B67DE965292584DB008C6400 /* Resources */,
 				B67DE95D292583F1008C6400 /* Preview Content */,
 			);
@@ -70,6 +77,40 @@
 				B67DE95B292583F1008C6400 /* Assets.xcassets */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		B67DE96629258505008C6400 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				B67DE96C29258552008C6400 /* Screens */,
+				B67DE96D29258575008C6400 /* Components */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		B67DE9682925850F008C6400 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				B67DE957292583F0008C6400 /* SplitWeasleyApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		B67DE96C29258552008C6400 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				B67DE96A2925852B008C6400 /* TransactionScreenView.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		B67DE96D29258575008C6400 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				B67DE96E2925858C008C6400 /* PaidAndSplitBarView.swift */,
+				B67DE97029258B32008C6400 /* RoundButton.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -142,7 +183,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B67DE97129258B32008C6400 /* RoundButton.swift in Sources */,
 				B67DE958292583F0008C6400 /* SplitWeasleyApp.swift in Sources */,
+				B67DE96B2925852B008C6400 /* TransactionScreenView.swift in Sources */,
+				B67DE96F2925858C008C6400 /* PaidAndSplitBarView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
