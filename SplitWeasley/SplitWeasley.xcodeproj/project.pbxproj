@@ -13,6 +13,9 @@
 		B67DE96B2925852B008C6400 /* TransactionScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE96A2925852B008C6400 /* TransactionScreenView.swift */; };
 		B67DE96F2925858C008C6400 /* PaidAndSplitBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE96E2925858C008C6400 /* PaidAndSplitBarView.swift */; };
 		B67DE97129258B32008C6400 /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE97029258B32008C6400 /* RoundButton.swift */; };
+		B67DE9742927E1BF008C6400 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE9732927E1BF008C6400 /* Person.swift */; };
+		B67DE9782927EAE8008C6400 /* SplitGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE9772927EAE8008C6400 /* SplitGroup.swift */; };
+		B67DE97C2927EBDC008C6400 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE97B2927EBDC008C6400 /* Currency.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +26,9 @@
 		B67DE96A2925852B008C6400 /* TransactionScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionScreenView.swift; sourceTree = "<group>"; };
 		B67DE96E2925858C008C6400 /* PaidAndSplitBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaidAndSplitBarView.swift; sourceTree = "<group>"; };
 		B67DE97029258B32008C6400 /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
+		B67DE9732927E1BF008C6400 /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
+		B67DE9772927EAE8008C6400 /* SplitGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitGroup.swift; sourceTree = "<group>"; };
+		B67DE97B2927EBDC008C6400 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +62,7 @@
 			isa = PBXGroup;
 			children = (
 				B67DE9682925850F008C6400 /* App */,
+				B67DE9722927E1B2008C6400 /* Model */,
 				B67DE96629258505008C6400 /* UI */,
 				B67DE965292584DB008C6400 /* Resources */,
 				B67DE95D292583F1008C6400 /* Preview Content */,
@@ -111,6 +118,16 @@
 				B67DE97029258B32008C6400 /* RoundButton.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		B67DE9722927E1B2008C6400 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B67DE9732927E1BF008C6400 /* Person.swift */,
+				B67DE9772927EAE8008C6400 /* SplitGroup.swift */,
+				B67DE97B2927EBDC008C6400 /* Currency.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -183,9 +200,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B67DE9782927EAE8008C6400 /* SplitGroup.swift in Sources */,
+				B67DE9742927E1BF008C6400 /* Person.swift in Sources */,
 				B67DE97129258B32008C6400 /* RoundButton.swift in Sources */,
 				B67DE958292583F0008C6400 /* SplitWeasleyApp.swift in Sources */,
 				B67DE96B2925852B008C6400 /* TransactionScreenView.swift in Sources */,
+				B67DE97C2927EBDC008C6400 /* Currency.swift in Sources */,
 				B67DE96F2925858C008C6400 /* PaidAndSplitBarView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
