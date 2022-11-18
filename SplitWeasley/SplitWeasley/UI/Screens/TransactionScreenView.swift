@@ -7,27 +7,43 @@
 
 import SwiftUI
 
-struct TransactionScreenView: View {
-    // State
-    @State private var date = Date()
-    @State private var description = ""
-    @State private var amount: Double = 0.0
+struct TransactionScreenView<VM: ITransactionScreenViewModel>: View {
+    // View model
+    @ObservedObject private var vm: VM
+    // Constants
+    private let buttonDiameter: CGFloat = 64
+    private let horizontalInsets: CGFloat = 40
     // Etc
     private let numberFormatter: Formatter = {
         let nf = NumberFormatter()
         nf.numberStyle = .decimal
         nf.maximumFractionDigits = 2
+        nf.groupingSeparator = ""
         nf.zeroSymbol = ""
         return nf
     }()
-
+    // MARK: Init
+    init(vm: VM = TransactionScreenViewModel()) {
+        self.vm = vm
+    }
+    // MARK: Body
     var body: some View {
         VStack {
-            Spacer()
-            datePicker
-            Spacer()
-            mainInputViews
-            Spacer()
+            VStack {
+                Spacer()
+                datePicker
+                Spacer()
+                mainInputViews
+                Spacer()
+                PaidAndSplitBarView(
+                    payeeLabel: $vm.payee,
+                    splitLabel: $vm.splitWithin,
+                    payeeAction: nil,
+                    splitAction: nil
+                )
+                Spacer()
+            }
+            .frame(height: 400)
             Spacer()
         }
     }
@@ -38,7 +54,7 @@ struct TransactionScreenView: View {
 private extension TransactionScreenView {
     var datePicker: some View {
         DatePicker(
-            selection: $date,
+            selection: $vm.date,
             displayedComponents: [.date, .hourAndMinute],
             label: { EmptyView() }
         )
@@ -47,41 +63,74 @@ private extension TransactionScreenView {
     }
 
     var mainInputViews: some View {
-        let buttonDiameter: CGFloat = 80
-
-        return VStack {
-            HStack {
-                RoundButton(bodyFill: Color(UIColor.systemPurple)) {
-                    Image(systemName: "airplane")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .foregroundColor(Color(UIColor.systemBackground))
-                        .scaleEffect(0.5)
-                }
-                .frame(width: buttonDiameter, height: buttonDiameter)
-                TextField("Description", text: $description, axis: .vertical)
-                    .font(.title2)
-                    .lineLimit(2)
-                    .keyboardType(.asciiCapable)
-                    .padding(.leading)
-            }
-            HStack {
-                RoundButton(bodyFill: Color(UIColor.systemBackground)) {
-                    Image(systemName: "dollarsign")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .scaleEffect(0.5)
-                }
-                .frame(width: buttonDiameter, height: buttonDiameter)
-                TextField(value: $amount, formatter: numberFormatter, label: { Text("0.0") })
-                    .keyboardType(.decimalPad)
-                    .font(.largeTitle)
-                    .padding(.leading)
-            }
+        return VStack(spacing: 16) {
+            descriptionInputRowView
+            amountInputRowView
         }
-        .padding(.horizontal, 40)
+        .padding(.horizontal, horizontalInsets)
+    }
+
+    var descriptionInputRowView: some View {
+        HStack {
+            RoundButton(bodyFill: Color(UIColor.systemPurple.withAlphaComponent(0.75))) {
+                Image(systemName: "airplane")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .foregroundColor(Color(UIColor.systemBackground))
+                    .scaleEffect(0.5)
+            }
+            .frame(width: buttonDiameter, height: buttonDiameter)
+            TextField("Description", text: $vm.transactionDescription, axis: .vertical)
+                .font(.title2)
+                .lineLimit(2)
+                .keyboardType(.asciiCapable)
+                .padding(.leading)
+        }
+    }
+
+    var amountInputRowView: some View {
+        HStack {
+            RoundButton(bodyFill: Color(UIColor.systemBackground)) {
+                Image(systemName: "dollarsign")
+                    .resizable()
+                    .font(.system(size: 17, weight: .semibold))
+                    .aspectRatio(contentMode: .fit)
+                    .scaleEffect(0.5)
+            }
+            .frame(width: buttonDiameter, height: buttonDiameter)
+            TextField(value: $vm.transactoinAmount, formatter: numberFormatter, label: { Text("0.0") })
+                .keyboardType(.decimalPad)
+                .font(.largeTitle.weight(.semibold))
+                .padding(.leading)
+        }
     }
 }
+
+// MARK: - ViewModel
+
+protocol ITransactionScreenViewModel: ObservableObject {
+    var date: Date { get set }
+    var transactionDescription: String { get set }
+    var transactoinAmount: Double { get set }
+    var payee: String { get set }
+    var splitWithin: String { get set }
+}
+
+final class TransactionScreenViewModel: ObservableObject, ITransactionScreenViewModel {
+    @Published var date = Date()
+    @Published var transactionDescription = ""
+    @Published var transactoinAmount: Double = 0.0
+    var payee: String {
+        get { "you" }
+        set { }
+    }
+    var splitWithin: String {
+        get { "equally" }
+        set { }
+    }
+}
+
+// MARK: - Previews
 
 struct TransactionScreenView_Previews: PreviewProvider {
     static var previews: some View {
