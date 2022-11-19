@@ -89,19 +89,29 @@ private extension TransactionScreenView {
     }
 
     var amountInputRowView: some View {
-        HStack {
-            RoundButton(bodyFill: Color(UIColor.systemBackground)) {
-                Image(systemName: "dollarsign")
-                    .resizable()
-                    .font(.system(size: 17, weight: .semibold))
-                    .aspectRatio(contentMode: .fit)
-                    .scaleEffect(0.5)
-            }
-            .frame(width: buttonDiameter, height: buttonDiameter)
-            TextField(value: $vm.transactionAmount, formatter: numberFormatter, label: { Text("0.0") })
-                .keyboardType(.decimalPad)
-                .font(.largeTitle.weight(.semibold))
-                .padding(.leading)
+        let currencyButton = RoundButton(bodyFill: Color(UIColor.systemBackground)) {
+            Image(systemName: vm.transactionCurrency.iconString)
+                .font(.title)
+                .fontWeight(.medium)
+        }
+        .frame(width: buttonDiameter, height: buttonDiameter)
+        .foregroundColor(Color(uiColor: UIColor.label))
+
+        let currencyOptions = ForEach(Currency.allCases) { currency in
+            Button(
+                action: { vm.transactionCurrency = currency },
+                label: { Label(currency.name, systemImage: currency.iconString) }
+            )
+        }
+
+        let amountInput = TextField(value: $vm.transactionAmount, formatter: numberFormatter, label: { Text("0.0 \(vm.transactionCurrency.iso4217code)") })
+            .keyboardType(.decimalPad)
+            .font(.largeTitle.weight(.semibold))
+            .padding(.leading)
+
+        return HStack {
+            Menu(content: { currencyOptions }, label: { currencyButton })
+            amountInput
         }
     }
 }
@@ -120,7 +130,7 @@ protocol ITransactionScreenViewModel: ObservableObject {
 final class TransactionScreenViewModel: ObservableObject {
     @Published var date = Date()
     @Published var transactionDescription = ""
-    @Published var monetaryAmount = MonetaryAmount(currency: .usd, amount: 0.0)
+    @Published var monetaryAmount = MonetaryAmount(currency: .eur, amount: 0.0)
 }
 
 extension TransactionScreenViewModel: ITransactionScreenViewModel {

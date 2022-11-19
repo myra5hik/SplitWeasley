@@ -10,6 +10,21 @@ import SwiftUI
 enum Currency: Hashable, CaseIterable {
     case usd
     case eur
+    case jpy
+    case gbp
+    case cny
+    case aud
+    case cad
+    case chf
+    case hkd
+    case sgd
+    case rub
+}
+
+// MARK: - Identifiable
+
+extension Currency: Identifiable {
+    var id: Self { self }
 }
 
 // MARK: - Codes
@@ -27,6 +42,15 @@ extension Currency {
         switch self {
         case .usd: return "US Dollar"
         case .eur: return "Euro"
+        case .jpy: return "Japanese Yen"
+        case .gbp: return "British Pound"
+        case .cny: return "Renminbi"
+        case .aud: return "Australian Dollar"
+        case .cad: return "Canadian Dollar"
+        case .chf: return "Swiss Franc"
+        case .hkd: return "Hong Kong Dollar"
+        case .sgd: return "Singapore Dollar"
+        case .rub: return "Russian Ruble"
         }
     }
 }
@@ -34,12 +58,19 @@ extension Currency {
 // MARK: - Icons
 
 extension Currency {
-    private static var defaultIcon: UIImage { UIImage(systemName: "questionmark")! }
-
-    var icon: UIImage {
+    var iconString: String {
         switch self {
-        case .usd: return UIImage(systemName: "dollarsign") ?? Self.defaultIcon
-        case .eur: return UIImage(systemName: "eurosign") ?? Self.defaultIcon
+        case .usd: return "dollarsign"
+        case .eur: return "eurosign"
+        case .jpy: return "yensign"
+        case .gbp: return "sterlingsign"
+        case .cny: return "yensign"
+        case .aud: return "australsign"
+        case .cad: return "dollarsign"
+        case .chf: return "francsign"
+        case .hkd: return "dollarsign"
+        case .sgd: return "dollarsign"
+        case .rub: return "rublesign"
         }
     }
 }
