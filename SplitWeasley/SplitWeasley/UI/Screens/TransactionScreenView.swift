@@ -98,7 +98,7 @@ private extension TransactionScreenView {
                     .scaleEffect(0.5)
             }
             .frame(width: buttonDiameter, height: buttonDiameter)
-            TextField(value: $vm.transactoinAmount, formatter: numberFormatter, label: { Text("0.0") })
+            TextField(value: $vm.transactionAmount, formatter: numberFormatter, label: { Text("0.0") })
                 .keyboardType(.decimalPad)
                 .font(.largeTitle.weight(.semibold))
                 .padding(.leading)
@@ -111,19 +111,34 @@ private extension TransactionScreenView {
 protocol ITransactionScreenViewModel: ObservableObject {
     var date: Date { get set }
     var transactionDescription: String { get set }
-    var transactoinAmount: Double { get set }
+    var transactionAmount: Double { get set }
+    var transactionCurrency: Currency { get set }
     var payee: String { get set }
     var splitWithin: String { get set }
 }
 
-final class TransactionScreenViewModel: ObservableObject, ITransactionScreenViewModel {
+final class TransactionScreenViewModel: ObservableObject {
     @Published var date = Date()
     @Published var transactionDescription = ""
-    @Published var transactoinAmount: Double = 0.0
+    @Published var monetaryAmount = MonetaryAmount(currency: .usd, amount: 0.0)
+}
+
+extension TransactionScreenViewModel: ITransactionScreenViewModel {
+    var transactionAmount: Double {
+        get { NSDecimalNumber(decimal: monetaryAmount.amount).doubleValue }
+        set { monetaryAmount.amount = Decimal(floatLiteral: newValue) }
+    }
+
+    var transactionCurrency: Currency {
+        get { monetaryAmount.currency }
+        set(newCurrency) { monetaryAmount = monetaryAmount.with(newCurrency) }
+    }
+
     var payee: String {
         get { "you" }
         set { }
     }
+
     var splitWithin: String {
         get { "equally" }
         set { }
