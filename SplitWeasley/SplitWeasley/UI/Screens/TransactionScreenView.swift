@@ -104,10 +104,11 @@ private extension TransactionScreenView {
             )
         }
 
-        let amountInput = TextField(value: $vm.transactionAmount, formatter: numberFormatter, label: { Text("0.0 \(vm.transactionCurrency.iso4217code)") })
-            .keyboardType(.decimalPad)
-            .font(.largeTitle.weight(.semibold))
-            .padding(.leading)
+        let amountInput = TextField(value: $vm.transactionAmount, formatter: numberFormatter, label: { Text("0.0 \(vm.transactionCurrency.iso4217code)")
+        })
+        .keyboardType(.decimalPad)
+        .font(.largeTitle.weight(.semibold))
+        .padding(.leading)
 
         return HStack {
             Menu(content: { currencyOptions }, label: { currencyButton })
