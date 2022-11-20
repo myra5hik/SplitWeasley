@@ -17,6 +17,7 @@
 		B67DE9782927EAE8008C6400 /* SplitGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE9772927EAE8008C6400 /* SplitGroup.swift */; };
 		B67DE97C2927EBDC008C6400 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE97B2927EBDC008C6400 /* Currency.swift */; };
 		B67DE97E2928005A008C6400 /* MonetaryAmount.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE97D2928005A008C6400 /* MonetaryAmount.swift */; };
+		B67DE980292AB36A008C6400 /* SplitOptionsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE97F292AB36A008C6400 /* SplitOptionsScreenView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		B67DE9772927EAE8008C6400 /* SplitGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitGroup.swift; sourceTree = "<group>"; };
 		B67DE97B2927EBDC008C6400 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 		B67DE97D2928005A008C6400 /* MonetaryAmount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonetaryAmount.swift; sourceTree = "<group>"; };
+		B67DE97F292AB36A008C6400 /* SplitOptionsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitOptionsScreenView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				B67DE96A2925852B008C6400 /* TransactionScreenView.swift */,
+				B67DE97F292AB36A008C6400 /* SplitOptionsScreenView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -206,6 +209,7 @@
 				B67DE9782927EAE8008C6400 /* SplitGroup.swift in Sources */,
 				B67DE9742927E1BF008C6400 /* Person.swift in Sources */,
 				B67DE97E2928005A008C6400 /* MonetaryAmount.swift in Sources */,
+				B67DE980292AB36A008C6400 /* SplitOptionsScreenView.swift in Sources */,
 				B67DE97129258B32008C6400 /* RoundButton.swift in Sources */,
 				B67DE958292583F0008C6400 /* SplitWeasleyApp.swift in Sources */,
 				B67DE96B2925852B008C6400 /* TransactionScreenView.swift in Sources */,
