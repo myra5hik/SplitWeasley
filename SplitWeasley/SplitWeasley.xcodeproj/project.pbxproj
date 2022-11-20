@@ -95,6 +95,7 @@
 			children = (
 				B67DE96C29258552008C6400 /* Screens */,
 				B67DE96D29258575008C6400 /* Components */,
+				B67DE981292ADFE0008C6400 /* Elements */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -120,7 +121,6 @@
 			isa = PBXGroup;
 			children = (
 				B67DE96E2925858C008C6400 /* PaidAndSplitBarView.swift */,
-				B67DE97029258B32008C6400 /* RoundButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -134,6 +134,14 @@
 				B67DE97D2928005A008C6400 /* MonetaryAmount.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		B67DE981292ADFE0008C6400 /* Elements */ = {
+			isa = PBXGroup;
+			children = (
+				B67DE97029258B32008C6400 /* RoundButton.swift */,
+			);
+			path = Elements;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
