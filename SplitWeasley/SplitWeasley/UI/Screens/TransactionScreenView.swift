@@ -46,6 +46,13 @@ struct TransactionScreenView<VM: ITransactionScreenViewModel>: View {
             .frame(height: 400)
             Spacer()
         }
+        .navigationTitle("Trip to Turkey")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button("Save", action: { }).fontWeight(.semibold)
+            }
+        }
     }
 }
 
@@ -99,7 +106,7 @@ private extension TransactionScreenView {
 
         let currencyOptions = ForEach(Currency.allCases) { currency in
             Button(
-                action: { vm.transactionCurrency = currency },
+                action: { [weak vm] in vm?.transactionCurrency = currency },
                 label: { Label(currency.name, systemImage: currency.iconString) }
             )
         }
