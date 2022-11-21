@@ -9,5 +9,5 @@ import Foundation
 
 struct SplitGroup: Identifiable, Hashable {
     let id: UUID
-    let members: Set<Person>
+    let members: [Person]
 }

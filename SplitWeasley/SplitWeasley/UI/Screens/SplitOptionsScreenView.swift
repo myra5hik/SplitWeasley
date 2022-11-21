@@ -9,7 +9,6 @@ import SwiftUI
 
 struct SplitOptionsScreenView: View {
     private let splitGroup: SplitGroup
-    private var sortedMembers: [Person] { splitGroup.members.sorted(by: { $0.fullName <= $1.fullName }) }
     @State private var selection = Set<Person.ID>()
 
     @State private var pickerSelection: Int = 0
@@ -61,7 +60,7 @@ private extension SplitOptionsScreenView {
     }
 
     var splitGroupMembersListView: some View {
-        List(sortedMembers, id: \.id) { member in
+        List(splitGroup.members, id: \.id) { member in
             ConfugurableListRowView(
                 heading: member.fullName,
                 subheading: selection.contains(member.id) ? "$3.92" : "not involved",
