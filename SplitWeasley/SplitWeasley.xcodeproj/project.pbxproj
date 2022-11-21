@@ -18,6 +18,7 @@
 		B67DE97C2927EBDC008C6400 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE97B2927EBDC008C6400 /* Currency.swift */; };
 		B67DE97E2928005A008C6400 /* MonetaryAmount.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE97D2928005A008C6400 /* MonetaryAmount.swift */; };
 		B67DE980292AB36A008C6400 /* SplitOptionsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE97F292AB36A008C6400 /* SplitOptionsScreenView.swift */; };
+		B67DE983292AE025008C6400 /* ConfugurableListRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE982292AE025008C6400 /* ConfugurableListRowView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		B67DE97B2927EBDC008C6400 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 		B67DE97D2928005A008C6400 /* MonetaryAmount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonetaryAmount.swift; sourceTree = "<group>"; };
 		B67DE97F292AB36A008C6400 /* SplitOptionsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitOptionsScreenView.swift; sourceTree = "<group>"; };
+		B67DE982292AE025008C6400 /* ConfugurableListRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfugurableListRowView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +142,7 @@
 			isa = PBXGroup;
 			children = (
 				B67DE97029258B32008C6400 /* RoundButton.swift */,
+				B67DE982292AE025008C6400 /* ConfugurableListRowView.swift */,
 			);
 			path = Elements;
 			sourceTree = "<group>";
@@ -222,6 +225,7 @@
 				B67DE958292583F0008C6400 /* SplitWeasleyApp.swift in Sources */,
 				B67DE96B2925852B008C6400 /* TransactionScreenView.swift in Sources */,
 				B67DE97C2927EBDC008C6400 /* Currency.swift in Sources */,
+				B67DE983292AE025008C6400 /* ConfugurableListRowView.swift in Sources */,
 				B67DE96F2925858C008C6400 /* PaidAndSplitBarView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

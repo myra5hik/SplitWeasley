@@ -62,18 +62,13 @@ private extension SplitOptionsScreenView {
 
     var splitGroupMembersListView: some View {
         List(sortedMembers, id: \.id) { member in
-            Button {
-                if !selection.insert(member.id).inserted { selection.remove(member.id) }
-            } label: {
-                HStack {
-                    Circle().foregroundColor(.blue).frame(width: 36)
-                    Text(member.fullName)
-                    Spacer()
-                    if selection.contains(member.id) {
-                        Image(systemName: "checkmark")
-                    }
-                }
-            }
+            ConfugurableListRowView(
+                heading: member.fullName,
+                subheading: selection.contains(member.id) ? "$3.92" : "not involved",
+                leadingAccessory: { Circle().foregroundColor(.blue) },
+                trailingAccessory: { if selection.contains(member.id) { Image(systemName: "checkmark") } },
+                action: { if !selection.insert(member.id).inserted { selection.remove(member.id) } }
+            )
         }
         .listStyle(.plain)
     }
