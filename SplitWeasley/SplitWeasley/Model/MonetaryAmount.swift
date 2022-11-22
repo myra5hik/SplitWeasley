@@ -9,12 +9,35 @@ import Foundation
 
 struct MonetaryAmount {
     let currency: Currency
-    var amount: Decimal
+    let amount: Decimal
 
-    func with(_ currency: Currency) -> Self {
+    init(currency: Currency, amount: Decimal = 0.0) {
+        self.currency = currency
+        self.amount = amount.rounded(scale: currency.roundingScale)
+    }
+
+    init(currency: Currency, amountAsDouble: Double = 0.0) {
+        self.init(currency: currency, amount: Decimal(amountAsDouble))
+    }
+
+    func with(
+        currency: Currency? = nil,
+        amount: Decimal? = nil
+    ) -> Self {
         return .init(
-            currency: currency,
-            amount: self.amount
+            currency: currency ?? self.currency,
+            amount: amount ?? self.amount
         )
+    }
+
+    func formatted() -> String {
+        let nf = NumberFormatter()
+        nf.numberStyle = .currency
+        nf.currencyCode = self.currency.iso4217code
+        nf.locale = Locale.current
+        nf.maximumFractionDigits = currency.roundingScale
+        nf.minimumFractionDigits = currency.roundingScale
+
+        return nf.string(for: amount) ?? "\(currency.iso4217code)\(amount)"
     }
 }

@@ -19,6 +19,8 @@
 		B67DE97E2928005A008C6400 /* MonetaryAmount.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE97D2928005A008C6400 /* MonetaryAmount.swift */; };
 		B67DE980292AB36A008C6400 /* SplitOptionsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE97F292AB36A008C6400 /* SplitOptionsScreenView.swift */; };
 		B67DE983292AE025008C6400 /* ConfugurableListRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE982292AE025008C6400 /* ConfugurableListRowView.swift */; };
+		B67DE985292AFE14008C6400 /* SplitStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE984292AFE14008C6400 /* SplitStrategy.swift */; };
+		B67DE987292C479A008C6400 /* Decimal+Rounded.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE986292C479A008C6400 /* Decimal+Rounded.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +37,8 @@
 		B67DE97D2928005A008C6400 /* MonetaryAmount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonetaryAmount.swift; sourceTree = "<group>"; };
 		B67DE97F292AB36A008C6400 /* SplitOptionsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitOptionsScreenView.swift; sourceTree = "<group>"; };
 		B67DE982292AE025008C6400 /* ConfugurableListRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfugurableListRowView.swift; sourceTree = "<group>"; };
+		B67DE984292AFE14008C6400 /* SplitStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitStrategy.swift; sourceTree = "<group>"; };
+		B67DE986292C479A008C6400 /* Decimal+Rounded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decimal+Rounded.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +74,7 @@
 				B67DE9682925850F008C6400 /* App */,
 				B67DE9722927E1B2008C6400 /* Model */,
 				B67DE96629258505008C6400 /* UI */,
+				B67DE989292C4BB7008C6400 /* Extensions */,
 				B67DE965292584DB008C6400 /* Resources */,
 				B67DE95D292583F1008C6400 /* Preview Content */,
 			);
@@ -134,6 +139,7 @@
 				B67DE9772927EAE8008C6400 /* SplitGroup.swift */,
 				B67DE97B2927EBDC008C6400 /* Currency.swift */,
 				B67DE97D2928005A008C6400 /* MonetaryAmount.swift */,
+				B67DE984292AFE14008C6400 /* SplitStrategy.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -145,6 +151,14 @@
 				B67DE982292AE025008C6400 /* ConfugurableListRowView.swift */,
 			);
 			path = Elements;
+			sourceTree = "<group>";
+		};
+		B67DE989292C4BB7008C6400 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B67DE986292C479A008C6400 /* Decimal+Rounded.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -218,6 +232,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B67DE9782927EAE8008C6400 /* SplitGroup.swift in Sources */,
+				B67DE987292C479A008C6400 /* Decimal+Rounded.swift in Sources */,
 				B67DE9742927E1BF008C6400 /* Person.swift in Sources */,
 				B67DE97E2928005A008C6400 /* MonetaryAmount.swift in Sources */,
 				B67DE980292AB36A008C6400 /* SplitOptionsScreenView.swift in Sources */,
@@ -226,6 +241,7 @@
 				B67DE96B2925852B008C6400 /* TransactionScreenView.swift in Sources */,
 				B67DE97C2927EBDC008C6400 /* Currency.swift in Sources */,
 				B67DE983292AE025008C6400 /* ConfugurableListRowView.swift in Sources */,
+				B67DE985292AFE14008C6400 /* SplitStrategy.swift in Sources */,
 				B67DE96F2925858C008C6400 /* PaidAndSplitBarView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

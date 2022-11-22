@@ -7,16 +7,23 @@
 
 import SwiftUI
 
-struct SplitOptionsScreenView: View {
+struct SplitOptionsScreenView<ESSS: IEqualSharesSplitStrategy>: View {
+    // Data
     private let splitGroup: SplitGroup
-    @State private var selection = Set<Person.ID>()
-
+    // State
     @State private var pickerSelection: Int = 0
-    @State private var hintPlateHeader = "Split equally"
-    @State private var hintPlateBody = "Select which people own an equal share:"
+    // Split parameters
+    @StateObject private var equalSharesSplitStrategy: ESSS
 
-    init(splitGroup: SplitGroup) {
+    init(
+        splitGroup: SplitGroup,
+        total: MonetaryAmount,
+        equalSharesSplitStrategy: ESSS.Type = EqualSharesSplitStrategy.self
+    ) {
         self.splitGroup = splitGroup
+        self._equalSharesSplitStrategy = StateObject(
+            wrappedValue: equalSharesSplitStrategy.init(splitGroup: splitGroup, total: total)
+        )
     }
 
     var body: some View {
@@ -52,8 +59,8 @@ private extension SplitOptionsScreenView {
             RoundedRectangle(cornerRadius: 6)
                 .foregroundColor(Color(uiColor: .tertiarySystemFill))
             VStack {
-                Text(hintPlateHeader).font(.headline)
-                Text(hintPlateBody).font(.subheadline)
+                Text(equalSharesSplitStrategy.hintHeader).font(.headline)
+                Text(equalSharesSplitStrategy.hintDescription).font(.subheadline)
             }
         }
         .frame(height: 60)
@@ -63,10 +70,16 @@ private extension SplitOptionsScreenView {
         List(splitGroup.members, id: \.id) { member in
             ConfugurableListRowView(
                 heading: member.fullName,
-                subheading: selection.contains(member.id) ? "$3.92" : "not involved",
+                subheading: {
+                    if let amount = equalSharesSplitStrategy.amount(for: member.id) { return amount.formatted() }
+                    return "not involved"
+                }(),
                 leadingAccessory: { Circle().foregroundColor(.blue) },
-                trailingAccessory: { if selection.contains(member.id) { Image(systemName: "checkmark") } },
-                action: { if !selection.insert(member.id).inserted { selection.remove(member.id) } }
+                trailingAccessory: {
+                    let isIncluded = equalSharesSplitStrategy.isIncluded[member.id] ?? false
+                    if isIncluded { Image(systemName: "checkmark") }
+                },
+                action: { equalSharesSplitStrategy.isIncluded[member.id]?.toggle() }
             )
         }
         .listStyle(.plain)
@@ -77,11 +90,17 @@ private extension SplitOptionsScreenView {
 
 struct SplitOptionsScreen_Previews: PreviewProvider {
     static var previews: some View {
-        SplitOptionsScreenView(splitGroup: SplitGroup(id: UUID(), members: [
-            Person(id: UUID(), firstName: "Alexander", lastName: nil),
-            Person(id: UUID(), firstName: "Alena", lastName: nil),
-            Person(id: UUID(), firstName: "Ilia", lastName: nil),
-            Person(id: UUID(), firstName: "Oleg", lastName: nil)
-        ]))
+        SplitOptionsScreenView(
+            splitGroup: SplitGroup(
+                id: UUID(),
+                members: [
+                    Person(id: UUID(), firstName: "Alexander", lastName: nil),
+                    Person(id: UUID(), firstName: "Alena", lastName: nil),
+                    Person(id: UUID(), firstName: "Ilia", lastName: nil),
+                    Person(id: UUID(), firstName: "Oleg", lastName: nil)
+                ]
+            ),
+            total: MonetaryAmount(currency: .jpy, amount: 100003.0)
+        )
     }
 }

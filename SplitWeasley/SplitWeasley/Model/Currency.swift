@@ -55,6 +55,26 @@ extension Currency {
     }
 }
 
+// MARK: - Rounding scales
+
+extension Currency {
+    var roundingScale: Int {
+        switch self {
+        case .usd: return 2
+        case .eur: return 2
+        case .jpy: return 0
+        case .gbp: return 2
+        case .cny: return 2
+        case .aud: return 2
+        case .cad: return 2
+        case .chf: return 2
+        case .hkd: return 2
+        case .sgd: return 2
+        case .rub: return 2
+        }
+    }
+}
+
 // MARK: - Icons
 
 extension Currency {
