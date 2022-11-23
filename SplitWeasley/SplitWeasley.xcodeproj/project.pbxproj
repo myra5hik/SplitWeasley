@@ -21,6 +21,7 @@
 		B67DE983292AE025008C6400 /* ConfugurableListRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE982292AE025008C6400 /* ConfugurableListRowView.swift */; };
 		B67DE985292AFE14008C6400 /* SplitStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE984292AFE14008C6400 /* SplitStrategy.swift */; };
 		B67DE987292C479A008C6400 /* Decimal+Rounded.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE986292C479A008C6400 /* Decimal+Rounded.swift */; };
+		B67DE98C292D77DD008C6400 /* MonetaryAmountInputProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE98B292D77DD008C6400 /* MonetaryAmountInputProxy.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 		B67DE982292AE025008C6400 /* ConfugurableListRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfugurableListRowView.swift; sourceTree = "<group>"; };
 		B67DE984292AFE14008C6400 /* SplitStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitStrategy.swift; sourceTree = "<group>"; };
 		B67DE986292C479A008C6400 /* Decimal+Rounded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decimal+Rounded.swift"; sourceTree = "<group>"; };
+		B67DE98B292D77DD008C6400 /* MonetaryAmountInputProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonetaryAmountInputProxy.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				B67DE96C29258552008C6400 /* Screens */,
 				B67DE96D29258575008C6400 /* Components */,
 				B67DE981292ADFE0008C6400 /* Elements */,
+				B67DE98A292D7755008C6400 /* Helpers */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -159,6 +162,14 @@
 				B67DE986292C479A008C6400 /* Decimal+Rounded.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		B67DE98A292D7755008C6400 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				B67DE98B292D77DD008C6400 /* MonetaryAmountInputProxy.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -238,6 +249,7 @@
 				B67DE980292AB36A008C6400 /* SplitOptionsScreenView.swift in Sources */,
 				B67DE97129258B32008C6400 /* RoundButton.swift in Sources */,
 				B67DE958292583F0008C6400 /* SplitWeasleyApp.swift in Sources */,
+				B67DE98C292D77DD008C6400 /* MonetaryAmountInputProxy.swift in Sources */,
 				B67DE96B2925852B008C6400 /* TransactionScreenView.swift in Sources */,
 				B67DE97C2927EBDC008C6400 /* Currency.swift in Sources */,
 				B67DE983292AE025008C6400 /* ConfugurableListRowView.swift in Sources */,

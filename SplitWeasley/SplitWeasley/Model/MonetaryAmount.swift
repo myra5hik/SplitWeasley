@@ -16,7 +16,7 @@ struct MonetaryAmount {
         self.amount = amount.rounded(scale: currency.roundingScale)
     }
 
-    init(currency: Currency, amountAsDouble: Double = 0.0) {
+    init(currency: Currency, amountAsDouble: Double) {
         self.init(currency: currency, amount: Decimal(amountAsDouble))
     }
 

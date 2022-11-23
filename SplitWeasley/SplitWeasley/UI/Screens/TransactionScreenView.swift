@@ -128,62 +128,28 @@ protocol ITransactionScreenViewModel: ObservableObject {
 }
 
 final class TransactionScreenViewModel: ObservableObject {
-    // Inputs
     @Published var date = Date()
     @Published var transactionDescription = ""
     @Published var monetaryAmount = MonetaryAmount(currency: .eur, amount: 0.0)
-    private let separatorSymbol = "\(Locale.current.decimalSeparator ?? "")"
-    // Logics
-    private var shouldAddTrailingSeparator = false
-    private var amountOfTrailingZeros = 0
+    private var inputProxy: (any IMonetaryAmountInputProxy)! = nil
+
+    init() {
+        self.inputProxy = MonetaryAmountInputProxy(
+            managedPropertyGetter: { [weak self] in self?.monetaryAmount ?? .init(currency: .usd) },
+            managedPropertySetter: { [weak self] in self?.monetaryAmount = $0 }
+        )
+    }
 }
 
 extension TransactionScreenViewModel: ITransactionScreenViewModel {
     var transactionAmount: String {
-        get {
-            let amount = monetaryAmount.amount
-            if amount == 0.0 { return "" }
-            var res = "\(amount)"
-            // Adds a trailing separator if flag set to true
-            if shouldAddTrailingSeparator { res += separatorSymbol }
-            // Adds a separator if fractional part consists of only trailing zeros
-            if (amountOfTrailingZeros > 0 && amount.rounded(scale: 0) == amount) { res += separatorSymbol }
-            // Adds the required amount of trailing zeros
-            res += Array(repeating: "0", count: amountOfTrailingZeros)
-            return res
-        }
-
-        set {
-            // Fallback: sets the amount to the previous value to trigger publisher
-            let fallback = { [weak self] in
-                guard let self = self else { return }
-                self.monetaryAmount = self.monetaryAmount
-            }
-            // For an empty string, sets the value to 0.0
-            if newValue == "" { monetaryAmount = monetaryAmount.with(amount: 0.0) }
-            // Checks the input is a valid numeric input
-            guard let properNumber = Double(newValue) else { fallback(); return }
-            // Logic around fractional values of the decimal
-            let splits = newValue.split(separator: separatorSymbol, omittingEmptySubsequences: false)
-            if splits.count == 2, let last = newValue.last {
-                // Forbids inputting more fractional digits than allowed for the currency
-                guard splits[1].count <= monetaryAmount.currency.roundingScale else { fallback(); return }
-                // Sets trailing separator flag, so that the getter keeps it
-                shouldAddTrailingSeparator = (String(last) == separatorSymbol) ? true : false
-                // Sets the amount of trailing zeros, so that the getter keeps them
-                amountOfTrailingZeros = String(splits[1]).amountOfTrailingZeros()
-            } else {
-                shouldAddTrailingSeparator = false
-                amountOfTrailingZeros = 0
-            }
-
-            monetaryAmount = monetaryAmount.with(amount: Decimal(properNumber))
-        }
+        get { inputProxy.transactionAmount }
+        set { inputProxy.transactionAmount = newValue }
     }
 
     var transactionCurrency: Currency {
-        get { monetaryAmount.currency }
-        set(newCurrency) { monetaryAmount = monetaryAmount.with(currency: newCurrency) }
+        get { inputProxy.transactionCurrency }
+        set { inputProxy.transactionCurrency = newValue }
     }
 
     var payee: String {
@@ -194,18 +160,6 @@ extension TransactionScreenViewModel: ITransactionScreenViewModel {
     var splitWithin: String {
         get { "equally" }
         set { }
-    }
-}
-
-// MARK: - Local helper
-
-private extension String {
-    func amountOfTrailingZeros() -> Int {
-        var res = 0
-        for c in self.reversed() {
-            if c != "0" { break } else { res += 1 }
-        }
-        return res
     }
 }
 
