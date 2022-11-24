@@ -6,23 +6,37 @@
 //
 
 import SwiftUI
+import Combine
 
-struct SplitOptionsScreenView<ESSS: IEqualSharesSplitStrategy>: View {
+struct SplitOptionsScreenView<
+    ESSS: IEqualSharesSplitStrategy,
+    EASS: IExactAmountSplitStrategy
+>: View {
+    // TODO: Store splitGroup in split strategy objects instead of views
     // Data
     private let splitGroup: SplitGroup
+    private let total: MonetaryAmount
     // State
-    @State private var pickerSelection: Int = 0
+    @State private var pickerSelection: PickerSelection = .exactAmount
     // Split parameters
     @StateObject private var equalSharesSplitStrategy: ESSS
+    @StateObject private var exactAmountSplitStrategy: EASS
+    // Etc
+    private var bag = Set<AnyCancellable>()
 
     init(
         splitGroup: SplitGroup,
         total: MonetaryAmount,
-        equalSharesSplitStrategy: ESSS.Type = EqualSharesSplitStrategy.self
+        equalSharesSplitStrategy: ESSS.Type = EqualSharesSplitStrategy.self,
+        exactAmountSplitStrategy: EASS.Type = ExactAmountSplitStrategy.self
     ) {
         self.splitGroup = splitGroup
+        self.total = total
         self._equalSharesSplitStrategy = StateObject(
             wrappedValue: equalSharesSplitStrategy.init(splitGroup: splitGroup, total: total)
+        )
+        self._exactAmountSplitStrategy = StateObject(
+            wrappedValue: exactAmountSplitStrategy.init(splitGroup: splitGroup, total: total)
         )
     }
 
@@ -43,11 +57,11 @@ struct SplitOptionsScreenView<ESSS: IEqualSharesSplitStrategy>: View {
 private extension SplitOptionsScreenView {
     var splitStrategySegmentedControlView: some View {
         Picker(selection: $pickerSelection) {
-            Image(systemName: "equal").tag(0)
-            Text("1.23").tag(1)
-            Image(systemName: "percent").tag(2)
-            Image(systemName: "chart.pie.fill").tag(3)
-            Image(systemName: "plus.forwardslash.minus").tag(4)
+            Image(systemName: "equal").tag(PickerSelection.equalShares)
+            Text("1.23").tag(PickerSelection.exactAmount)
+            Image(systemName: "percent").tag(PickerSelection.percent)
+            Image(systemName: "chart.pie.fill").tag(PickerSelection.unequalShares)
+            Image(systemName: "plus.forwardslash.minus").tag(PickerSelection.plusMinus)
         } label: {
             EmptyView()
         }
@@ -67,6 +81,19 @@ private extension SplitOptionsScreenView {
     }
 
     var splitGroupMembersListView: some View {
+        VStack {
+            switch pickerSelection {
+            case .equalShares: equalSharesSplitMembersListView
+            case .exactAmount: exactAmountSplitMembersListView
+            case .percent: EmptyView()
+            case .unequalShares: EmptyView()
+            case .plusMinus: EmptyView()
+            }
+            Spacer()
+        }
+    }
+
+    var equalSharesSplitMembersListView: some View {
         List(splitGroup.members, id: \.id) { member in
             ConfugurableListRowView(
                 heading: member.fullName,
@@ -84,6 +111,28 @@ private extension SplitOptionsScreenView {
         }
         .listStyle(.plain)
     }
+
+    var exactAmountSplitMembersListView: some View {
+        List(splitGroup.members, id: \.id) { member in
+            ConfugurableListRowView(
+                heading: member.fullName,
+                leadingAccessory: { Circle().foregroundColor(.blue) },
+                trailingAccessory: {
+                    let proxy = MonetaryAmountInputProxy(MonetaryAmount(currency: total.currency))
+                    MonetaryAmountInputView(inputProxy: proxy).multilineTextAlignment(.trailing)
+                }
+            )
+        }
+        .listStyle(.plain)
+    }
+}
+
+// MARK: - PickerSelection
+
+private extension SplitOptionsScreenView {
+    enum PickerSelection {
+        case equalShares, exactAmount, percent, unequalShares, plusMinus
+    }
 }
 
 // MARK: - Previews
@@ -100,7 +149,7 @@ struct SplitOptionsScreen_Previews: PreviewProvider {
                     Person(id: UUID(), firstName: "Oleg", lastName: nil)
                 ]
             ),
-            total: MonetaryAmount(currency: .jpy, amount: 100003.0)
+            total: MonetaryAmount(currency: .eur, amount: 100.0)
         )
     }
 }

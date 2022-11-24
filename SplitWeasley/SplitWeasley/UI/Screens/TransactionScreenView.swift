@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct TransactionScreenView<VM: ITransactionScreenViewModel>: View {
     // View model
@@ -88,7 +89,7 @@ private extension TransactionScreenView {
 
     var amountInputRowView: some View {
         let currencyButton = RoundButton(bodyFill: Color(UIColor.systemBackground)) {
-            Image(systemName: vm.transactionCurrency.iconString)
+            Image(systemName: vm.inputProxy.monetaryAmount.currency.iconString)
                 .font(.title)
                 .fontWeight(.medium)
         }
@@ -97,17 +98,15 @@ private extension TransactionScreenView {
 
         let currencyOptions = ForEach(Currency.allCases) { currency in
             Button(
-                action: { [weak vm] in vm?.transactionCurrency = currency },
+                action: { [weak vm] in vm?.inputProxy.currency = currency },
                 label: { Label(currency.name, systemImage: currency.iconString) }
             )
         }
 
-        let amountInput = TextField(text: $vm.transactionAmount) {
-            Text("0.0 \(vm.transactionCurrency.iso4217code)")
-        }
-        .keyboardType(.decimalPad)
-        .font(.largeTitle.weight(.semibold))
-        .padding(.leading)
+        let amountInput = MonetaryAmountInputView(inputProxy: vm.inputProxy)
+            .keyboardType(.decimalPad)
+            .font(.largeTitle.weight(.semibold))
+            .padding(.leading)
 
         return HStack {
             Menu(content: { currencyOptions }, label: { currencyButton })
@@ -121,8 +120,8 @@ private extension TransactionScreenView {
 protocol ITransactionScreenViewModel: ObservableObject {
     var date: Date { get set }
     var transactionDescription: String { get set }
-    var transactionAmount: String { get set }
-    var transactionCurrency: Currency { get set }
+    var inputProxy: MonetaryAmountInputProxy { get }
+    var currency: Currency { get set }
     var payee: String { get set }
     var splitWithin: String { get set }
 }
@@ -130,28 +129,24 @@ protocol ITransactionScreenViewModel: ObservableObject {
 final class TransactionScreenViewModel: ObservableObject {
     @Published var date = Date()
     @Published var transactionDescription = ""
-    @Published var monetaryAmount = MonetaryAmount(currency: .eur, amount: 0.0)
-    private var inputProxy: (any IMonetaryAmountInputProxy)! = nil
+    @Published var currency: Currency
+    let inputProxy = MonetaryAmountInputProxy(MonetaryAmount(currency: .eur))
+    private var bag = Set<AnyCancellable>()
 
     init() {
-        self.inputProxy = MonetaryAmountInputProxy(
-            managedPropertyGetter: { [weak self] in self?.monetaryAmount ?? .init(currency: .usd) },
-            managedPropertySetter: { [weak self] in self?.monetaryAmount = $0 }
-        )
+        self.currency = inputProxy.currency
+        subscribeCurrencyToProxy()
+    }
+
+    private func subscribeCurrencyToProxy() {
+        let storable = inputProxy.$monetaryAmount.sink { [weak self] in
+            self?.currency = $0.currency
+        }
+        storable.store(in: &bag)
     }
 }
 
 extension TransactionScreenViewModel: ITransactionScreenViewModel {
-    var transactionAmount: String {
-        get { inputProxy.transactionAmount }
-        set { inputProxy.transactionAmount = newValue }
-    }
-
-    var transactionCurrency: Currency {
-        get { inputProxy.transactionCurrency }
-        set { inputProxy.transactionCurrency = newValue }
-    }
-
     var payee: String {
         get { "you" }
         set { }

@@ -7,35 +7,31 @@
 
 import SwiftUI
 
-protocol IMonetaryAmountInputProxy {
-    var transactionAmount: String { get set }
-    var transactionCurrency: Currency { get set }
+protocol IMonetaryAmountInputProxy: ObservableObject {
+    var monetaryAmount: MonetaryAmount { get set }
+    var amountAsString: String { get set }
+    var currency: Currency { get set }
 }
 
-final class MonetaryAmountInputProxy {
-    // TODO: Rework with a @Binding instead of closures
-    // Managed property
-    private let getter: () -> (MonetaryAmount)
-    private let setter: (MonetaryAmount) -> ()
+final class MonetaryAmountInputProxy: ObservableObject {
+    @Published var monetaryAmount: MonetaryAmount
     // Inputs
     private let separator = "\(Locale.current.decimalSeparator ?? "")"
     // Logics
     private var shouldAddTrailingSeparator = false
     private var amountOfTrailingZeros = 0
 
-    init(
-        managedPropertyGetter: @escaping () -> (MonetaryAmount),
-        managedPropertySetter: @escaping (MonetaryAmount) -> ()
-    ) {
-        self.getter = managedPropertyGetter
-        self.setter = managedPropertySetter
+    init(_ monetaryAmount: MonetaryAmount) {
+        self.monetaryAmount = monetaryAmount
     }
 }
 
+// MARK: - IMonetaryAmountInputProxy conformance
+
 extension MonetaryAmountInputProxy: IMonetaryAmountInputProxy {
-    var transactionAmount: String {
+    var amountAsString: String {
         get {
-            let amount = getter().amount
+            let amount = monetaryAmount.amount
             if amount == 0.0 { return "" }
             var res = "\(amount)"
             // Adds a trailing separator if flag set to true
@@ -48,19 +44,19 @@ extension MonetaryAmountInputProxy: IMonetaryAmountInputProxy {
         }
 
         set {
-            let previousValue = getter()
-            let roundingScale = previousValue.currency.roundingScale
+            let previousValue = monetaryAmount
+            let currency = previousValue.currency
+            let roundingScale = currency.roundingScale
             // Fallback: sets the amount to the previous value to trigger publisher
-            let fallback = { [weak self] in
-                guard let self = self else { return }
-                self.setter(previousValue)
-            }
+            let fallback = { [weak self] in self?.monetaryAmount = previousValue }
             // For an empty string, sets the value to 0.0
-            if newValue == "" { setter(previousValue.with(amount: 0.0)) }
+            guard newValue != "" else { monetaryAmount = MonetaryAmount(currency: currency); return }
             // Checks the input is a valid numeric input
             guard let properNumber = Double(newValue) else { fallback(); return }
             // Logic around fractional values of the decimal
             let splits = newValue.split(separator: separator, omittingEmptySubsequences: false)
+            // Checks that the input will not overflow
+            guard splits[0].count < 14 else { fallback(); return }
             if splits.count == 2, let last = newValue.last {
                 // Forbids inputting more fractional digits than allowed for the currency
                 guard splits[1].count <= roundingScale else { fallback(); return }
@@ -73,13 +69,13 @@ extension MonetaryAmountInputProxy: IMonetaryAmountInputProxy {
                 amountOfTrailingZeros = 0
             }
 
-            setter(previousValue.with(amount: Decimal(properNumber)))
+            monetaryAmount = monetaryAmount.with(amount: Decimal(properNumber))
         }
     }
 
-    var transactionCurrency: Currency {
-        get { getter().currency }
-        set(newCurrency) { setter(getter().with(currency: newCurrency)) }
+    var currency: Currency {
+        get { monetaryAmount.currency }
+        set { monetaryAmount = monetaryAmount.with(currency: newValue) }
     }
 }
 
