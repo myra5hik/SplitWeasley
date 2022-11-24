@@ -11,3 +11,15 @@ struct SplitGroup: Identifiable, Hashable {
     let id: UUID
     let members: [Person]
 }
+
+// MARK: - Stub data
+
+extension SplitGroup {
+    static var stub: SplitGroup {
+        SplitGroup(id: UUID(), members: [
+            Person(id: UUID(), firstName: "John", lastName: "Appleseed"),
+            Person(id: UUID(), firstName: "The Dude"),
+            Person(id: UUID(), firstName: "Alex")
+        ])
+    }
+}

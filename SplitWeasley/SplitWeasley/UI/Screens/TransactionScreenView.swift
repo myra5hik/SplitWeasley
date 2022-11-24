@@ -31,7 +31,7 @@ struct TransactionScreenView<VM: ITransactionScreenViewModel>: View {
                     payeeLabel: $vm.payee,
                     splitLabel: $vm.splitWithin,
                     payeeAction: nil,
-                    splitAction: nil
+                    splitAction: { [weak vm] in vm?.isPresentingSplitOptionsView = true }
                 )
                 Spacer()
             }
@@ -44,6 +44,13 @@ struct TransactionScreenView<VM: ITransactionScreenViewModel>: View {
             ToolbarItem(placement: .primaryAction) {
                 Button("Save", action: { }).fontWeight(.semibold)
             }
+        }
+        .sheet(isPresented: $vm.isPresentingSplitOptionsView) {
+            SplitOptionsScreenView(
+                splitGroup: SplitGroup.stub,
+                total: vm.inputProxy.monetaryAmount,
+                onDismiss: { [weak vm] in vm?.isPresentingSplitOptionsView = false }
+            )
         }
     }
 }
@@ -118,6 +125,7 @@ private extension TransactionScreenView {
 // MARK: - ViewModel
 
 protocol ITransactionScreenViewModel: ObservableObject {
+    var isPresentingSplitOptionsView: Bool { get set }
     var date: Date { get set }
     var transactionDescription: String { get set }
     var inputProxy: MonetaryAmountInputProxy { get }
@@ -127,9 +135,13 @@ protocol ITransactionScreenViewModel: ObservableObject {
 }
 
 final class TransactionScreenViewModel: ObservableObject {
+    // Data
     @Published var date = Date()
     @Published var transactionDescription = ""
     @Published var currency: Currency
+    // Routing
+    @Published var isPresentingSplitOptionsView = false
+    // Etc
     let inputProxy = MonetaryAmountInputProxy(MonetaryAmount(currency: .eur))
     private var bag = Set<AnyCancellable>()
 

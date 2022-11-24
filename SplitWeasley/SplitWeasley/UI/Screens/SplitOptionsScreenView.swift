@@ -17,10 +17,13 @@ struct SplitOptionsScreenView<
     private let splitGroup: SplitGroup
     private let total: MonetaryAmount
     // State
-    @State private var pickerSelection: PickerSelection = .exactAmount
+    @State private var pickerSelection: PickerSelection = .equalShares
     // Split parameters
     @StateObject private var equalSharesSplitStrategy: ESSS
     @StateObject private var exactAmountSplitStrategy: EASS
+    // Actions
+    private let onDismiss: (() -> Void)?
+    private let onAdd: ((any ISplitStrategy) -> Void)?
     // Etc
     private var bag = Set<AnyCancellable>()
 
@@ -28,7 +31,9 @@ struct SplitOptionsScreenView<
         splitGroup: SplitGroup,
         total: MonetaryAmount,
         equalSharesSplitStrategy: ESSS.Type = EqualSharesSplitStrategy.self,
-        exactAmountSplitStrategy: EASS.Type = ExactAmountSplitStrategy.self
+        exactAmountSplitStrategy: EASS.Type = ExactAmountSplitStrategy.self,
+        onDismiss: (() -> Void)? = nil,
+        onAdd: ((any ISplitStrategy) -> Void)? = nil
     ) {
         self.splitGroup = splitGroup
         self.total = total
@@ -38,17 +43,39 @@ struct SplitOptionsScreenView<
         self._exactAmountSplitStrategy = StateObject(
             wrappedValue: exactAmountSplitStrategy.init(splitGroup: splitGroup, total: total)
         )
+        // Actions
+        self.onDismiss = onDismiss
+        self.onAdd = onAdd
     }
 
     var body: some View {
-        VStack {
-            VStack(spacing: 8) {
-                splitStrategySegmentedControlView
-                hintPlateView
+        NavigationStack {
+            applyingNavigationModifiers {
+                VStack {
+                    VStack(spacing: 8) {
+                        splitStrategySegmentedControlView
+                        hintPlateView
+                    }
+                    .padding()
+                    splitGroupMembersListView
+                }
             }
-            .padding()
-            splitGroupMembersListView
         }
+    }
+
+    private func applyingNavigationModifiers<V: View>(_ content: () -> (V)) -> some View {
+        content()
+            .navigationTitle("Split Options")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel", role: .cancel, action: { onDismiss?() })
+                }
+                ToolbarItem(placement: .primaryAction) {
+                    Button("Add", action: { })
+                        .bold()
+                }
+            }
     }
 }
 
@@ -140,15 +167,7 @@ private extension SplitOptionsScreenView {
 struct SplitOptionsScreen_Previews: PreviewProvider {
     static var previews: some View {
         SplitOptionsScreenView(
-            splitGroup: SplitGroup(
-                id: UUID(),
-                members: [
-                    Person(id: UUID(), firstName: "Alexander", lastName: nil),
-                    Person(id: UUID(), firstName: "Alena", lastName: nil),
-                    Person(id: UUID(), firstName: "Ilia", lastName: nil),
-                    Person(id: UUID(), firstName: "Oleg", lastName: nil)
-                ]
-            ),
+            splitGroup: SplitGroup.stub,
             total: MonetaryAmount(currency: .eur, amount: 100.0)
         )
     }
