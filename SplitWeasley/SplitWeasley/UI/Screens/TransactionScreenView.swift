@@ -31,7 +31,10 @@ struct TransactionScreenView<VM: ITransactionScreenViewModel>: View {
                     payeeLabel: $vm.payee,
                     splitLabel: $vm.splitWithin,
                     payeeAction: nil,
-                    splitAction: { [weak vm] in vm?.isPresentingSplitOptionsView = true }
+                    splitAction: { [weak vm] in
+                        guard (vm?.inputProxy.monetaryAmount.amount ?? 0) > 0 else { return }
+                        vm?.isPresentingSplitOptionsView = true
+                    }
                 )
                 Spacer()
             }

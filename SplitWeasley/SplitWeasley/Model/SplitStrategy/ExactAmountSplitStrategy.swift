@@ -9,6 +9,8 @@ import Foundation
 
 protocol IExactAmountSplitStrategy: ObservableObject, ISplitStrategy {
     var inputAmount: [Person.ID: MonetaryAmount] { get set }
+    var inputTotal: MonetaryAmount { get }
+    var remainingAmount: MonetaryAmount { get }
 }
 
 final class ExactAmountSplitStrategy: ObservableObject {
@@ -33,13 +35,21 @@ extension ExactAmountSplitStrategy: IExactAmountSplitStrategy {
     var hintDescription: String { "Specify exactly how much a person owes:" }
     var conciseHintDescription: String { "unequally" }
 
-    var isLogicallyConsistent: Bool {
+    var inputTotal: MonetaryAmount {
         let currency = total.currency
         let inputTotal = inputAmount.values.reduce(MonetaryAmount(currency: currency), {
             assert($0.currency == currency && $1.currency == currency)
             return MonetaryAmount(currency: currency, amount: $0.amount + $1.amount)
         })
-        return inputTotal == total
+        return inputTotal
+    }
+
+    var remainingAmount: MonetaryAmount {
+        return MonetaryAmount(currency: total.currency, amount: total.amount - inputTotal.amount)
+    }
+
+    var isLogicallyConsistent: Bool {
+        return remainingAmount.amount == 0
     }
 
     func amount(for personId: Person.ID) -> MonetaryAmount? {

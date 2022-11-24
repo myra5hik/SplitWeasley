@@ -140,14 +140,22 @@ private extension SplitOptionsScreenView {
     }
 
     var exactAmountSplitMembersListView: some View {
-        List(splitGroup.members, id: \.id) { member in
-            ConfugurableListRowView(
-                heading: member.fullName,
-                leadingAccessory: { Circle().foregroundColor(.blue) },
-                trailingAccessory: {
-                    let proxy = MonetaryAmountInputProxy(MonetaryAmount(currency: total.currency))
-                    MonetaryAmountInputView(inputProxy: proxy).multilineTextAlignment(.trailing)
+        List {
+            Section {
+                ForEach(splitGroup.members, id: \.id) { member in
+                    ConfugurableListRowView(
+                        heading: member.fullName,
+                        leadingAccessory: { Circle().foregroundColor(.blue) },
+                        trailingAccessory: {
+                            Text("0.0").foregroundColor(Color(uiColor: .systemGray2))
+                        }
+                    )
                 }
+            }
+            ConfugurableListRowView(
+                heading: "Left to Distribute:",
+                leadingAccessory: { Rectangle().foregroundColor(Color(uiColor: .clear)) },
+                trailingAccessory: { Text(exactAmountSplitStrategy.remainingAmount.formatted()) }
             )
         }
         .listStyle(.plain)
