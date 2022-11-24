@@ -19,6 +19,7 @@ enum Currency: Hashable, CaseIterable {
     case hkd
     case sgd
     case rub
+    case btc
 }
 
 // MARK: - Identifiable
@@ -51,6 +52,7 @@ extension Currency {
         case .hkd: return "Hong Kong Dollar"
         case .sgd: return "Singapore Dollar"
         case .rub: return "Russian Ruble"
+        case .btc: return "Bitcoin"
         }
     }
 }
@@ -71,6 +73,7 @@ extension Currency {
         case .hkd: return 2
         case .sgd: return 2
         case .rub: return 2
+        case .btc: return 8
         }
     }
 }
@@ -91,6 +94,7 @@ extension Currency {
         case .hkd: return "dollarsign"
         case .sgd: return "dollarsign"
         case .rub: return "rublesign"
+        case .btc: return "bitcoinsign"
         }
     }
 }
