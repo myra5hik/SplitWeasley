@@ -8,21 +8,23 @@
 import SwiftUI
 
 protocol IMonetaryAmountInputProxy: ObservableObject {
-    var monetaryAmount: MonetaryAmount { get set }
     var amountAsString: String { get set }
+    var amountAsDecimal: Decimal { get set }
     var currency: Currency { get set }
 }
 
 final class MonetaryAmountInputProxy: ObservableObject {
-    @Published var monetaryAmount: MonetaryAmount
+    private var monetaryAmount: MonetaryAmount {
+        willSet { objectWillChange.send() }
+    }
     // Inputs
     private let separator = "\(Locale.current.decimalSeparator ?? "")"
     // Logics
     private var shouldAddTrailingSeparator = false
     private var amountOfTrailingZeros = 0
 
-    init(_ monetaryAmount: MonetaryAmount) {
-        self.monetaryAmount = monetaryAmount
+    init(currency: Currency) {
+        self.monetaryAmount = MonetaryAmount(currency: currency)
     }
 }
 
@@ -71,6 +73,11 @@ extension MonetaryAmountInputProxy: IMonetaryAmountInputProxy {
 
             monetaryAmount = monetaryAmount.with(amount: Decimal(properNumber))
         }
+    }
+
+    var amountAsDecimal: Decimal {
+        get { monetaryAmount.amount }
+        set { monetaryAmount = monetaryAmount.with(amount: newValue) }
     }
 
     var currency: Currency {

@@ -32,7 +32,7 @@ struct TransactionScreenView<VM: ITransactionScreenViewModel>: View {
                     splitLabel: $vm.splitWithin,
                     payeeAction: nil,
                     splitAction: { [weak vm] in
-                        guard (vm?.inputProxy.monetaryAmount.amount ?? 0) > 0 else { return }
+                        guard (vm?.amount.amount ?? 0) > 0 else { return }
                         vm?.isPresentingSplitOptionsView = true
                     }
                 )
@@ -51,7 +51,7 @@ struct TransactionScreenView<VM: ITransactionScreenViewModel>: View {
         .sheet(isPresented: $vm.isPresentingSplitOptionsView) {
             SplitOptionsScreenView(
                 splitGroup: SplitGroup.stub,
-                total: vm.inputProxy.monetaryAmount,
+                total: vm.amount,
                 onDismiss: { [weak vm] in vm?.isPresentingSplitOptionsView = false }
             )
         }
@@ -99,7 +99,7 @@ private extension TransactionScreenView {
 
     var amountInputRowView: some View {
         let currencyButton = RoundButton(bodyFill: Color(UIColor.systemBackground)) {
-            Image(systemName: vm.inputProxy.monetaryAmount.currency.iconString)
+            Image(systemName: vm.amount.currency.iconString)
                 .font(.title)
                 .fontWeight(.medium)
         }
@@ -108,12 +108,15 @@ private extension TransactionScreenView {
 
         let currencyOptions = ForEach(Currency.allCases) { currency in
             Button(
-                action: { [weak vm] in vm?.inputProxy.currency = currency },
+                action: { [weak vm] in
+                    guard let vm = vm else { return }
+                    vm.amount = vm.amount.with(currency: currency)
+                },
                 label: { Label(currency.name, systemImage: currency.iconString) }
             )
         }
 
-        let amountInput = MonetaryAmountInputView(inputProxy: vm.inputProxy)
+        let amountInput = MonetaryAmountInputView(monetaryAmount: $vm.amount)
             .keyboardType(.decimalPad)
             .font(.largeTitle.weight(.semibold))
             .padding(.leading)
@@ -131,8 +134,7 @@ protocol ITransactionScreenViewModel: ObservableObject {
     var isPresentingSplitOptionsView: Bool { get set }
     var date: Date { get set }
     var transactionDescription: String { get set }
-    var inputProxy: MonetaryAmountInputProxy { get }
-    var currency: Currency { get set }
+    var amount: MonetaryAmount { get set }
     var payee: String { get set }
     var splitWithin: String { get set }
 }
@@ -141,24 +143,9 @@ final class TransactionScreenViewModel: ObservableObject {
     // Data
     @Published var date = Date()
     @Published var transactionDescription = ""
-    @Published var currency: Currency
+    @Published var amount = MonetaryAmount(currency: .eur)
     // Routing
     @Published var isPresentingSplitOptionsView = false
-    // Etc
-    let inputProxy = MonetaryAmountInputProxy(MonetaryAmount(currency: .eur))
-    private var bag = Set<AnyCancellable>()
-
-    init() {
-        self.currency = inputProxy.currency
-        subscribeCurrencyToProxy()
-    }
-
-    private func subscribeCurrencyToProxy() {
-        let storable = inputProxy.$monetaryAmount.sink { [weak self] in
-            self?.currency = $0.currency
-        }
-        storable.store(in: &bag)
-    }
 }
 
 extension TransactionScreenViewModel: ITransactionScreenViewModel {

@@ -59,15 +59,6 @@ struct ConfugurableListRowView_Previews: PreviewProvider {
                 leadingAccessory: { Circle().foregroundColor(.mint) },
                 trailingAccessory: { Image(systemName: "checkmark") }
             )
-            ConfugurableListRowView(
-                heading: "Full",
-                subheading: "including subline",
-                leadingAccessory: { Circle().foregroundColor(.mint) },
-                trailingAccessory: {
-                    let proxy = MonetaryAmountInputProxy(MonetaryAmount(currency: .eur))
-                    MonetaryAmountInputView(inputProxy: proxy).multilineTextAlignment(.trailing)
-                }
-            )
         }
     }
 }
