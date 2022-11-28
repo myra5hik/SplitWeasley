@@ -27,7 +27,8 @@ struct MonetaryAmountInputView<LFDIP: ILimitedFractionDigitInputProxy>: View {
     ) {
         self._inputProxy = StateObject(
             wrappedValue: inputProxy.init(
-                roundingScale: monetaryAmount.wrappedValue.currency.roundingScale
+                roundingScale: monetaryAmount.wrappedValue.currency.roundingScale,
+                initialValue: monetaryAmount.wrappedValue.amount
             )
         )
         self.currencySymbol = monetaryAmount.wrappedValue.currency.iso4217code

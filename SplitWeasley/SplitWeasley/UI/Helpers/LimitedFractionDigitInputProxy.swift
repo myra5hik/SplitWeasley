@@ -14,7 +14,7 @@ protocol ILimitedFractionDigitInputProxy: ObservableObject {
     var amountAsDecimal: Decimal { get set }
     var roundingScale: Int { get set }
 
-    init(roundingScale: Int)
+    init(roundingScale: Int, initialValue: Decimal)
 }
 
 // MARK: - LimitedFractionDigitInputProxy implementation
@@ -35,10 +35,12 @@ final class LimitedFractionDigitInputProxy: ObservableObject {
     private let separator = "\(Locale.current.decimalSeparator ?? "")"
     // Logics
     private var shouldAddTrailingSeparator = false
+    private var shouldAddLeadingZero = false
     private var amountOfTrailingZeros = 0
 
-    init(roundingScale: Int) {
+    init(roundingScale: Int, initialValue: Decimal) {
         self.roundingScale = roundingScale
+        self.decimal = initialValue
     }
 }
 
@@ -47,8 +49,8 @@ final class LimitedFractionDigitInputProxy: ObservableObject {
 extension LimitedFractionDigitInputProxy: ILimitedFractionDigitInputProxy {
     var amountAsString: String {
         get {
-            if decimal == 0.0 { return "" }
-            var res = "\(decimal)"
+            var res = decimal == 0.0 ? "" : "\(decimal)"
+            if shouldAddLeadingZero { res = "0\(res)" }
             // Adds a trailing separator if flag set to true
             if shouldAddTrailingSeparator { res += separator }
             // Adds a separator if fractional part consists of only trailing zeros
@@ -62,27 +64,23 @@ extension LimitedFractionDigitInputProxy: ILimitedFractionDigitInputProxy {
             let previousValue = decimal
             // Fallback: sets the amount to the previous value to trigger publisher
             let fallback = { [weak self] in self?.decimal = previousValue }
+            // Checks that the input will not overflow
+            guard newValue.count <= 16 else { fallback(); return }
             // For an empty string, sets the value to 0.0
-            guard newValue != "" else { decimal = 0.0; return }
-            // Checks the input is a valid numeric input
-            guard let properNumber = Double(newValue) else { fallback(); return }
+            guard newValue != "" else { decimal = 0.0; shouldAddLeadingZero = false; return }
             // Logic around fractional values of the decimal
             let splits = newValue.split(separator: separator, omittingEmptySubsequences: false)
-            // Checks that the input will not overflow
-            guard splits[0].count < 14 else { fallback(); return }
-            if splits.count == 2, let last = newValue.last {
-                // Forbids inputting more fractional digits than allowed
-                guard splits[1].count <= roundingScale else { fallback(); return }
-                // Sets trailing separator flag, so that the getter keeps it
-                shouldAddTrailingSeparator = (String(last) == separator && roundingScale > 0) ? true : false
-                // Sets the amount of trailing zeros, so that the getter keeps them
-                amountOfTrailingZeros = String(splits[1]).amountOfTrailingZeros()
-            } else {
-                shouldAddTrailingSeparator = false
-                amountOfTrailingZeros = 0
-            }
-
-            decimal = Decimal(properNumber)
+            guard splits.count >= 1 && splits.count <= 2 else { fallback(); return }
+            let wholePart = splits[0]
+            let fractionalPart = (splits.count == 2) ? splits[1] : nil
+            // Sets flags which manage state not derivable from the numeric value
+            shouldAddLeadingZero = (wholePart == "0" && (fractionalPart == "" || fractionalPart == nil))
+            shouldAddTrailingSeparator = (fractionalPart == "" && roundingScale > 0)
+            // Forbids inputting more fractional digits than allowed
+            if splits.count == 2 && splits[1].count > roundingScale { fallback(); return }
+            // Checks the input is a valid numeric input
+            guard let properNumber = Decimal(string: newValue) else { fallback(); return }
+            decimal = properNumber
         }
     }
 
