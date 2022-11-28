@@ -68,18 +68,20 @@ extension LimitedFractionDigitInputProxy: ILimitedFractionDigitInputProxy {
             guard newValue.count <= 16 else { fallback(); return }
             // For an empty string, sets the value to 0.0
             guard newValue != "" else { decimal = 0.0; shouldAddLeadingZero = false; return }
+            // Checks the input is a valid numeric input
+            guard let properNumber = Decimal(string: newValue) else { fallback(); return }
             // Logic around fractional values of the decimal
             let splits = newValue.split(separator: separator, omittingEmptySubsequences: false)
             guard splits.count >= 1 && splits.count <= 2 else { fallback(); return }
             let wholePart = splits[0]
             let fractionalPart = (splits.count == 2) ? splits[1] : nil
             // Sets flags which manage state not derivable from the numeric value
-            shouldAddLeadingZero = (wholePart == "0" && (fractionalPart == "" || fractionalPart == nil))
+            shouldAddLeadingZero = (wholePart == "0" && decimal.rounded(scale: 0) == decimal)
             shouldAddTrailingSeparator = (fractionalPart == "" && roundingScale > 0)
             // Forbids inputting more fractional digits than allowed
             if splits.count == 2 && splits[1].count > roundingScale { fallback(); return }
-            // Checks the input is a valid numeric input
-            guard let properNumber = Decimal(string: newValue) else { fallback(); return }
+            // Sets amount of trailing zeros
+            if splits.count == 2 { amountOfTrailingZeros = (String(splits[1]).amountOfTrailingZeros()) }
             decimal = properNumber
         }
     }
