@@ -100,8 +100,12 @@ private extension SplitOptionsScreenView {
             RoundedRectangle(cornerRadius: 6)
                 .foregroundColor(Color(uiColor: .tertiarySystemFill))
             VStack {
-                Text(equalSharesSplitStrategy.hintHeader).font(.headline)
-                Text(equalSharesSplitStrategy.hintDescription).font(.subheadline)
+                if let strategy = strategyForPickerSelection() {
+                    Text(strategy.hintHeader).font(.headline)
+                    Text(strategy.hintDescription).font(.subheadline)
+                } else {
+                    EmptyView()
+                }
             }
         }
         .frame(height: 60)
@@ -179,6 +183,16 @@ private extension SplitOptionsScreenView {
 private extension SplitOptionsScreenView {
     enum PickerSelection {
         case equalShares, exactAmount, percent, unequalShares, plusMinus
+    }
+
+    func strategyForPickerSelection() -> (any ISplitStrategy)? {
+        switch pickerSelection {
+        case .equalShares: return equalSharesSplitStrategy
+        case .exactAmount: return exactAmountSplitStrategy
+        case .percent: return nil
+        case .unequalShares: return nil
+        case .plusMinus: return nil
+        }
     }
 }
 
