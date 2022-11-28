@@ -147,7 +147,15 @@ private extension SplitOptionsScreenView {
                         heading: member.fullName,
                         leadingAccessory: { Circle().foregroundColor(.blue) },
                         trailingAccessory: {
-                            Text("0.0").foregroundColor(Color(uiColor: .systemGray2))
+                            // Requires hussle as one can't subsctipt a Binding<Dictionary<...>>
+                            let defaultValue = MonetaryAmount(currency: total.currency)
+                            let amountBinding = Binding(
+                                get: { exactAmountSplitStrategy.inputAmount[member.id] ?? defaultValue },
+                                set: { exactAmountSplitStrategy.inputAmount[member.id] = $0 }
+                            )
+                            // Return view
+                            MonetaryAmountInputView(monetaryAmount: amountBinding)
+                                .multilineTextAlignment(.trailing)
                         }
                     )
                 }
@@ -155,7 +163,11 @@ private extension SplitOptionsScreenView {
             ConfugurableListRowView(
                 heading: "Left to Distribute:",
                 leadingAccessory: { Rectangle().foregroundColor(Color(uiColor: .clear)) },
-                trailingAccessory: { Text(exactAmountSplitStrategy.remainingAmount.formatted()) }
+                trailingAccessory: {
+                    Text(exactAmountSplitStrategy.remainingAmount.formatted())
+                        .lineLimit(1)
+                        .truncationMode(.tail)
+                }
             )
         }
         .listStyle(.plain)
