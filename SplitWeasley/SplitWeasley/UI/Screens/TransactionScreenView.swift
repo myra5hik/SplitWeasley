@@ -172,6 +172,7 @@ extension TransactionScreenViewModel: ITransactionScreenViewModel {
         return SplitOptionsScreenView(
             splitGroup: splitStrategy.splitGroup,
             total: amount,
+            initialState: splitStrategy,
             onDismiss: { [weak self] in self?.isPresentingSplitOptionsView = false },
             onDone: { [weak self] updatedStrategy in
                 self?.splitStrategy = updatedStrategy

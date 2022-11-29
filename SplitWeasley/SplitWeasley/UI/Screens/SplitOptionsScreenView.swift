@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Combine
 
 struct SplitOptionsScreenView<
     ESSS: IEqualSharesSplitStrategy,
@@ -24,14 +23,13 @@ struct SplitOptionsScreenView<
     // Actions
     private let onDismiss: (() -> Void)?
     private let onDone: ((any ISplitStrategy) -> Void)?
-    // Etc
-    private var bag = Set<AnyCancellable>()
 
     init(
         splitGroup: SplitGroup,
         total: MonetaryAmount,
         equalSharesSplitStrategy: ESSS.Type = EqualSharesSplitStrategy.self,
         exactAmountSplitStrategy: EASS.Type = ExactAmountSplitStrategy.self,
+        initialState: (any ISplitStrategy)? = nil,
         onDismiss: (() -> Void)? = nil,
         onDone: ((any ISplitStrategy) -> Void)? = nil
     ) {
@@ -46,6 +44,8 @@ struct SplitOptionsScreenView<
         // Actions
         self.onDismiss = onDismiss
         self.onDone = onDone
+        // State restoration
+        if let initialState = initialState { restoreState(initialState) }
     }
 
     var body: some View {
@@ -59,11 +59,12 @@ struct SplitOptionsScreenView<
                     .padding()
                     splitGroupMembersListView
                 }
+                .id(pickerSelection)
             }
         }
     }
 
-    private func applyingNavigationModifiers<V: View>(_ content: () -> (V)) -> some View {
+    private func applyingNavigationModifiers(_ content: () -> (some View)) -> some View {
         content()
             .navigationTitle("Split Options")
             .navigationBarTitleDisplayMode(.inline)
@@ -199,6 +200,20 @@ private extension SplitOptionsScreenView {
         case .percent: return nil
         case .unequalShares: return nil
         case .plusMinus: return nil
+        }
+    }
+
+    mutating
+    func restoreState(_ state: any ISplitStrategy) {
+        switch state {
+        case let state as ESSS:
+            _equalSharesSplitStrategy = StateObject(wrappedValue: state)
+            _pickerSelection = .init(initialValue: .equalShares)
+        case let state as EASS:
+            _exactAmountSplitStrategy = StateObject(wrappedValue: state)
+            _pickerSelection = .init(initialValue: .exactAmount)
+        default:
+            assertionFailure()
         }
     }
 }
