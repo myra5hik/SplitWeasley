@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B6253A0D29354A9E0028EC7F /* SplitTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6253A0C29354A9E0028EC7F /* SplitTransaction.swift */; };
 		B63747CF292E733700A50615 /* EqualSharesSplitStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63747CE292E733700A50615 /* EqualSharesSplitStrategy.swift */; };
 		B63747D1292E771900A50615 /* ExactAmountSplitStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63747D0292E771900A50615 /* ExactAmountSplitStrategy.swift */; };
 		B63747D3292E813C00A50615 /* MonetaryAmountInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63747D2292E813C00A50615 /* MonetaryAmountInputView.swift */; };
@@ -28,6 +29,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B6253A0C29354A9E0028EC7F /* SplitTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitTransaction.swift; sourceTree = "<group>"; };
 		B63747CE292E733700A50615 /* EqualSharesSplitStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EqualSharesSplitStrategy.swift; sourceTree = "<group>"; };
 		B63747D0292E771900A50615 /* ExactAmountSplitStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExactAmountSplitStrategy.swift; sourceTree = "<group>"; };
 		B63747D2292E813C00A50615 /* MonetaryAmountInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonetaryAmountInputView.swift; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 				B67DE9772927EAE8008C6400 /* SplitGroup.swift */,
 				B67DE97B2927EBDC008C6400 /* Currency.swift */,
 				B67DE97D2928005A008C6400 /* MonetaryAmount.swift */,
+				B6253A0C29354A9E0028EC7F /* SplitTransaction.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -266,6 +269,7 @@
 				B67DE97E2928005A008C6400 /* MonetaryAmount.swift in Sources */,
 				B67DE980292AB36A008C6400 /* SplitOptionsScreenView.swift in Sources */,
 				B67DE97129258B32008C6400 /* RoundButton.swift in Sources */,
+				B6253A0D29354A9E0028EC7F /* SplitTransaction.swift in Sources */,
 				B63747D3292E813C00A50615 /* MonetaryAmountInputView.swift in Sources */,
 				B67DE958292583F0008C6400 /* SplitWeasleyApp.swift in Sources */,
 				B67DE98C292D77DD008C6400 /* LimitedFractionDigitInputProxy.swift in Sources */,

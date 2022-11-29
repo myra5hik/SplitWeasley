@@ -49,11 +49,7 @@ struct TransactionScreenView<VM: ITransactionScreenViewModel>: View {
             }
         }
         .sheet(isPresented: $vm.isPresentingSplitOptionsView) {
-            SplitOptionsScreenView(
-                splitGroup: SplitGroup.stub,
-                total: vm.amount,
-                onDismiss: { [weak vm] in vm?.isPresentingSplitOptionsView = false }
-            )
+            vm.splitOptionsScreenView
         }
     }
 }
@@ -129,21 +125,34 @@ private extension TransactionScreenView {
 }
 
 // MARK: - ViewModel
+// TODO: Factor Routing out to a separate class
 
 protocol ITransactionScreenViewModel: ObservableObject {
-    var isPresentingSplitOptionsView: Bool { get set }
+    associatedtype SplitOptionsScreenViewType: View
+
     var date: Date { get set }
     var transactionDescription: String { get set }
     var amount: MonetaryAmount { get set }
     var payee: String { get set }
     var splitWithin: String { get set }
+    // Routing
+    var splitOptionsScreenView: SplitOptionsScreenViewType { get }
+    var isPresentingSplitOptionsView: Bool { get set }
 }
 
 final class TransactionScreenViewModel: ObservableObject {
     // Data
     @Published var date = Date()
     @Published var transactionDescription = ""
-    @Published var amount = MonetaryAmount(currency: .eur)
+    @Published var amount = MonetaryAmount(currency: .eur) {
+        didSet { splitStrategy.total = amount }
+    }
+    private var splitStrategy: any ISplitStrategy = EqualSharesSplitStrategy(
+        splitGroup: SplitGroup.stub,
+        total: MonetaryAmount(currency: .eur)
+    ) {
+        willSet { objectWillChange.send() }
+    }
     // Routing
     @Published var isPresentingSplitOptionsView = false
 }
@@ -155,8 +164,20 @@ extension TransactionScreenViewModel: ITransactionScreenViewModel {
     }
 
     var splitWithin: String {
-        get { "equally" }
-        set { }
+        get { splitStrategy.conciseHintDescription }
+        set { assertionFailure("This property is designed as get-only. Manipulate splitStrategy instead.") }
+    }
+
+    var splitOptionsScreenView: some View {
+        return SplitOptionsScreenView(
+            splitGroup: splitStrategy.splitGroup,
+            total: amount,
+            onDismiss: { [weak self] in self?.isPresentingSplitOptionsView = false },
+            onDone: { [weak self] updatedStrategy in
+                self?.splitStrategy = updatedStrategy
+                self?.isPresentingSplitOptionsView = false
+            }
+        )
     }
 }
 

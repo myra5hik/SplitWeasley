@@ -23,7 +23,7 @@ struct SplitOptionsScreenView<
     @StateObject private var exactAmountSplitStrategy: EASS
     // Actions
     private let onDismiss: (() -> Void)?
-    private let onAdd: ((any ISplitStrategy) -> Void)?
+    private let onDone: ((any ISplitStrategy) -> Void)?
     // Etc
     private var bag = Set<AnyCancellable>()
 
@@ -33,7 +33,7 @@ struct SplitOptionsScreenView<
         equalSharesSplitStrategy: ESSS.Type = EqualSharesSplitStrategy.self,
         exactAmountSplitStrategy: EASS.Type = ExactAmountSplitStrategy.self,
         onDismiss: (() -> Void)? = nil,
-        onAdd: ((any ISplitStrategy) -> Void)? = nil
+        onDone: ((any ISplitStrategy) -> Void)? = nil
     ) {
         self.splitGroup = splitGroup
         self.total = total
@@ -45,7 +45,7 @@ struct SplitOptionsScreenView<
         )
         // Actions
         self.onDismiss = onDismiss
-        self.onAdd = onAdd
+        self.onDone = onDone
     }
 
     var body: some View {
@@ -72,8 +72,11 @@ struct SplitOptionsScreenView<
                     Button("Cancel", role: .cancel, action: { onDismiss?() })
                 }
                 ToolbarItem(placement: .primaryAction) {
-                    Button("Add", action: { })
-                        .bold()
+                    Button("Done", action: {
+                        onDone?(strategyForPickerSelection() ?? equalSharesSplitStrategy)
+                    })
+                    .disabled(!(strategyForPickerSelection()?.isLogicallyConsistent ?? false))
+                    .bold()
                 }
             }
     }
@@ -125,11 +128,13 @@ private extension SplitOptionsScreenView {
     }
 
     var equalSharesSplitMembersListView: some View {
-        List(splitGroup.members, id: \.id) { member in
+        List(equalSharesSplitStrategy.splitGroup.members, id: \.id) { member in
             ConfugurableListRowView(
                 heading: member.fullName,
                 subheading: {
-                    if let amount = equalSharesSplitStrategy.amount(for: member.id) { return amount.formatted() }
+                    if let amount = equalSharesSplitStrategy.amount(for: member.id) {
+                        return amount.formatted()
+                    }
                     return "not involved"
                 }(),
                 leadingAccessory: { Circle().foregroundColor(.blue) },
@@ -146,13 +151,15 @@ private extension SplitOptionsScreenView {
     var exactAmountSplitMembersListView: some View {
         List {
             Section {
-                ForEach(splitGroup.members, id: \.id) { member in
+                ForEach(exactAmountSplitStrategy.splitGroup.members, id: \.id) { member in
                     ConfugurableListRowView(
                         heading: member.fullName,
                         leadingAccessory: { Circle().foregroundColor(.blue) },
                         trailingAccessory: {
                             // Requires hussle as one can't subsctipt a Binding<Dictionary<...>>
-                            let defaultValue = MonetaryAmount(currency: total.currency)
+                            let defaultValue = MonetaryAmount(
+                                currency: exactAmountSplitStrategy.total.currency
+                            )
                             let amountBinding = Binding(
                                 get: { exactAmountSplitStrategy.inputAmount[member.id] ?? defaultValue },
                                 set: { exactAmountSplitStrategy.inputAmount[member.id] = $0 }

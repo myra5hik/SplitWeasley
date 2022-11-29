@@ -15,8 +15,8 @@ protocol IExactAmountSplitStrategy: ObservableObject, ISplitStrategy {
 
 final class ExactAmountSplitStrategy: ObservableObject {
     @Published var inputAmount: [Person.ID: MonetaryAmount]
-    private let splitGroup: SplitGroup
-    private let total: MonetaryAmount
+    let splitGroup: SplitGroup
+    var total: MonetaryAmount
 
     init(splitGroup: SplitGroup, total: MonetaryAmount) {
         self.splitGroup = splitGroup

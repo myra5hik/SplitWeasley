@@ -16,8 +16,8 @@ final class EqualSharesSplitStrategy: IEqualSharesSplitStrategy {
     @Published var isIncluded: [Person.ID: Bool] {
         didSet { personBearingResidue = isIncluded.keys.filter({ isIncluded[$0] == true }).randomElement() }
     }
-    private let splitGroup: SplitGroup
-    private let total: MonetaryAmount
+    let splitGroup: SplitGroup
+    var total: MonetaryAmount
     private var roundingScale: Int { total.currency.roundingScale }
     // Logics
     var isLogicallyConsistent: Bool { includedCount >= 1 }

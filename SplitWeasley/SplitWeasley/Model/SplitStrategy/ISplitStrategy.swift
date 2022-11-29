@@ -8,6 +8,8 @@
 import Foundation
 
 protocol ISplitStrategy: ObservableObject {
+    var splitGroup: SplitGroup { get }
+    var total: MonetaryAmount { get set }
     /// Signifies that the applied parameters are consistent with the logic of the app. If false, views should not allow for further processing.
     var isLogicallyConsistent: Bool { get }
     /// Heading used by views to describe the split strategy
