@@ -18,7 +18,7 @@ struct NumericInputView<LFDIP: ILimitedFractionDigitInputProxy, SV: View>: View 
     // State
     @ObservedObject private var inputProxy: LFDIP
     private let placeholder: String
-    private let suffixView: SV
+    private let suffixView: () -> (SV)
     // Binding to the source of truth
     @Binding private var boundTo: Decimal
 
@@ -26,7 +26,7 @@ struct NumericInputView<LFDIP: ILimitedFractionDigitInputProxy, SV: View>: View 
         _ binding: Binding<Decimal>,
         roundingScale: Int? = nil,
         placeholder: String,
-        suffixView: SV = EmptyView(),
+        suffixView: @escaping () -> (SV) = { EmptyView() },
         inputProxy: LFDIP.Type = LimitedFractionDigitInputProxy.self
     ) {
         self.inputProxy = inputProxy.init(
@@ -38,8 +38,25 @@ struct NumericInputView<LFDIP: ILimitedFractionDigitInputProxy, SV: View>: View 
         self.suffixView = suffixView
     }
 
+    init(
+        _ binding: Binding<Decimal>,
+        roundingScale: Int? = nil,
+        placeholder: String,
+        suffix: String,
+        inputProxy: LFDIP.Type = LimitedFractionDigitInputProxy.self
+    ) where SV == Text {
+        self.init(
+            binding,
+            roundingScale: roundingScale,
+            placeholder: placeholder,
+            suffixView: { Text(suffix) },
+            inputProxy: inputProxy
+        )
+    }
+
     var body: some View {
-        HStack {
+        let suffixView = suffixView()
+        return HStack {
             TextField(text: $inputProxy.amountAsString) { Text(placeholder) }
                 .keyboardType(.decimalPad)
                 // Following modifiers bind proxy to the injected binding
@@ -58,19 +75,19 @@ struct MonetaryAmountInput_Previews: PreviewProvider {
                 .constant(0),
                 roundingScale: 0,
                 placeholder: "0",
-                suffixView: Text("JPY")
+                suffix: "JPY"
             )
             NumericInputView(
                 .constant(0),
                 roundingScale: 2,
                 placeholder: "0.00",
-                suffixView: Image(systemName: "eurosign")
+                suffixView: { Image(systemName: "eurosign") }
             )
             NumericInputView(
                 .constant(0),
                 roundingScale: 6,
                 placeholder: "0.0000",
-                suffixView: Text("💵")
+                suffixView: { Text("💵") }
             )
         }
         .font(.title)
