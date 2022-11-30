@@ -11,7 +11,7 @@
 		B63747CF292E733700A50615 /* EqualSharesSplitStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63747CE292E733700A50615 /* EqualSharesSplitStrategy.swift */; };
 		B63747D1292E771900A50615 /* ExactAmountSplitStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63747D0292E771900A50615 /* ExactAmountSplitStrategy.swift */; };
 		B63747D3292E813C00A50615 /* MonetaryAmountInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63747D2292E813C00A50615 /* MonetaryAmountInputView.swift */; };
-		B67ABB3929365A8400E8BC62 /* PerscentageSplitStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67ABB3829365A8400E8BC62 /* PerscentageSplitStrategy.swift */; };
+		B67ABB3929365A8400E8BC62 /* PercentageSplitStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67ABB3829365A8400E8BC62 /* PercentageSplitStrategy.swift */; };
 		B67DE958292583F0008C6400 /* SplitWeasleyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE957292583F0008C6400 /* SplitWeasleyApp.swift */; };
 		B67DE95C292583F1008C6400 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B67DE95B292583F1008C6400 /* Assets.xcassets */; };
 		B67DE95F292583F1008C6400 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B67DE95E292583F1008C6400 /* Preview Assets.xcassets */; };
@@ -34,7 +34,7 @@
 		B63747CE292E733700A50615 /* EqualSharesSplitStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EqualSharesSplitStrategy.swift; sourceTree = "<group>"; };
 		B63747D0292E771900A50615 /* ExactAmountSplitStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExactAmountSplitStrategy.swift; sourceTree = "<group>"; };
 		B63747D2292E813C00A50615 /* MonetaryAmountInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonetaryAmountInputView.swift; sourceTree = "<group>"; };
-		B67ABB3829365A8400E8BC62 /* PerscentageSplitStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerscentageSplitStrategy.swift; sourceTree = "<group>"; };
+		B67ABB3829365A8400E8BC62 /* PercentageSplitStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PercentageSplitStrategy.swift; sourceTree = "<group>"; };
 		B67DE954292583F0008C6400 /* SplitWeasley.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SplitWeasley.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B67DE957292583F0008C6400 /* SplitWeasleyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitWeasleyApp.swift; sourceTree = "<group>"; };
 		B67DE95B292583F1008C6400 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -70,7 +70,7 @@
 				B67DE984292AFE14008C6400 /* ISplitStrategy.swift */,
 				B63747CE292E733700A50615 /* EqualSharesSplitStrategy.swift */,
 				B63747D0292E771900A50615 /* ExactAmountSplitStrategy.swift */,
-				B67ABB3829365A8400E8BC62 /* PerscentageSplitStrategy.swift */,
+				B67ABB3829365A8400E8BC62 /* PercentageSplitStrategy.swift */,
 			);
 			path = SplitStrategy;
 			sourceTree = "<group>";
@@ -278,7 +278,7 @@
 				B67DE98C292D77DD008C6400 /* LimitedFractionDigitInputProxy.swift in Sources */,
 				B63747CF292E733700A50615 /* EqualSharesSplitStrategy.swift in Sources */,
 				B67DE96B2925852B008C6400 /* TransactionScreenView.swift in Sources */,
-				B67ABB3929365A8400E8BC62 /* PerscentageSplitStrategy.swift in Sources */,
+				B67ABB3929365A8400E8BC62 /* PercentageSplitStrategy.swift in Sources */,
 				B67DE97C2927EBDC008C6400 /* Currency.swift in Sources */,
 				B67DE983292AE025008C6400 /* ConfugurableListRowView.swift in Sources */,
 				B67DE985292AFE14008C6400 /* ISplitStrategy.swift in Sources */,

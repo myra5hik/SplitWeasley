@@ -10,7 +10,7 @@ import SwiftUI
 struct SplitOptionsScreenView<
     ESSS: IEqualSharesSplitStrategy,
     EASS: IExactAmountSplitStrategy,
-    PSS: IPersentageSplitStrategy
+    PSS: IPercentageSplitStrategy
 >: View {
     // State
     @State private var pickerSelection: PickerSelection = .percent
@@ -142,7 +142,10 @@ private extension SplitOptionsScreenView {
                     let isIncluded = equalSharesSplitStrategy.isIncluded[member.id] ?? false
                     if isIncluded { Image(systemName: "checkmark") }
                 },
-                action: { equalSharesSplitStrategy.isIncluded[member.id]?.toggle() }
+                action: {
+                    let isIncluded = equalSharesSplitStrategy.isIncluded[member.id] ?? false
+                    equalSharesSplitStrategy.set(!isIncluded, for: member.id)
+                }
             )
         }
         .listStyle(.plain)
@@ -156,13 +159,12 @@ private extension SplitOptionsScreenView {
                         heading: member.fullName,
                         leadingAccessory: { Circle().foregroundColor(.blue) },
                         trailingAccessory: {
-                            // Requires hussle as one can't subsctipt a Binding<Dictionary<...>>
                             let defaultValue = MonetaryAmount(
                                 currency: exactAmountSplitStrategy.total.currency
                             )
                             let amountBinding = Binding(
-                                get: { exactAmountSplitStrategy.inputAmount[member.id] ?? defaultValue },
-                                set: { exactAmountSplitStrategy.inputAmount[member.id] = $0 }
+                                get: { exactAmountSplitStrategy.amount(for: member.id) ?? defaultValue },
+                                set: { exactAmountSplitStrategy.set($0, for: member.id) }
                             )
                             // Return view
                             MonetaryAmountInputView(monetaryAmount: amountBinding)
@@ -201,7 +203,7 @@ private extension SplitOptionsScreenView {
                         trailingAccessory: {
                             let binding = Binding(
                                 get: { percentageSplitStrategy.inputAmount[member.id] ?? 0.0 },
-                                set: { percentageSplitStrategy.inputAmount[member.id] = $0 }
+                                set: { percentageSplitStrategy.set($0, for: member.id) }
                             )
                             TextField("0.0", value: binding, format: .percent)
                                 .multilineTextAlignment(.trailing)

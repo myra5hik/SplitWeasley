@@ -7,16 +7,18 @@
 
 import Foundation
 
-protocol IExactAmountSplitStrategy: ObservableObject, ISplitStrategy {
-    var inputAmount: [Person.ID: MonetaryAmount] { get set }
-    var inputTotal: MonetaryAmount { get }
+protocol IExactAmountSplitStrategy: ObservableObject, ISplitStrategy where SplitParameter == MonetaryAmount {
     var remainingAmount: MonetaryAmount { get }
 }
 
 final class ExactAmountSplitStrategy: ObservableObject {
-    @Published var inputAmount: [Person.ID: MonetaryAmount]
+    // Public
     let splitGroup: SplitGroup
     var total: MonetaryAmount
+    // Private
+    private var inputAmount: [Person.ID: MonetaryAmount] {
+        willSet { objectWillChange.send() }
+    }
 
     init(splitGroup: SplitGroup, total: MonetaryAmount) {
         self.splitGroup = splitGroup
@@ -54,5 +56,11 @@ extension ExactAmountSplitStrategy: IExactAmountSplitStrategy {
 
     func amount(for personId: Person.ID) -> MonetaryAmount? {
         return inputAmount[personId]
+    }
+
+    func set(_ value: MonetaryAmount, for personId: Person.ID) {
+        guard inputAmount.keys.contains(personId) else { return }
+        guard value.currency == total.currency else { return }
+        inputAmount[personId] = value
     }
 }
