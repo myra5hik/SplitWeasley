@@ -14,10 +14,11 @@ import SwiftUI
 /// b) up to the specified fractional digit limit (0, 0.00, 0.0000, etc.)
 /// c) no more than one separator symbol within the number; and other corner cases.
 ///
-struct NumericInputView<LFDIP: ILimitedFractionDigitInputProxy>: View {
+struct NumericInputView<LFDIP: ILimitedFractionDigitInputProxy, SV: View>: View {
     // State
     @ObservedObject private var inputProxy: LFDIP
     private let placeholder: String
+    private let suffixView: SV
     // Binding to the source of truth
     @Binding private var boundTo: Decimal
 
@@ -25,6 +26,7 @@ struct NumericInputView<LFDIP: ILimitedFractionDigitInputProxy>: View {
         _ binding: Binding<Decimal>,
         roundingScale: Int? = nil,
         placeholder: String,
+        suffixView: SV = EmptyView(),
         inputProxy: LFDIP.Type = LimitedFractionDigitInputProxy.self
     ) {
         self.inputProxy = inputProxy.init(
@@ -33,17 +35,18 @@ struct NumericInputView<LFDIP: ILimitedFractionDigitInputProxy>: View {
         )
         self.placeholder = placeholder
         self._boundTo = binding
+        self.suffixView = suffixView
     }
 
     var body: some View {
-        TextField(text: $inputProxy.amountAsString) { Text(placeholder) }
-        .keyboardType(.decimalPad)
-        // Following modifiers bind proxy to the injected binding
-        .onChange(of: boundTo) {
-            inputProxy.amountAsDecimal = $0
-        }
-        .onChange(of: inputProxy.amountAsDecimal) {
-            boundTo = $0
+        HStack {
+            TextField(text: $inputProxy.amountAsString) { Text(placeholder) }
+                .keyboardType(.decimalPad)
+                // Following modifiers bind proxy to the injected binding
+                .onChange(of: boundTo) { inputProxy.amountAsDecimal = $0 }
+                .onChange(of: inputProxy.amountAsDecimal) { boundTo = $0 }
+                .multilineTextAlignment(suffixView is EmptyView ? .leading : .trailing)
+            suffixView
         }
     }
 }
@@ -51,9 +54,24 @@ struct NumericInputView<LFDIP: ILimitedFractionDigitInputProxy>: View {
 struct MonetaryAmountInput_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            NumericInputView(.constant(0), roundingScale: 0, placeholder: "0")
-            NumericInputView(.constant(0), roundingScale: 2, placeholder: "0.00")
-            NumericInputView(.constant(0), roundingScale: 6, placeholder: "0.0000")
+            NumericInputView(
+                .constant(0),
+                roundingScale: 0,
+                placeholder: "0",
+                suffixView: Text("JPY")
+            )
+            NumericInputView(
+                .constant(0),
+                roundingScale: 2,
+                placeholder: "0.00",
+                suffixView: Image(systemName: "eurosign")
+            )
+            NumericInputView(
+                .constant(0),
+                roundingScale: 6,
+                placeholder: "0.0000",
+                suffixView: Text("💵")
+            )
         }
         .font(.title)
         .padding()
