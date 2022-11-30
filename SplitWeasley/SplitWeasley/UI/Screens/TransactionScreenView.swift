@@ -112,10 +112,17 @@ private extension TransactionScreenView {
             )
         }
 
-        let amountInput = MonetaryAmountInputView(monetaryAmount: $vm.amount)
-            .keyboardType(.decimalPad)
-            .font(.largeTitle.weight(.semibold))
-            .padding(.leading)
+        let amountInput = NumericInputView(
+            Binding(
+                get: { vm.amount.amount },
+                set: { vm.amount = vm.amount.with(amount: $0) }
+            ),
+            roundingScale: vm.amount.currency.roundingScale,
+            placeholder: "0.0 \(vm.amount.currency.iso4217code)"
+        )
+        .keyboardType(.decimalPad)
+        .font(.largeTitle.weight(.semibold))
+        .padding(.leading)
 
         return HStack {
             Menu(content: { currencyOptions }, label: { currencyButton })

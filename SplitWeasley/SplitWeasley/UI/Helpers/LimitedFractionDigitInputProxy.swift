@@ -39,8 +39,8 @@ final class LimitedFractionDigitInputProxy: ObservableObject {
     private var amountOfTrailingZeros = 0
 
     init(roundingScale: Int, initialValue: Decimal) {
-        self.roundingScale = roundingScale
-        self.decimal = initialValue
+        self.roundingScale = max(0, roundingScale)
+        self.decimal = initialValue.rounded(scale: roundingScale)
     }
 }
 

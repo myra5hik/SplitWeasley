@@ -152,22 +152,23 @@ private extension SplitOptionsScreenView {
     }
 
     var exactAmountSplitMembersListView: some View {
-        List {
+        let strategy = exactAmountSplitStrategy
+        return List {
             Section {
-                ForEach(exactAmountSplitStrategy.splitGroup.members, id: \.id) { member in
+                ForEach(strategy.splitGroup.members, id: \.id) { member in
                     ConfugurableListRowView(
                         heading: member.fullName,
                         leadingAccessory: { Circle().foregroundColor(.blue) },
                         trailingAccessory: {
-                            let defaultValue = MonetaryAmount(
-                                currency: exactAmountSplitStrategy.total.currency
-                            )
-                            let amountBinding = Binding(
-                                get: { exactAmountSplitStrategy.amount(for: member.id) ?? defaultValue },
-                                set: { exactAmountSplitStrategy.set($0, for: member.id) }
-                            )
+                            let currency = strategy.total.currency
+                            let defaultValue = MonetaryAmount(currency: currency)
+                            let getter = { (strategy.amount(for: member.id) ?? defaultValue).amount }
+                            let setter = {
+                                strategy.set(MonetaryAmount(currency: currency, amount: $0), for: member.id)
+                            }
+                            let amountBinding = Binding(get: getter, set: setter)
                             // Return view
-                            MonetaryAmountInputView(monetaryAmount: amountBinding)
+                            NumericInputView(amountBinding, placeholder: "0.0 \(currency.iso4217code)")
                                 .multilineTextAlignment(.trailing)
                         }
                     )
@@ -267,7 +268,7 @@ struct SplitOptionsScreen_Previews: PreviewProvider {
     static var previews: some View {
         SplitOptionsScreenView(
             splitGroup: SplitGroup.stub,
-            total: MonetaryAmount(currency: .eur, amount: 100.0)
+            total: MonetaryAmount(currency: .eur, amount: 10.0)
         )
     }
 }
