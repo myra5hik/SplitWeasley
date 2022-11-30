@@ -9,17 +9,15 @@ import SwiftUI
 
 struct SplitOptionsScreenView<
     ESSS: IEqualSharesSplitStrategy,
-    EASS: IExactAmountSplitStrategy
+    EASS: IExactAmountSplitStrategy,
+    PSS: IPersentageSplitStrategy
 >: View {
-    // TODO: Store splitGroup in split strategy objects instead of views
-    // Data
-    private let splitGroup: SplitGroup
-    private let total: MonetaryAmount
     // State
-    @State private var pickerSelection: PickerSelection = .equalShares
+    @State private var pickerSelection: PickerSelection = .percent
     // Split parameters
     @StateObject private var equalSharesSplitStrategy: ESSS
     @StateObject private var exactAmountSplitStrategy: EASS
+    @StateObject private var percentageSplitStrategy: PSS
     // Actions
     private let onDismiss: (() -> Void)?
     private let onDone: ((any ISplitStrategy) -> Void)?
@@ -29,17 +27,19 @@ struct SplitOptionsScreenView<
         total: MonetaryAmount,
         equalSharesSplitStrategy: ESSS.Type = EqualSharesSplitStrategy.self,
         exactAmountSplitStrategy: EASS.Type = ExactAmountSplitStrategy.self,
+        percentageSplitStrategy: PSS.Type = PercentageSplitStrategy.self,
         initialState: (any ISplitStrategy)? = nil,
         onDismiss: (() -> Void)? = nil,
         onDone: ((any ISplitStrategy) -> Void)? = nil
     ) {
-        self.splitGroup = splitGroup
-        self.total = total
         self._equalSharesSplitStrategy = StateObject(
             wrappedValue: equalSharesSplitStrategy.init(splitGroup: splitGroup, total: total)
         )
         self._exactAmountSplitStrategy = StateObject(
             wrappedValue: exactAmountSplitStrategy.init(splitGroup: splitGroup, total: total)
+        )
+        self._percentageSplitStrategy = StateObject(
+            wrappedValue: percentageSplitStrategy.init(splitGroup: splitGroup, total: total)
         )
         // Actions
         self.onDismiss = onDismiss
@@ -59,7 +59,6 @@ struct SplitOptionsScreenView<
                     .padding()
                     splitGroupMembersListView
                 }
-                .id(pickerSelection)
             }
         }
     }
@@ -120,7 +119,7 @@ private extension SplitOptionsScreenView {
             switch pickerSelection {
             case .equalShares: equalSharesSplitMembersListView
             case .exactAmount: exactAmountSplitMembersListView
-            case .percent: EmptyView()
+            case .percent: percentageSplitMembersListView
             case .unequalShares: EmptyView()
             case .plusMinus: EmptyView()
             }
@@ -184,6 +183,45 @@ private extension SplitOptionsScreenView {
         }
         .listStyle(.plain)
     }
+
+    var percentageSplitMembersListView: some View {
+        List {
+            Section {
+                ForEach(percentageSplitStrategy.splitGroup.members, id: \.id) { member in
+                    ConfugurableListRowView(
+                        heading: member.fullName,
+                        subheading: {
+                            if let amount = percentageSplitStrategy.amount(for: member.id) {
+                                return amount.formatted()
+                            } else {
+                                return ""
+                            }
+                        }(),
+                        leadingAccessory: { Circle().foregroundColor(.blue) },
+                        trailingAccessory: {
+                            let binding = Binding(
+                                get: { percentageSplitStrategy.inputAmount[member.id] ?? 0.0 },
+                                set: { percentageSplitStrategy.inputAmount[member.id] = $0 }
+                            )
+                            TextField("0.0", value: binding, format: .percent)
+                                .multilineTextAlignment(.trailing)
+                                .keyboardType(.decimalPad)
+                        }
+                    )
+                }
+            }
+            ConfugurableListRowView(
+                heading: "Left to Distribute:",
+                leadingAccessory: { Rectangle().foregroundColor(Color(uiColor: .clear)) },
+                trailingAccessory: {
+                    Text(percentageSplitStrategy.remainingAmount.formatted(.percent))
+                        .lineLimit(1)
+                        .truncationMode(.tail)
+                }
+            )
+        }
+        .listStyle(.plain)
+    }
 }
 
 // MARK: - PickerSelection
@@ -197,7 +235,7 @@ private extension SplitOptionsScreenView {
         switch pickerSelection {
         case .equalShares: return equalSharesSplitStrategy
         case .exactAmount: return exactAmountSplitStrategy
-        case .percent: return nil
+        case .percent: return percentageSplitStrategy
         case .unequalShares: return nil
         case .plusMinus: return nil
         }
@@ -206,12 +244,15 @@ private extension SplitOptionsScreenView {
     mutating
     func restoreState(_ state: any ISplitStrategy) {
         switch state {
-        case let state as ESSS:
+        case let state as ESSS: // Equal shares
             _equalSharesSplitStrategy = StateObject(wrappedValue: state)
             _pickerSelection = .init(initialValue: .equalShares)
-        case let state as EASS:
+        case let state as EASS: // Exact amounts
             _exactAmountSplitStrategy = StateObject(wrappedValue: state)
             _pickerSelection = .init(initialValue: .exactAmount)
+        case let state as PSS: // Percentage split
+            _percentageSplitStrategy = StateObject(wrappedValue: state)
+            _pickerSelection = .init(initialValue: .percent)
         default:
             assertionFailure()
         }
