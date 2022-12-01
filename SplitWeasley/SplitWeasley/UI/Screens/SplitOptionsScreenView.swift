@@ -203,12 +203,10 @@ private extension SplitOptionsScreenView {
                         leadingAccessory: { Circle().foregroundColor(.blue) },
                         trailingAccessory: {
                             let binding = Binding(
-                                get: { percentageSplitStrategy.inputAmount[member.id] ?? 0.0 },
-                                set: { percentageSplitStrategy.set($0, for: member.id) }
+                                get: { (percentageSplitStrategy.inputAmount[member.id] ?? 0.0) * 100 },
+                                set: { percentageSplitStrategy.set($0 / 100, for: member.id) }
                             )
-                            TextField("0.0", value: binding, format: .percent)
-                                .multilineTextAlignment(.trailing)
-                                .keyboardType(.decimalPad)
+                            NumericInputView(binding, placeholder: "0.0", suffix: "%")
                         }
                     )
                 }
