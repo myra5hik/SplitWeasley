@@ -24,9 +24,10 @@ struct PercentageSplitMembersListView<S: IPercentageSplitStrategy>: View {
                         leadingAccessory: { Circle().foregroundColor(.blue) },
                         trailingAccessory: { makeInputView(memberId: member.id) }
                     )
+                    .frame(height: 38)
                 }
             }
-            leftToDistributeRow
+            leftToDistributeRow.frame(height: 38)
         }
         .listStyle(.plain)
     }

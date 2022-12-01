@@ -30,6 +30,7 @@ struct EqualSharesSplitMembersListView<S: IEqualSharesSplitStrategy>: View {
                     strategy.set(!isIncluded, for: member.id)
                 }
             )
+            .frame(height: 38)
         }
         .listStyle(.plain)
     }
