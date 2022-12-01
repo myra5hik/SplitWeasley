@@ -13,7 +13,7 @@ struct SplitOptionsScreenView<
     PSS: IPercentageSplitStrategy
 >: View {
     // State
-    @State private var pickerSelection: PickerSelection = .percent
+    @State private var pickerSelection: PickerSelection = .equalShares
     // Split parameters
     @StateObject private var equalSharesSplitStrategy: ESSS
     @StateObject private var exactAmountSplitStrategy: EASS
@@ -158,6 +158,12 @@ private extension SplitOptionsScreenView {
                 ForEach(strategy.splitGroup.members, id: \.id) { member in
                     ConfugurableListRowView(
                         heading: member.fullName,
+                        subheading: {
+                            let amount = strategy.amount(for: member.id)?.amount ?? 0.0
+                            let total = strategy.total.amount
+                            let share = amount / total
+                            return share.formatted(.percent)
+                        }(),
                         leadingAccessory: { Circle().foregroundColor(.blue) },
                         trailingAccessory: {
                             let currency = strategy.total.currency
@@ -193,13 +199,7 @@ private extension SplitOptionsScreenView {
                 ForEach(percentageSplitStrategy.splitGroup.members, id: \.id) { member in
                     ConfugurableListRowView(
                         heading: member.fullName,
-                        subheading: {
-                            if let amount = percentageSplitStrategy.amount(for: member.id) {
-                                return amount.formatted()
-                            } else {
-                                return ""
-                            }
-                        }(),
+                        subheading: percentageSplitStrategy.amount(for: member.id)?.formatted() ?? "",
                         leadingAccessory: { Circle().foregroundColor(.blue) },
                         trailingAccessory: {
                             let binding = Binding(
