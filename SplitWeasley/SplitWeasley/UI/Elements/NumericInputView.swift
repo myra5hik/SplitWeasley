@@ -19,6 +19,7 @@ struct NumericInputView<LFDIP: ILimitedFractionDigitInputProxy, SV: View>: View 
     @ObservedObject private var inputProxy: LFDIP
     private let placeholder: String
     private let suffixView: () -> (SV)
+    @Environment(\.multilineTextAlignment) private var envTextAlignment
     // Binding to the source of truth
     @Binding private var boundTo: Decimal
 
@@ -62,7 +63,7 @@ struct NumericInputView<LFDIP: ILimitedFractionDigitInputProxy, SV: View>: View 
                 // Following modifiers bind proxy to the injected binding
                 .onChange(of: boundTo) { inputProxy.amountAsDecimal = $0 }
                 .onChange(of: inputProxy.amountAsDecimal) { boundTo = $0 }
-                .multilineTextAlignment(suffixView is EmptyView ? .leading : .trailing)
+                .multilineTextAlignment(suffixView is EmptyView ? envTextAlignment : .trailing)
             suffixView
         }
     }
