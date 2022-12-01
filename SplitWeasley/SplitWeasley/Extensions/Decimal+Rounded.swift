@@ -11,7 +11,7 @@ extension Decimal {
     func rounded(scale: Int) -> Decimal {
         var initial = self
         var res = self
-        NSDecimalRound(&res, &initial, scale, .bankers)
+        NSDecimalRound(&res, &initial, scale, .plain)
         return res
     }
 }
