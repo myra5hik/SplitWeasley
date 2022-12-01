@@ -27,6 +27,9 @@
 		B67DE985292AFE14008C6400 /* ISplitStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE984292AFE14008C6400 /* ISplitStrategy.swift */; };
 		B67DE987292C479A008C6400 /* Decimal+Rounded.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE986292C479A008C6400 /* Decimal+Rounded.swift */; };
 		B67DE98C292D77DD008C6400 /* LimitedFractionDigitInputProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE98B292D77DD008C6400 /* LimitedFractionDigitInputProxy.swift */; };
+		B6D1E8FE293906760040BA37 /* EqualSharesSplitMembersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D1E8FD293906760040BA37 /* EqualSharesSplitMembersListView.swift */; };
+		B6D1E900293908070040BA37 /* ExactAmountSplitMembersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D1E8FF293908070040BA37 /* ExactAmountSplitMembersListView.swift */; };
+		B6D1E90229390C090040BA37 /* PercentageSplitMembersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D1E90129390C090040BA37 /* PercentageSplitMembersListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +54,9 @@
 		B67DE984292AFE14008C6400 /* ISplitStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISplitStrategy.swift; sourceTree = "<group>"; };
 		B67DE986292C479A008C6400 /* Decimal+Rounded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decimal+Rounded.swift"; sourceTree = "<group>"; };
 		B67DE98B292D77DD008C6400 /* LimitedFractionDigitInputProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitedFractionDigitInputProxy.swift; sourceTree = "<group>"; };
+		B6D1E8FD293906760040BA37 /* EqualSharesSplitMembersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EqualSharesSplitMembersListView.swift; sourceTree = "<group>"; };
+		B6D1E8FF293908070040BA37 /* ExactAmountSplitMembersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExactAmountSplitMembersListView.swift; sourceTree = "<group>"; };
+		B6D1E90129390C090040BA37 /* PercentageSplitMembersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PercentageSplitMembersListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,6 +157,7 @@
 		B67DE96D29258575008C6400 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				B6D1E8FC2939065D0040BA37 /* SplitMembersLists */,
 				B67DE96E2925858C008C6400 /* PaidAndSplitBarView.swift */,
 			);
 			path = Components;
@@ -193,6 +200,16 @@
 				B67DE98B292D77DD008C6400 /* LimitedFractionDigitInputProxy.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		B6D1E8FC2939065D0040BA37 /* SplitMembersLists */ = {
+			isa = PBXGroup;
+			children = (
+				B6D1E8FD293906760040BA37 /* EqualSharesSplitMembersListView.swift */,
+				B6D1E8FF293908070040BA37 /* ExactAmountSplitMembersListView.swift */,
+				B6D1E90129390C090040BA37 /* PercentageSplitMembersListView.swift */,
+			);
+			path = SplitMembersLists;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -268,6 +285,7 @@
 				B67DE9782927EAE8008C6400 /* SplitGroup.swift in Sources */,
 				B67DE987292C479A008C6400 /* Decimal+Rounded.swift in Sources */,
 				B67DE9742927E1BF008C6400 /* Person.swift in Sources */,
+				B6D1E900293908070040BA37 /* ExactAmountSplitMembersListView.swift in Sources */,
 				B63747D1292E771900A50615 /* ExactAmountSplitStrategy.swift in Sources */,
 				B67DE97E2928005A008C6400 /* MonetaryAmount.swift in Sources */,
 				B67DE980292AB36A008C6400 /* SplitOptionsScreenView.swift in Sources */,
@@ -280,7 +298,9 @@
 				B67DE96B2925852B008C6400 /* TransactionScreenView.swift in Sources */,
 				B67ABB3929365A8400E8BC62 /* PercentageSplitStrategy.swift in Sources */,
 				B67DE97C2927EBDC008C6400 /* Currency.swift in Sources */,
+				B6D1E8FE293906760040BA37 /* EqualSharesSplitMembersListView.swift in Sources */,
 				B67DE983292AE025008C6400 /* ConfugurableListRowView.swift in Sources */,
+				B6D1E90229390C090040BA37 /* PercentageSplitMembersListView.swift in Sources */,
 				B67DE985292AFE14008C6400 /* ISplitStrategy.swift in Sources */,
 				B67DE96F2925858C008C6400 /* PaidAndSplitBarView.swift in Sources */,
 			);

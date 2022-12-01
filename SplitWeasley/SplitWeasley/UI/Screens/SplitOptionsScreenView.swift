@@ -117,111 +117,14 @@ private extension SplitOptionsScreenView {
     var splitGroupMembersListView: some View {
         VStack {
             switch pickerSelection {
-            case .equalShares: equalSharesSplitMembersListView
-            case .exactAmount: exactAmountSplitMembersListView
-            case .percent: percentageSplitMembersListView
+            case .equalShares: EqualSharesSplitMembersListView(strategy: equalSharesSplitStrategy)
+            case .exactAmount: ExactAmountSplitMembersListView(strategy: exactAmountSplitStrategy)
+            case .percent: PercentageSplitMembersListView(strategy: percentageSplitStrategy)
             case .unequalShares: EmptyView()
             case .plusMinus: EmptyView()
             }
             Spacer()
         }
-    }
-
-    var equalSharesSplitMembersListView: some View {
-        List(equalSharesSplitStrategy.splitGroup.members, id: \.id) { member in
-            ConfugurableListRowView(
-                heading: member.fullName,
-                subheading: {
-                    if let amount = equalSharesSplitStrategy.amount(for: member.id) {
-                        return amount.formatted()
-                    }
-                    return "not involved"
-                }(),
-                leadingAccessory: { Circle().foregroundColor(.blue) },
-                trailingAccessory: {
-                    let isIncluded = equalSharesSplitStrategy.isIncluded[member.id] ?? false
-                    if isIncluded { Image(systemName: "checkmark") }
-                },
-                action: {
-                    let isIncluded = equalSharesSplitStrategy.isIncluded[member.id] ?? false
-                    equalSharesSplitStrategy.set(!isIncluded, for: member.id)
-                }
-            )
-        }
-        .listStyle(.plain)
-    }
-
-    var exactAmountSplitMembersListView: some View {
-        let strategy = exactAmountSplitStrategy
-        return List {
-            Section {
-                ForEach(strategy.splitGroup.members, id: \.id) { member in
-                    ConfugurableListRowView(
-                        heading: member.fullName,
-                        subheading: {
-                            let amount = strategy.amount(for: member.id)?.amount ?? 0.0
-                            let total = strategy.total.amount
-                            let share = amount / total
-                            return share.formatted(.percent)
-                        }(),
-                        leadingAccessory: { Circle().foregroundColor(.blue) },
-                        trailingAccessory: {
-                            let currency = strategy.total.currency
-                            let defaultValue = MonetaryAmount(currency: currency)
-                            let getter = { (strategy.amount(for: member.id) ?? defaultValue).amount }
-                            let setter = {
-                                strategy.set(MonetaryAmount(currency: currency, amount: $0), for: member.id)
-                            }
-                            let amountBinding = Binding(get: getter, set: setter)
-                            // Return view
-                            NumericInputView(amountBinding, placeholder: "0.0 \(currency.iso4217code)")
-                                .multilineTextAlignment(.trailing)
-                        }
-                    )
-                }
-            }
-            ConfugurableListRowView(
-                heading: "Left to Distribute:",
-                leadingAccessory: { Rectangle().foregroundColor(Color(uiColor: .clear)) },
-                trailingAccessory: {
-                    Text(exactAmountSplitStrategy.remainingAmount.formatted())
-                        .lineLimit(1)
-                        .truncationMode(.tail)
-                }
-            )
-        }
-        .listStyle(.plain)
-    }
-
-    var percentageSplitMembersListView: some View {
-        List {
-            Section {
-                ForEach(percentageSplitStrategy.splitGroup.members, id: \.id) { member in
-                    ConfugurableListRowView(
-                        heading: member.fullName,
-                        subheading: percentageSplitStrategy.amount(for: member.id)?.formatted() ?? "",
-                        leadingAccessory: { Circle().foregroundColor(.blue) },
-                        trailingAccessory: {
-                            let binding = Binding(
-                                get: { (percentageSplitStrategy.inputAmount[member.id] ?? 0.0) * 100 },
-                                set: { percentageSplitStrategy.set($0 / 100, for: member.id) }
-                            )
-                            NumericInputView(binding, placeholder: "0.0", suffix: "%")
-                        }
-                    )
-                }
-            }
-            ConfugurableListRowView(
-                heading: "Left to Distribute:",
-                leadingAccessory: { Rectangle().foregroundColor(Color(uiColor: .clear)) },
-                trailingAccessory: {
-                    Text(percentageSplitStrategy.remainingAmount.formatted(.percent))
-                        .lineLimit(1)
-                        .truncationMode(.tail)
-                }
-            )
-        }
-        .listStyle(.plain)
     }
 }
 
