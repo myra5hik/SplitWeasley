@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ExactAmountSplitMembersListView<S: IExactAmountSplitStrategy>: View {
     @ObservedObject private var strategy: S
+    @FocusState private var focus: Person.ID?
 
     init(strategy: S) {
         self.strategy = strategy
@@ -22,7 +23,8 @@ struct ExactAmountSplitMembersListView<S: IExactAmountSplitStrategy>: View {
                         heading: member.fullName,
                         subheading: makeSubheading(memberId: member.id),
                         leadingAccessory: { Circle().foregroundColor(.blue) },
-                        trailingAccessory: { makeInputView(memberId: member.id) }
+                        trailingAccessory: { makeInputView(memberId: member.id) },
+                        action: { focus = member.id } // On tap on the cell, focuses onto TextField
                     )
                     .frame(height: 38)
                 }
@@ -48,7 +50,7 @@ struct ExactAmountSplitMembersListView<S: IExactAmountSplitStrategy>: View {
         let amount = strategy.amount(for: memberId)?.amount ?? 0.0
         let total = strategy.total.amount
         let share = amount / total
-        return share.formatted(.percent)
+        return share.formatted(.percent.precision(.fractionLength(0...2)))
     }
 
     private func makeInputView(memberId: Person.ID) -> some View {
@@ -61,10 +63,11 @@ struct ExactAmountSplitMembersListView<S: IExactAmountSplitStrategy>: View {
         // Return view
         return NumericInputView(
             binding,
-            roundingScale: strategy.total.currency.roundingScale,
-            placeholder: "0.0 \(currency.iso4217code)"
+            roundingScale: currency.roundingScale,
+            placeholder: "\(MonetaryAmount(currency: currency).formatted())"
         )
         .multilineTextAlignment(.trailing)
+        .focused($focus, equals: memberId)
     }
 }
 

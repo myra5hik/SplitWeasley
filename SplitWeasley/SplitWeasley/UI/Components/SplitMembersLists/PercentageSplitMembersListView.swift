@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PercentageSplitMembersListView<S: IPercentageSplitStrategy>: View {
     @ObservedObject private var strategy: S
+    @FocusState private var focus: Person.ID?
 
     init(strategy: S) {
         self.strategy = strategy
@@ -22,7 +23,8 @@ struct PercentageSplitMembersListView<S: IPercentageSplitStrategy>: View {
                         heading: member.fullName,
                         subheading: strategy.amount(for: member.id)?.formatted() ?? "",
                         leadingAccessory: { Circle().foregroundColor(.blue) },
-                        trailingAccessory: { makeInputView(memberId: member.id) }
+                        trailingAccessory: { makeInputView(memberId: member.id) },
+                        action: { focus = member.id } // On tap on the cell, focuses onto TextField
                     )
                     .frame(height: 38)
                 }
@@ -50,6 +52,7 @@ struct PercentageSplitMembersListView<S: IPercentageSplitStrategy>: View {
             set: { strategy.set($0 / 100, for: memberId) }
         )
         return NumericInputView(binding, placeholder: "0.0", suffix: "%")
+            .focused($focus, equals: memberId)
     }
 }
 
