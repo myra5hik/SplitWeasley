@@ -11,7 +11,8 @@ struct SplitOptionsScreenView<
     ESSS: IEqualSharesSplitStrategy,
     EASS: IExactAmountSplitStrategy,
     PSS: IPercentageSplitStrategy,
-    USSS: IUnequalSharesSplitStrategy
+    USSS: IUnequalSharesSplitStrategy,
+    PMSS: IPlusMinusSplitStrategy
 >: View {
     // State
     @State private var pickerSelection: PickerSelection = .equalShares
@@ -20,6 +21,7 @@ struct SplitOptionsScreenView<
     @StateObject private var exactAmountSplitStrategy: EASS
     @StateObject private var percentageSplitStrategy: PSS
     @StateObject private var unequalSharesSplitStrategy: USSS
+    @StateObject private var plusMinusSplitStrategy: PMSS
     // Actions
     private let onDismiss: (() -> Void)?
     private let onDone: ((any ISplitStrategy) -> Void)?
@@ -31,6 +33,7 @@ struct SplitOptionsScreenView<
         exactAmountSplitStrategy: EASS.Type = ExactAmountSplitStrategy.self,
         percentageSplitStrategy: PSS.Type = PercentageSplitStrategy.self,
         unequalSharesSplitStrategy: USSS.Type = UnequalSharesSplitStrategy.self,
+        plusMinusSplitStrategy: PMSS.Type = PlusMinusSplitStrategy.self,
         initialState: (any ISplitStrategy)? = nil,
         onDismiss: (() -> Void)? = nil,
         onDone: ((any ISplitStrategy) -> Void)? = nil
@@ -46,6 +49,9 @@ struct SplitOptionsScreenView<
         )
         self._unequalSharesSplitStrategy = StateObject(
             wrappedValue: unequalSharesSplitStrategy.init(splitGroup: splitGroup, total: total)
+        )
+        self._plusMinusSplitStrategy = StateObject(
+            wrappedValue: plusMinusSplitStrategy.init(splitGroup: splitGroup, total: total)
         )
         // Actions
         self.onDismiss = onDismiss
@@ -127,7 +133,7 @@ private extension SplitOptionsScreenView {
             case .exactAmount: ExactAmountSplitMembersListView(strategy: exactAmountSplitStrategy)
             case .percent: PercentageSplitMembersListView(strategy: percentageSplitStrategy)
             case .unequalShares: UnequalSharesSplitMembersListView(strategy: unequalSharesSplitStrategy)
-            case .plusMinus: EmptyView()
+            case .plusMinus: PlusMinusSplitMembersListView(strategy: plusMinusSplitStrategy)
             }
             Spacer()
         }
@@ -147,7 +153,7 @@ private extension SplitOptionsScreenView {
         case .exactAmount: return exactAmountSplitStrategy
         case .percent: return percentageSplitStrategy
         case .unequalShares: return unequalSharesSplitStrategy
-        case .plusMinus: return nil
+        case .plusMinus: return plusMinusSplitStrategy
         }
     }
 
@@ -163,11 +169,14 @@ private extension SplitOptionsScreenView {
         case let state as PSS: // Percentage split
             _percentageSplitStrategy = StateObject(wrappedValue: state)
             _pickerSelection = .init(initialValue: .percent)
-        case let state as USSS:
+        case let state as USSS: // Unequal shares split
             _unequalSharesSplitStrategy = StateObject(wrappedValue: state)
             _pickerSelection = .init(initialValue: .unequalShares)
+        case let state as PMSS: // Plus-minus adjustment split
+            _plusMinusSplitStrategy = StateObject(wrappedValue: state)
+            _pickerSelection = .init(initialValue: .plusMinus)
         default:
-            assertionFailure()
+            assertionFailure("Unrecognized split strategy state")
         }
     }
 }
