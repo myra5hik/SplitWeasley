@@ -77,11 +77,11 @@ private extension TransactionScreenView {
 
     var descriptionInputRowView: some View {
         HStack {
-            RoundButton(bodyFill: Color(UIColor.systemPurple.withAlphaComponent(0.75))) {
-                Image(systemName: "airplane")
+            RoundButton(bodyFill: vm.transactionCategory.backgroundColor) {
+                vm.transactionCategory.icon
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .foregroundColor(Color(UIColor.systemBackground))
+                    .foregroundColor(vm.transactionCategory.foregroundColor)
                     .scaleEffect(0.5)
             }
             .frame(width: buttonDiameter, height: buttonDiameter)
@@ -94,13 +94,13 @@ private extension TransactionScreenView {
     }
 
     var amountInputRowView: some View {
-        let currencyButton = RoundButton(bodyFill: Color(UIColor.systemBackground)) {
+        let currencyButton = RoundButton(bodyFill: .white) {
             Image(systemName: vm.amount.currency.iconString)
                 .font(.title)
                 .fontWeight(.medium)
         }
         .frame(width: buttonDiameter, height: buttonDiameter)
-        .foregroundColor(Color(uiColor: UIColor.label))
+        .foregroundColor(.black)
 
         let currencyOptions = ForEach(Currency.allCases) { currency in
             Button(
@@ -132,17 +132,19 @@ private extension TransactionScreenView {
 }
 
 // MARK: - ViewModel
-// TODO: Factor Routing out to a separate class
 
 protocol ITransactionScreenViewModel: ObservableObject {
     associatedtype SplitOptionsScreenViewType: View
 
     var date: Date { get set }
+    var transactionCategory: TransactionCategory { get set }
     var transactionDescription: String { get set }
     var amount: MonetaryAmount { get set }
+    // TODO: Rework as get-only
     var payee: String { get set }
     var splitWithin: String { get set }
     // Routing
+    // TODO: Factor Routing out to a separate class
     var splitOptionsScreenView: SplitOptionsScreenViewType { get }
     var isPresentingSplitOptionsView: Bool { get set }
 }
@@ -150,6 +152,7 @@ protocol ITransactionScreenViewModel: ObservableObject {
 final class TransactionScreenViewModel: ObservableObject {
     // Data
     @Published var date = Date()
+    @Published var transactionCategory: TransactionCategory = .otherUndefined
     @Published var transactionDescription = ""
     @Published var amount = MonetaryAmount(currency: .eur) {
         didSet { splitStrategy.total = amount }

@@ -34,6 +34,7 @@
 		B6D1E90229390C090040BA37 /* PercentageSplitMembersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D1E90129390C090040BA37 /* PercentageSplitMembersListView.swift */; };
 		B6D1E904293917E20040BA37 /* UnequalSharesSplitStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D1E903293917E20040BA37 /* UnequalSharesSplitStrategy.swift */; };
 		B6D1E90829394AEE0040BA37 /* UnequalSharesSplitMembersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D1E90729394AEE0040BA37 /* UnequalSharesSplitMembersListView.swift */; };
+		B6E68916293BF0DE008F0E77 /* TransactionCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E68915293BF0DE008F0E77 /* TransactionCategory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,6 +66,7 @@
 		B6D1E90129390C090040BA37 /* PercentageSplitMembersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PercentageSplitMembersListView.swift; sourceTree = "<group>"; };
 		B6D1E903293917E20040BA37 /* UnequalSharesSplitStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnequalSharesSplitStrategy.swift; sourceTree = "<group>"; };
 		B6D1E90729394AEE0040BA37 /* UnequalSharesSplitMembersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnequalSharesSplitMembersListView.swift; sourceTree = "<group>"; };
+		B6E68915293BF0DE008F0E77 /* TransactionCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TransactionCategory.swift; path = SplitWeasley/Model/TransactionCategory.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,6 +184,7 @@
 				B67DE97B2927EBDC008C6400 /* Currency.swift */,
 				B67DE97D2928005A008C6400 /* MonetaryAmount.swift */,
 				B6253A0C29354A9E0028EC7F /* SplitTransaction.swift */,
+				B6E68915293BF0DE008F0E77 /* TransactionCategory.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -312,6 +315,7 @@
 				B67DE96B2925852B008C6400 /* TransactionScreenView.swift in Sources */,
 				B67ABB3929365A8400E8BC62 /* PercentageSplitStrategy.swift in Sources */,
 				B67DE97C2927EBDC008C6400 /* Currency.swift in Sources */,
+				B6E68916293BF0DE008F0E77 /* TransactionCategory.swift in Sources */,
 				B6D1E904293917E20040BA37 /* UnequalSharesSplitStrategy.swift in Sources */,
 				B6D1E90829394AEE0040BA37 /* UnequalSharesSplitMembersListView.swift in Sources */,
 				B6D1E8FE293906760040BA37 /* EqualSharesSplitMembersListView.swift in Sources */,
