@@ -76,20 +76,31 @@ private extension TransactionScreenView {
     }
 
     var descriptionInputRowView: some View {
-        HStack {
-            RoundButton(bodyFill: vm.transactionCategory.backgroundColor) {
-                vm.transactionCategory.icon
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .foregroundColor(vm.transactionCategory.foregroundColor)
-                    .scaleEffect(0.5)
-            }
-            .frame(width: buttonDiameter, height: buttonDiameter)
-            TextField("Description", text: $vm.transactionDescription, axis: .vertical)
-                .font(.title2)
-                .lineLimit(2)
-                .keyboardType(.asciiCapable)
-                .padding(.leading)
+        let categoryOptions = ForEach(TransactionCategory.allCases) { category in
+            Button(
+                action: { vm.transactionCategory = category },
+                label: { Label(title: { Text("\(category.rawValue)") }, icon: { category.icon }) }
+            )
+        }
+
+        let categoryButton = RoundButton(bodyFill: vm.transactionCategory.backgroundColor) {
+            vm.transactionCategory.icon
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .foregroundColor(vm.transactionCategory.foregroundColor)
+                .scaleEffect(0.5)
+        }
+        .frame(width: buttonDiameter, height: buttonDiameter)
+
+        let descriptionInputField = TextField("Description", text: $vm.transactionDescription, axis: .vertical)
+            .font(.title2)
+            .lineLimit(2)
+            .keyboardType(.asciiCapable)
+            .padding(.leading)
+
+        return HStack {
+            Menu(content: { categoryOptions }, label: { categoryButton })
+            descriptionInputField
         }
     }
 

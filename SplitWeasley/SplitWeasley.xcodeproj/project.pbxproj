@@ -29,6 +29,7 @@
 		B67DE985292AFE14008C6400 /* ISplitStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE984292AFE14008C6400 /* ISplitStrategy.swift */; };
 		B67DE987292C479A008C6400 /* Decimal+Rounded.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE986292C479A008C6400 /* Decimal+Rounded.swift */; };
 		B67DE98C292D77DD008C6400 /* LimitedFractionDigitInputProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE98B292D77DD008C6400 /* LimitedFractionDigitInputProxy.swift */; };
+		B6B0C2DB293E4CA7006EF2B6 /* TransactionCategorySelectionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B0C2DA293E4CA7006EF2B6 /* TransactionCategorySelectionList.swift */; };
 		B6D1E8FE293906760040BA37 /* EqualSharesSplitMembersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D1E8FD293906760040BA37 /* EqualSharesSplitMembersListView.swift */; };
 		B6D1E900293908070040BA37 /* ExactAmountSplitMembersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D1E8FF293908070040BA37 /* ExactAmountSplitMembersListView.swift */; };
 		B6D1E90229390C090040BA37 /* PercentageSplitMembersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D1E90129390C090040BA37 /* PercentageSplitMembersListView.swift */; };
@@ -61,6 +62,7 @@
 		B67DE984292AFE14008C6400 /* ISplitStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISplitStrategy.swift; sourceTree = "<group>"; };
 		B67DE986292C479A008C6400 /* Decimal+Rounded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decimal+Rounded.swift"; sourceTree = "<group>"; };
 		B67DE98B292D77DD008C6400 /* LimitedFractionDigitInputProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitedFractionDigitInputProxy.swift; sourceTree = "<group>"; };
+		B6B0C2DA293E4CA7006EF2B6 /* TransactionCategorySelectionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCategorySelectionList.swift; sourceTree = "<group>"; };
 		B6D1E8FD293906760040BA37 /* EqualSharesSplitMembersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EqualSharesSplitMembersListView.swift; sourceTree = "<group>"; };
 		B6D1E8FF293908070040BA37 /* ExactAmountSplitMembersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExactAmountSplitMembersListView.swift; sourceTree = "<group>"; };
 		B6D1E90129390C090040BA37 /* PercentageSplitMembersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PercentageSplitMembersListView.swift; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 			children = (
 				B6D1E8FC2939065D0040BA37 /* SplitMembersLists */,
 				B67DE96E2925858C008C6400 /* PaidAndSplitBarView.swift */,
+				B6B0C2DA293E4CA7006EF2B6 /* TransactionCategorySelectionList.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -314,6 +317,7 @@
 				B63747CF292E733700A50615 /* EqualSharesSplitStrategy.swift in Sources */,
 				B67DE96B2925852B008C6400 /* TransactionScreenView.swift in Sources */,
 				B67ABB3929365A8400E8BC62 /* PercentageSplitStrategy.swift in Sources */,
+				B6B0C2DB293E4CA7006EF2B6 /* TransactionCategorySelectionList.swift in Sources */,
 				B67DE97C2927EBDC008C6400 /* Currency.swift in Sources */,
 				B6E68916293BF0DE008F0E77 /* TransactionCategory.swift in Sources */,
 				B6D1E904293917E20040BA37 /* UnequalSharesSplitStrategy.swift in Sources */,
