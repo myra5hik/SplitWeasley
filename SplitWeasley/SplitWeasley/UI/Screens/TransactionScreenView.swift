@@ -163,7 +163,7 @@ protocol ITransactionScreenViewModel: ObservableObject {
 final class TransactionScreenViewModel: ObservableObject {
     // Data
     @Published var date = Date()
-    @Published var transactionCategory: TransactionCategory = .otherUndefined
+    @Published var transactionCategory: TransactionCategory = .undefined
     @Published var transactionDescription = ""
     @Published var amount = MonetaryAmount(currency: .eur) {
         didSet { splitStrategy.total = amount }

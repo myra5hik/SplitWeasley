@@ -23,13 +23,13 @@ enum TransactionCategory: String, CaseIterable, Hashable, Identifiable, Codable 
     case liquor
     case otherFoodAndDrink
     // Undefined
-    case otherUndefined
+    case undefined
 
     var grouping: Grouping {
         switch self {
         case .games, .movies, .music, .sports, .otherEntertainment: return .entertainment
         case .diningOut, .groceries, .liquor, .otherFoodAndDrink: return .foodAndDrink
-        case .otherUndefined: return .undefined
+        case .undefined: return .undefined
         }
     }
 
@@ -47,7 +47,7 @@ enum TransactionCategory: String, CaseIterable, Hashable, Identifiable, Codable 
         case .liquor: return Image(systemName: "wineglass.fill")
         case .otherFoodAndDrink: return Self.otherIcon
         // Undefined
-        case .otherUndefined: return Self.otherIcon
+        case .undefined: return Self.otherIcon
         }
     }
 
@@ -61,6 +61,14 @@ enum TransactionCategory: String, CaseIterable, Hashable, Identifiable, Codable 
 
     var backgroundColor: Color {
         return grouping.color
+    }
+
+    var description: String {
+        switch self {
+        case .otherEntertainment, .otherFoodAndDrink: return "Other"
+        case .diningOut: return "Dining Out"
+        default: return self.rawValue.capitalized
+        }
     }
 }
 

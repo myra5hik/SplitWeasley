@@ -29,20 +29,22 @@ struct TransactionCategorySelectionList: View {
 
     private func cell(_ category: TransactionCategory) -> some View {
         ConfugurableListRowView(
-            heading: category.rawValue,
-            leadingAccessory: {
-                ZStack {
-                    Circle()
-                        .foregroundColor(category.backgroundColor).padding(.vertical, 2)
-                    category.icon
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .foregroundColor(category.foregroundColor)
-                        .padding(8)
-                }
-            },
+            heading: category.description,
+            leadingAccessory: { icon(category) },
             action: { onSelect?(category) }
         )
+    }
+
+    private func icon(_ category: TransactionCategory) -> some View {
+        ZStack {
+            Circle()
+                .foregroundColor(category.backgroundColor).padding(.vertical, 2)
+            category.icon
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .foregroundColor(category.foregroundColor)
+                .padding(8)
+        }
     }
 }
 
