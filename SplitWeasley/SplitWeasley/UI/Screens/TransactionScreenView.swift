@@ -27,15 +27,7 @@ struct TransactionScreenView<VM: ITransactionScreenViewModel>: View {
                 Spacer()
                 mainInputViews
                 Spacer()
-                PaidAndSplitBarView(
-                    payeeLabel: $vm.payee,
-                    splitLabel: $vm.splitWithin,
-                    payeeAction: nil,
-                    splitAction: { [weak vm] in
-                        guard (vm?.amount.amount ?? 0) > 0 else { return }
-                        vm?.isPresentingSplitOptionsView = true
-                    }
-                )
+                paidAndSplitBar
                 Spacer()
             }
             .frame(height: 400)
@@ -50,6 +42,9 @@ struct TransactionScreenView<VM: ITransactionScreenViewModel>: View {
         }
         .sheet(isPresented: $vm.isPresentingSplitOptionsView) {
             vm.splitOptionsScreenView
+        }
+        .sheet(isPresented: $vm.isPresentingCategorySelectionView) {
+            vm.categorySelectionScreenView
         }
     }
 }
@@ -75,15 +70,23 @@ private extension TransactionScreenView {
         .padding(.horizontal, horizontalInsets)
     }
 
-    var descriptionInputRowView: some View {
-        let categoryOptions = ForEach(TransactionCategory.allCases) { category in
-            Button(
-                action: { vm.transactionCategory = category },
-                label: { Label(title: { Text("\(category.rawValue)") }, icon: { category.icon }) }
-            )
-        }
+    var paidAndSplitBar: some View {
+        PaidAndSplitBarView(
+            payeeLabel: $vm.payee,
+            splitLabel: $vm.splitWithin,
+            payeeAction: nil,
+            splitAction: { [weak vm] in
+                guard (vm?.amount.amount ?? 0) > 0 else { return }
+                vm?.isPresentingSplitOptionsView = true
+            }
+        )
+    }
 
-        let categoryButton = RoundButton(bodyFill: vm.transactionCategory.backgroundColor) {
+    var descriptionInputRowView: some View {
+        let categoryButton = RoundButton(
+            bodyFill: vm.transactionCategory.backgroundColor,
+            action: { vm.isPresentingCategorySelectionView = true }
+        ) {
             vm.transactionCategory.icon
                 .resizable()
                 .aspectRatio(contentMode: .fit)
@@ -99,7 +102,7 @@ private extension TransactionScreenView {
             .padding(.leading)
 
         return HStack {
-            Menu(content: { categoryOptions }, label: { categoryButton })
+            categoryButton
             descriptionInputField
         }
     }
@@ -145,6 +148,7 @@ private extension TransactionScreenView {
 // MARK: - ViewModel
 
 protocol ITransactionScreenViewModel: ObservableObject {
+    associatedtype CategorySelectionViewType: View
     associatedtype SplitOptionsScreenViewType: View
 
     var date: Date { get set }
@@ -156,7 +160,9 @@ protocol ITransactionScreenViewModel: ObservableObject {
     var splitWithin: String { get set }
     // Routing
     // TODO: Factor Routing out to a separate class
+    var categorySelectionScreenView: CategorySelectionViewType { get }
     var splitOptionsScreenView: SplitOptionsScreenViewType { get }
+    var isPresentingCategorySelectionView: Bool { get set }
     var isPresentingSplitOptionsView: Bool { get set }
 }
 
@@ -176,6 +182,7 @@ final class TransactionScreenViewModel: ObservableObject {
     }
     // Routing
     @Published var isPresentingSplitOptionsView = false
+    @Published var isPresentingCategorySelectionView = false
 }
 
 extension TransactionScreenViewModel: ITransactionScreenViewModel {
@@ -190,7 +197,7 @@ extension TransactionScreenViewModel: ITransactionScreenViewModel {
     }
 
     var splitOptionsScreenView: some View {
-        return SplitOptionsScreenView(
+        SplitOptionsScreenView(
             splitGroup: splitStrategy.splitGroup,
             total: amount,
             initialState: splitStrategy,
@@ -200,6 +207,22 @@ extension TransactionScreenViewModel: ITransactionScreenViewModel {
                 self?.isPresentingSplitOptionsView = false
             }
         )
+    }
+
+    var categorySelectionScreenView: some View {
+        let cancelButton = Button("Cancel", role: .cancel) { [weak self] in
+            self?.isPresentingCategorySelectionView = false
+        }
+
+        return NavigationView {
+            TransactionCategorySelectionList { [weak self] (category) in
+                self?.transactionCategory = category
+                self?.isPresentingCategorySelectionView = false
+            }
+            .navigationTitle("Select category")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar { cancelButton }
+        }
     }
 }
 
