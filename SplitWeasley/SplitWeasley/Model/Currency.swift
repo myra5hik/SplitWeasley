@@ -19,6 +19,11 @@ enum Currency: Hashable, CaseIterable {
     case hkd
     case sgd
     case rub
+    case brl
+    case inr
+    case krw
+    case mxn
+    case uah
     case btc
 }
 
@@ -52,10 +57,16 @@ extension Currency {
         case .hkd: return "Hong Kong Dollar"
         case .sgd: return "Singapore Dollar"
         case .rub: return "Russian Ruble"
+        case .brl: return "Brazilian Real"
+        case .inr: return "Indian Rupee"
+        case .krw: return "South Korean Won"
+        case .mxn: return "Mexican Peso"
+        case .uah: return "Ukrainian Hryvna"
         case .btc: return "Bitcoin"
         }
     }
 }
+
 
 // MARK: - Rounding scales
 
@@ -73,10 +84,16 @@ extension Currency {
         case .hkd: return 2
         case .sgd: return 2
         case .rub: return 2
+        case .brl: return 2
+        case .inr: return 2
+        case .krw: return 0
+        case .mxn: return 2
+        case .uah: return 2
         case .btc: return 8
         }
     }
 }
+
 
 // MARK: - Icons
 
@@ -94,6 +111,11 @@ extension Currency {
         case .hkd: return "dollarsign"
         case .sgd: return "dollarsign"
         case .rub: return "rublesign"
+        case .brl: return "brazilianrealsign"
+        case .inr: return "indianrupeesign"
+        case .krw: return "wonsign"
+        case .mxn: return "pesosign"
+        case .uah: return "hryvniasign"
         case .btc: return "bitcoinsign"
         }
     }
