@@ -72,8 +72,8 @@ private extension TransactionScreenView {
 
     var paidAndSplitBar: some View {
         PaidAndSplitBarView(
-            payeeLabel: $vm.payee,
-            splitLabel: $vm.splitWithin,
+            payeeLabel: vm.payee,
+            splitLabel: vm.splitWithin,
             payeeAction: nil,
             splitAction: { [weak vm] in
                 guard (vm?.amount.amount ?? 0) > 0 else { return }
@@ -156,8 +156,8 @@ protocol ITransactionScreenViewModel: ObservableObject {
     var transactionDescription: String { get set }
     var amount: MonetaryAmount { get set }
     // TODO: Rework as get-only
-    var payee: String { get set }
-    var splitWithin: String { get set }
+    var payee: String { get }
+    var splitWithin: String { get }
     // Routing
     // TODO: Factor Routing out to a separate class
     var categorySelectionScreenView: CategorySelectionViewType { get }
@@ -186,15 +186,9 @@ final class TransactionScreenViewModel: ObservableObject {
 }
 
 extension TransactionScreenViewModel: ITransactionScreenViewModel {
-    var payee: String {
-        get { "you" }
-        set { }
-    }
+    var payee: String { "you" }
 
-    var splitWithin: String {
-        get { splitStrategy.conciseHintDescription }
-        set { assertionFailure("This property is designed as get-only. Manipulate splitStrategy instead.") }
-    }
+    var splitWithin: String { splitStrategy.conciseHintDescription }
 
     var splitOptionsScreenView: some View {
         SplitOptionsScreenView(

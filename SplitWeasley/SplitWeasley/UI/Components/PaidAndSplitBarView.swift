@@ -8,19 +8,19 @@
 import SwiftUI
 
 struct PaidAndSplitBarView: View {
-    @Binding var payeeLabel: String
-    @Binding var splitLabel: String
+    private let payeeLabel: String
+    private let splitLabel: String
     private let payeeAction: (() -> Void)?
     private let splitAction: (() -> Void)?
 
     init(
-        payeeLabel: Binding<String>,
-        splitLabel: Binding<String>,
+        payeeLabel: String,
+        splitLabel: String,
         payeeAction: (() -> Void)?,
         splitAction: (() -> Void)?
     ) {
-        self._payeeLabel = payeeLabel
-        self._splitLabel = splitLabel
+        self.payeeLabel = payeeLabel
+        self.splitLabel = splitLabel
         self.payeeAction = payeeAction
         self.splitAction = splitAction
     }
@@ -43,8 +43,8 @@ struct PaidAndSplitBarView: View {
 struct PaidAndSplitBarView_Previews: PreviewProvider {
     static var previews: some View {
         PaidAndSplitBarView(
-            payeeLabel: Binding<String>(get: { "you" }, set: { _ in }),
-            splitLabel: Binding<String>(get: { "equally" }, set: { _ in }),
+            payeeLabel: "you",
+            splitLabel: "equally",
             payeeAction: nil,
             splitAction: nil
         )
