@@ -8,13 +8,10 @@
 import SwiftUI
 
 protocol IAddTransactionModule {
-    associatedtype F: IScreenFactory
-
     var rootView: AnyView { get }
 }
 
 final class AddTransactionModule: IAddTransactionModule {
-    typealias F = AddTransactionModule
     // Public
     var rootView: AnyView { presentingView.eraseToAnyView() }
     // Private
