@@ -7,42 +7,62 @@
 
 import SwiftUI
 
+// MARK: - IRoutingDestination Protocol
+
+protocol IRoutingDestination: Identifiable, Hashable { }
+
 // MARK: - IRouter Protocol
 
-protocol IRouter: AnyObject {
-    associatedtype RD: IRoutingDestination
-    associatedtype V: View
+protocol IRouter: ObservableObject {
+    associatedtype F: IScreenFactory
 
-    var rootView: V { get }
+    var navigationPath: NavigationPath { get set }
+    var presentedView: F.RD? { get set }
 
-    func push(_ destination: RD)
+    func push(_ destination: F.RD)
     func pop()
-    func present(_ destination: RD)
+    func present(_ destination: F.RD)
     func dismiss()
+}
+
+// MARK: - IScreenFactory protocol
+
+protocol IScreenFactory: AnyObject {
+    associatedtype RD: IRoutingDestination
+    func view(for: RD) -> AnyView
 }
 
 // MARK: - Router Implementation
 
-final class Router<RD: IRoutingDestination>: IRouter {
-    let rootView: PresentingView<RD>
+final class Router<F: IScreenFactory>: IRouter {
+    @Published var navigationPath = NavigationPath()
+    @Published var presentedView: F.RD?
 
-    init(root: RD) {
-        self.rootView = PresentingView(root: root)
-    }
-
-    func push(_ destination: RD) {
-        rootView.push(destination)
+    func push(_ destination: F.RD) {
+        navigationPath.append(destination)
     }
 
     func pop() {
-        rootView.pop()
+        navigationPath.removeLast()
     }
 
-    func present(_ destination: RD) {
-        rootView.present(destination)
+    func present(_ destination: F.RD) {
+        presentedView = destination
     }
 
     func dismiss() {
-        rootView.dismiss()
+        presentedView = nil
     }
+}
+
+// MARK: - Stub Router Implementation
+
+final class StubRouter<F: IScreenFactory>: IRouter {
+    var navigationPath = NavigationPath()
+    var presentedView: F.RD?
+
+    func push(_ destination: F.RD) { }
+    func pop() { }
+    func present(_ destination: F.RD) { }
+    func dismiss() { }
 }

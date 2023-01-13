@@ -6,17 +6,20 @@
 //
 
 import SwiftUI
-import Combine
 
-struct TransactionScreenView<VM: ITransactionScreenViewModel>: View {
+struct TransactionScreenView<VM: ITransactionScreenViewModel, R: IRouter>: View
+where R.F.RD == AddTransactionModule.RoutingDestination {
     // View model
     @ObservedObject private var vm: VM
+    // Router
+    private let router: R
     // Constants
     private let buttonDiameter: CGFloat = 64
     private let horizontalInsets: CGFloat = 40
     // MARK: Init
-    init(vm: VM = TransactionScreenViewModel()) {
+    init(vm: VM = TransactionScreenViewModel(), router: R) {
         self.vm = vm
+        self.router = router
     }
     // MARK: Body
     var body: some View {
@@ -39,12 +42,6 @@ struct TransactionScreenView<VM: ITransactionScreenViewModel>: View {
             ToolbarItem(placement: .primaryAction) {
                 Button("Save", action: { }).fontWeight(.semibold)
             }
-        }
-        .sheet(isPresented: $vm.isPresentingSplitOptionsView) {
-            vm.splitOptionsScreenView
-        }
-        .sheet(isPresented: $vm.isPresentingCategorySelectionView) {
-            vm.categorySelectionScreenView
         }
     }
 }
@@ -77,7 +74,7 @@ private extension TransactionScreenView {
             payeeAction: nil,
             splitAction: { [weak vm] in
                 guard (vm?.amount.amount ?? 0) > 0 else { return }
-                vm?.isPresentingSplitOptionsView = true
+                router.present(.splitStrategySelector)
             }
         )
     }
@@ -85,7 +82,9 @@ private extension TransactionScreenView {
     var descriptionInputRowView: some View {
         let categoryButton = RoundButton(
             bodyFill: vm.transactionCategory.backgroundColor,
-            action: { vm.isPresentingCategorySelectionView = true }
+            action: {
+                router.present(.categorySelector)
+            }
         ) {
             vm.transactionCategory.icon
                 .resizable()
@@ -148,22 +147,13 @@ private extension TransactionScreenView {
 // MARK: - ViewModel
 
 protocol ITransactionScreenViewModel: ObservableObject {
-    associatedtype CategorySelectionViewType: View
-    associatedtype SplitOptionsScreenViewType: View
-
     var date: Date { get set }
     var transactionCategory: TransactionCategory { get set }
     var transactionDescription: String { get set }
     var amount: MonetaryAmount { get set }
-    // TODO: Rework as get-only
+    var splitStrategy: any ISplitStrategy { get set }
     var payee: String { get }
     var splitWithin: String { get }
-    // Routing
-    // TODO: Factor Routing out to a separate class
-    var categorySelectionScreenView: CategorySelectionViewType { get }
-    var splitOptionsScreenView: SplitOptionsScreenViewType { get }
-    var isPresentingCategorySelectionView: Bool { get set }
-    var isPresentingSplitOptionsView: Bool { get set }
 }
 
 final class TransactionScreenViewModel: ObservableObject {
@@ -174,56 +164,21 @@ final class TransactionScreenViewModel: ObservableObject {
     @Published var amount = MonetaryAmount(currency: .eur) {
         didSet { splitStrategy.total = amount }
     }
-    private var splitStrategy: any ISplitStrategy = EqualSharesSplitStrategy(
+    @Published var splitStrategy: any ISplitStrategy = EqualSharesSplitStrategy(
         splitGroup: SplitGroup.stub,
         total: MonetaryAmount(currency: .eur)
-    ) {
-        willSet { objectWillChange.send() }
-    }
-    // Routing
-    @Published var isPresentingSplitOptionsView = false
-    @Published var isPresentingCategorySelectionView = false
+    )
 }
 
 extension TransactionScreenViewModel: ITransactionScreenViewModel {
     var payee: String { "you" }
-
     var splitWithin: String { splitStrategy.conciseHintDescription }
-
-    var splitOptionsScreenView: some View {
-        SplitOptionsScreenView(
-            splitGroup: splitStrategy.splitGroup,
-            total: amount,
-            initialState: splitStrategy,
-            onDismiss: { [weak self] in self?.isPresentingSplitOptionsView = false },
-            onDone: { [weak self] updatedStrategy in
-                self?.splitStrategy = updatedStrategy
-                self?.isPresentingSplitOptionsView = false
-            }
-        )
-    }
-
-    var categorySelectionScreenView: some View {
-        let cancelButton = Button("Cancel", role: .cancel) { [weak self] in
-            self?.isPresentingCategorySelectionView = false
-        }
-
-        return NavigationView {
-            TransactionCategorySelectionList { [weak self] (category) in
-                self?.transactionCategory = category
-                self?.isPresentingCategorySelectionView = false
-            }
-            .navigationTitle("Select category")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar { cancelButton }
-        }
-    }
 }
 
 // MARK: - Previews
 
 struct TransactionScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        TransactionScreenView()
+        TransactionScreenView(router: StubRouter<AddTransactionModule>())
     }
 }

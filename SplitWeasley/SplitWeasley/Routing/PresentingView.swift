@@ -7,34 +7,25 @@
 
 import SwiftUI
 
-struct PresentingView<RD: IRoutingDestination>: View {
-    @State private var navigationPath = NavigationPath()
-    @State private var presentedView: RD?
-    private let root: RD
+struct PresentingView<R: IRouter>: View {
+    @ObservedObject private var router: R
+    private let factory: R.F // Router.Factory
+    private let root: R.F.RD // Router.Factory.RoutingDestination
 
-    init(root: RD) {
+    init(router: R, factory: R.F, root: R.F.RD) {
+        self.router = router
+        self.factory = factory
         self.root = root
     }
 
     var body: some View {
-        NavigationStack(path: $navigationPath, root: { root.view() })
-            .navigationDestination(for: RD.self, destination: { $0.view() })
-            .sheet(item: $presentedView, content: { $0.view() })
-    }
-
-    func push(_ destination: RD) {
-        navigationPath.append(destination)
-    }
-
-    func pop() {
-        navigationPath.removeLast()
-    }
-
-    func present(_ destination: RD) {
-        presentedView = destination
-    }
-
-    func dismiss() {
-        presentedView = nil
+        // Navigation
+        NavigationStack(path: $router.navigationPath) {
+            factory.view(for: root).navigationDestination(for: R.F.RD.self) { factory.view(for: $0) }
+        }
+        // Presentation
+        .sheet(item: $router.presentedView) {
+            factory.view(for: $0)
+        }
     }
 }
