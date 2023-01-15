@@ -14,14 +14,14 @@ protocol IRoutingDestination: Identifiable, Hashable { }
 // MARK: - IRouter Protocol
 
 protocol IRouter: ObservableObject {
-    associatedtype F: IScreenFactory
+    associatedtype RD: IRoutingDestination
 
     var navigationPath: NavigationPath { get set }
-    var presentedView: F.RD? { get set }
+    var presentedView: RD? { get set }
 
-    func push(_ destination: F.RD)
+    func push(_ destination: RD)
     func pop()
-    func present(_ destination: F.RD)
+    func present(_ destination: RD)
     func dismiss()
 }
 
@@ -34,11 +34,11 @@ protocol IScreenFactory: AnyObject {
 
 // MARK: - Router Implementation
 
-final class Router<F: IScreenFactory>: IRouter {
+final class Router<RD: IRoutingDestination>: IRouter {
     @Published var navigationPath = NavigationPath()
-    @Published var presentedView: F.RD?
+    @Published var presentedView: RD?
 
-    func push(_ destination: F.RD) {
+    func push(_ destination: RD) {
         navigationPath.append(destination)
     }
 
@@ -46,7 +46,7 @@ final class Router<F: IScreenFactory>: IRouter {
         navigationPath.removeLast()
     }
 
-    func present(_ destination: F.RD) {
+    func present(_ destination: RD) {
         presentedView = destination
     }
 
@@ -57,12 +57,12 @@ final class Router<F: IScreenFactory>: IRouter {
 
 // MARK: - Stub Router Implementation
 
-final class StubRouter<F: IScreenFactory>: IRouter {
+final class StubRouter<RD: IRoutingDestination>: IRouter {
     var navigationPath = NavigationPath()
-    var presentedView: F.RD?
+    var presentedView: RD?
 
-    func push(_ destination: F.RD) { }
+    func push(_ destination: RD) { }
     func pop() { }
-    func present(_ destination: F.RD) { }
+    func present(_ destination: RD) { }
     func dismiss() { }
 }

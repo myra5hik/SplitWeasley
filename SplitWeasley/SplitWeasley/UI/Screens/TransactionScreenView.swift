@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TransactionScreenView<VM: ITransactionScreenViewModel, R: IRouter>: View
-where R.F.RD == AddTransactionModule.RoutingDestination {
+where R.RD == AddTransactionModule.RoutingDestination {
     // View model
     @ObservedObject private var vm: VM
     // Router
@@ -179,6 +179,6 @@ extension TransactionScreenViewModel: ITransactionScreenViewModel {
 
 struct TransactionScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        TransactionScreenView(router: StubRouter<AddTransactionModule>())
+        TransactionScreenView(router: StubRouter<AddTransactionModule.RD>())
     }
 }

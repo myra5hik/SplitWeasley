@@ -12,12 +12,13 @@ protocol IAddTransactionModule {
 }
 
 final class AddTransactionModule: IAddTransactionModule {
+    private typealias R = Router<RoutingDestination>
     // Public
     var rootView: AnyView { presentingView.eraseToAnyView() }
     // Private
     private let transactionScreenViewModel = TransactionScreenViewModel()
-    private let router = Router<AddTransactionModule>()
-    private var presentingView: PresentingView<Router<AddTransactionModule>>!
+    private let router = R()
+    private var presentingView: PresentingView<R, AddTransactionModule>!
 
     init() {
         self.presentingView = PresentingView(router: router, factory: self, root: .transactionScreen)

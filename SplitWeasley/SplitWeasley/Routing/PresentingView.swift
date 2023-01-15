@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct PresentingView<R: IRouter>: View {
-    @ObservedObject private var router: R
-    private let factory: R.F // Router.Factory
-    private let root: R.F.RD // Router.Factory.RoutingDestination
+struct PresentingView<R: IRouter, F: IScreenFactory>: View where R.RD == F.RD {
+    @ObservedObject private var router: R // Router
+    private let factory: F // Factory
+    private let root: R.RD // Router.RoutingDestination
 
-    init(router: R, factory: R.F, root: R.F.RD) {
+    init(router: R, factory: F, root: R.RD) {
         self.router = router
         self.factory = factory
         self.root = root
@@ -21,7 +21,7 @@ struct PresentingView<R: IRouter>: View {
     var body: some View {
         // Navigation
         NavigationStack(path: $router.navigationPath) {
-            factory.view(for: root).navigationDestination(for: R.F.RD.self) { factory.view(for: $0) }
+            factory.view(for: root).navigationDestination(for: R.RD.self) { factory.view(for: $0) }
         }
         // Presentation
         .sheet(item: $router.presentedView) {
