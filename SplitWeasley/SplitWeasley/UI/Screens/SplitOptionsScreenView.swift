@@ -7,21 +7,15 @@
 
 import SwiftUI
 
-struct SplitOptionsScreenView<
-    ESSS: IEqualSharesSplitStrategy,
-    EASS: IExactAmountSplitStrategy,
-    PSS: IPercentageSplitStrategy,
-    USSS: IUnequalSharesSplitStrategy,
-    PMSS: IPlusMinusSplitStrategy
->: View {
+struct SplitOptionsScreenView: View {
     // State
     @State private var pickerSelection: PickerSelection = .equalShares
     // Split parameters
-    @StateObject private var equalSharesSplitStrategy: ESSS
-    @StateObject private var exactAmountSplitStrategy: EASS
-    @StateObject private var percentageSplitStrategy: PSS
-    @StateObject private var unequalSharesSplitStrategy: USSS
-    @StateObject private var plusMinusSplitStrategy: PMSS
+    @StateObject private var equalSharesSplitStrategy: EqualSharesSplitStrategy
+    @StateObject private var exactAmountSplitStrategy: ExactAmountSplitStrategy
+    @StateObject private var percentageSplitStrategy: PercentageSplitStrategy
+    @StateObject private var unequalSharesSplitStrategy: UnequalSharesSplitStrategy
+    @StateObject private var plusMinusSplitStrategy: PlusMinusSplitStrategy
     // Actions
     private let onDismiss: (() -> Void)?
     private let onDone: ((any ISplitStrategy) -> Void)?
@@ -29,29 +23,24 @@ struct SplitOptionsScreenView<
     init(
         splitGroup: SplitGroup,
         total: MonetaryAmount,
-        equalSharesSplitStrategy: ESSS.Type = EqualSharesSplitStrategy.self,
-        exactAmountSplitStrategy: EASS.Type = ExactAmountSplitStrategy.self,
-        percentageSplitStrategy: PSS.Type = PercentageSplitStrategy.self,
-        unequalSharesSplitStrategy: USSS.Type = UnequalSharesSplitStrategy.self,
-        plusMinusSplitStrategy: PMSS.Type = PlusMinusSplitStrategy.self,
         initialState: (any ISplitStrategy)? = nil,
         onDismiss: (() -> Void)? = nil,
         onDone: ((any ISplitStrategy) -> Void)? = nil
     ) {
         self._equalSharesSplitStrategy = StateObject(
-            wrappedValue: equalSharesSplitStrategy.init(splitGroup: splitGroup, total: total)
+            wrappedValue: EqualSharesSplitStrategy(splitGroup: splitGroup, total: total)
         )
         self._exactAmountSplitStrategy = StateObject(
-            wrappedValue: exactAmountSplitStrategy.init(splitGroup: splitGroup, total: total)
+            wrappedValue: ExactAmountSplitStrategy(splitGroup: splitGroup, total: total)
         )
         self._percentageSplitStrategy = StateObject(
-            wrappedValue: percentageSplitStrategy.init(splitGroup: splitGroup, total: total)
+            wrappedValue: PercentageSplitStrategy(splitGroup: splitGroup, total: total)
         )
         self._unequalSharesSplitStrategy = StateObject(
-            wrappedValue: unequalSharesSplitStrategy.init(splitGroup: splitGroup, total: total)
+            wrappedValue: UnequalSharesSplitStrategy(splitGroup: splitGroup, total: total)
         )
         self._plusMinusSplitStrategy = StateObject(
-            wrappedValue: plusMinusSplitStrategy.init(splitGroup: splitGroup, total: total)
+            wrappedValue: PlusMinusSplitStrategy(splitGroup: splitGroup, total: total)
         )
         // Actions
         self.onDismiss = onDismiss
@@ -160,19 +149,19 @@ private extension SplitOptionsScreenView {
     mutating
     func restoreState(_ state: any ISplitStrategy) {
         switch state {
-        case let state as ESSS: // Equal shares
+        case let state as EqualSharesSplitStrategy: // Equal shares
             _equalSharesSplitStrategy = StateObject(wrappedValue: state)
             _pickerSelection = .init(initialValue: .equalShares)
-        case let state as EASS: // Exact amounts
+        case let state as ExactAmountSplitStrategy: // Exact amounts
             _exactAmountSplitStrategy = StateObject(wrappedValue: state)
             _pickerSelection = .init(initialValue: .exactAmount)
-        case let state as PSS: // Percentage split
+        case let state as PercentageSplitStrategy: // Percentage split
             _percentageSplitStrategy = StateObject(wrappedValue: state)
             _pickerSelection = .init(initialValue: .percent)
-        case let state as USSS: // Unequal shares split
+        case let state as UnequalSharesSplitStrategy: // Unequal shares split
             _unequalSharesSplitStrategy = StateObject(wrappedValue: state)
             _pickerSelection = .init(initialValue: .unequalShares)
-        case let state as PMSS: // Plus-minus adjustment split
+        case let state as PlusMinusSplitStrategy: // Plus-minus adjustment split
             _plusMinusSplitStrategy = StateObject(wrappedValue: state)
             _pickerSelection = .init(initialValue: .plusMinus)
         default:
