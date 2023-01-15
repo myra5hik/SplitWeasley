@@ -85,9 +85,9 @@ struct SplitOptionsScreenView<
                 }
                 ToolbarItem(placement: .primaryAction) {
                     Button("Done", action: {
-                        onDone?(strategyForPickerSelection() ?? equalSharesSplitStrategy)
+                        onDone?(strategyForPickerSelection())
                     })
-                    .disabled(!(strategyForPickerSelection()?.isLogicallyConsistent ?? false))
+                    .disabled(!strategyForPickerSelection().isLogicallyConsistent)
                     .bold()
                 }
             }
@@ -147,7 +147,7 @@ private extension SplitOptionsScreenView {
         case equalShares, exactAmount, percent, unequalShares, plusMinus
     }
 
-    func strategyForPickerSelection() -> (any ISplitStrategy)? {
+    func strategyForPickerSelection() -> any ISplitStrategy {
         switch pickerSelection {
         case .equalShares: return equalSharesSplitStrategy
         case .exactAmount: return exactAmountSplitStrategy
