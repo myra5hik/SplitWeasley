@@ -12,10 +12,11 @@ struct GroupTransactionsScreenView: View {
 
     var body: some View {
         applyingNavigationModifiers {
-            List {
-                GroupSummaryLayoverView(balances: balances).listRowSeparator(.hidden)
+            ScrollView {
+                LazyVStack {
+                    GroupSummaryLayoverView(balances: balances).padding()
+                }
             }
-            .listStyle(.plain)
         }
     }
 

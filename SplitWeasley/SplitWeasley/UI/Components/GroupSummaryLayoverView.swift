@@ -35,23 +35,28 @@ struct GroupSummaryLayoverView: View {
     private var headingText: some View {
         Text("Your balance:")
             .font(.headline)
+            .fontWeight(.light)
     }
 
     @ViewBuilder
     private var balanceTexts: some View {
-        if balances.isEmpty {
-            settledBalance
-        } else {
+        if !balances.isEmpty {
             nonSettledBalance
+        } else {
+            settledBalance
         }
     }
 
     private var nonSettledBalance: some View {
-        VStack(alignment: .trailing) {
+        VStack(alignment: .leading) {
             ForEach(balances, id: \.hashValue) { amount in
-                let negative = amount.amount < 0.0
-                Text(amount.formatted())
-                    .foregroundColor(negative ? Color(uiColor: .systemRed) : Color(uiColor: .systemGreen))
+                let isNegative = amount.amount < 0.0
+                /// Adds spacing for non-negative numbers so that the minus sign is handing and the text block is aligned by currencies
+                let spacing = "\(Unicode.Scalar(0x2000)!)"
+                let string = (isNegative ? "" : spacing) + amount.formatted()
+
+                Text(string)
+                    .foregroundColor(isNegative ? Color(uiColor: .systemRed) : Color(uiColor: .systemGreen))
                     .font(.headline)
             }
         }
@@ -59,14 +64,15 @@ struct GroupSummaryLayoverView: View {
     }
 
     private var settledBalance: some View {
-        Text("You are settled")
+        Text("Settled")
             .foregroundColor(Color(uiColor: .systemGray))
             .padding(.vertical)
     }
 
     private var infoButton: some View {
         Button(action: onTapOfInfo ?? { }) {
-            Image(systemName: "info.circle")
+            Image(systemName: "info.circle.fill")
+                .font(.title2)
         }
     }
 }
@@ -76,8 +82,8 @@ struct GroupSummaryLayoverView_Previews: PreviewProvider {
         VStack {
             GroupSummaryLayoverView(balances: [
                 .init(currency: .eur, amount: 102.12),
-                .init(currency: .chf, amount: 23),
-                .init(currency: .krw, amount: -10_092_793)
+                .init(currency: .krw, amount: -10_092_793),
+                .init(currency: .chf, amount: 23)
             ])
             GroupSummaryLayoverView(balances: [
                 .init(currency: .jpy, amount: 193010)
