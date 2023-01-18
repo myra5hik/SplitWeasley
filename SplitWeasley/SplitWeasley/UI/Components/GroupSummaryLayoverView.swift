@@ -8,14 +8,22 @@
 import SwiftUI
 
 struct GroupSummaryLayoverView: View {
-    let balances: [MonetaryAmount]
+    private let balances: [MonetaryAmount]
+    private let onTapOfInfo: (() -> Void)?
+
+    init(balances: [MonetaryAmount], onTapOfInfo: (() -> Void)? = nil) {
+        self.balances = balances
+        self.onTapOfInfo = onTapOfInfo
+    }
 
     var body: some View {
         HStack {
             headingText
             Spacer()
             balanceTexts
+            infoButton
         }
+        .padding(.horizontal)
         .background(content: { background })
     }
 
@@ -25,9 +33,8 @@ struct GroupSummaryLayoverView: View {
     }
 
     private var headingText: some View {
-        Text("Your balances:")
+        Text("Your balance:")
             .font(.headline)
-            .padding()
     }
 
     @ViewBuilder
@@ -48,13 +55,19 @@ struct GroupSummaryLayoverView: View {
                     .font(.headline)
             }
         }
-        .padding()
+        .padding(.vertical)
     }
 
     private var settledBalance: some View {
         Text("You are settled")
             .foregroundColor(Color(uiColor: .systemGray))
-            .padding()
+            .padding(.vertical)
+    }
+
+    private var infoButton: some View {
+        Button(action: onTapOfInfo ?? { }) {
+            Image(systemName: "info.circle")
+        }
     }
 }
 
