@@ -30,7 +30,16 @@ struct GroupSummaryLayoverView: View {
             .padding()
     }
 
+    @ViewBuilder
     private var balanceTexts: some View {
+        if balances.isEmpty {
+            settledBalance
+        } else {
+            nonSettledBalance
+        }
+    }
+
+    private var nonSettledBalance: some View {
         VStack(alignment: .trailing) {
             ForEach(balances, id: \.hashValue) { amount in
                 let negative = amount.amount < 0.0
@@ -40,6 +49,12 @@ struct GroupSummaryLayoverView: View {
             }
         }
         .padding()
+    }
+
+    private var settledBalance: some View {
+        Text("You are settled")
+            .foregroundColor(Color(uiColor: .systemGray))
+            .padding()
     }
 }
 
@@ -54,6 +69,7 @@ struct GroupSummaryLayoverView_Previews: PreviewProvider {
             GroupSummaryLayoverView(balances: [
                 .init(currency: .jpy, amount: 193010)
             ])
+            GroupSummaryLayoverView(balances: [])
         }
         .padding()
     }
