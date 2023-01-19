@@ -1,5 +1,5 @@
 //
-//  TransactionScreenView.swift
+//  AddTransactionScreenView.swift
 //  SplitWeasley
 //
 //  Created by Alexander Tokarev on 16/11/22.
@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct TransactionScreenView<VM: ITransactionScreenViewModel, R: IRouter>: View
-where R.RD == AddTransactionModule.RoutingDestination {
+struct AddTransactionScreenView<VM: IAddTransactionScreenViewModel, R: IRouter>: View
+where R.RD == GroupTransactionsModule.RoutingDestination {
     // View model
     @ObservedObject private var vm: VM
     // Router
@@ -17,7 +17,7 @@ where R.RD == AddTransactionModule.RoutingDestination {
     private let buttonDiameter: CGFloat = 64
     private let horizontalInsets: CGFloat = 40
     // MARK: Init
-    init(vm: VM = TransactionScreenViewModel(), router: R) {
+    init(vm: VM, router: R) {
         self.vm = vm
         self.router = router
     }
@@ -36,7 +36,7 @@ where R.RD == AddTransactionModule.RoutingDestination {
             .frame(height: 400)
             Spacer()
         }
-        .navigationTitle("Trip to Turkey")
+        .navigationTitle("Add transaction")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
@@ -48,7 +48,7 @@ where R.RD == AddTransactionModule.RoutingDestination {
 
 // MARK: - Components
 
-private extension TransactionScreenView {
+private extension AddTransactionScreenView {
     var datePicker: some View {
         DatePicker(
             selection: $vm.date,
@@ -146,7 +146,7 @@ private extension TransactionScreenView {
 
 // MARK: - ViewModel
 
-protocol ITransactionScreenViewModel: ObservableObject {
+protocol IAddTransactionScreenViewModel: ObservableObject {
     var date: Date { get set }
     var transactionCategory: TransactionCategory { get set }
     var transactionDescription: String { get set }
@@ -156,7 +156,7 @@ protocol ITransactionScreenViewModel: ObservableObject {
     var splitWithin: String { get }
 }
 
-final class TransactionScreenViewModel: ObservableObject {
+final class AddTransactionScreenViewModel: ObservableObject {
     // Data
     @Published var date = Date()
     @Published var transactionCategory: TransactionCategory = .undefined
@@ -168,9 +168,16 @@ final class TransactionScreenViewModel: ObservableObject {
         splitGroup: SplitGroup.stub,
         total: MonetaryAmount(currency: .eur)
     )
+
+    init(group: SplitGroup) {
+        self._splitStrategy = .init(wrappedValue: EqualSharesSplitStrategy(
+            splitGroup: group,
+            total: MonetaryAmount(currency: .eur))
+        )
+    }
 }
 
-extension TransactionScreenViewModel: ITransactionScreenViewModel {
+extension AddTransactionScreenViewModel: IAddTransactionScreenViewModel {
     var payee: String { "you" }
     var splitWithin: String { splitStrategy.conciseHintDescription }
 }
@@ -179,6 +186,8 @@ extension TransactionScreenViewModel: ITransactionScreenViewModel {
 
 struct TransactionScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        TransactionScreenView(router: StubRouter<AddTransactionModule.RD>())
+        let vm = AddTransactionScreenViewModel(group: .stub)
+        let router = StubRouter<GroupTransactionsModule.RD>()
+        return AddTransactionScreenView(vm: vm, router: router)
     }
 }

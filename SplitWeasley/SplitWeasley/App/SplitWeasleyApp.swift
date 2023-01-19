@@ -9,12 +9,12 @@ import SwiftUI
 
 @main
 struct SplitWeasleyApp: App {
-    private let addTransactionModule = AddTransactionModule()
+    private let groupModule = GroupTransactionsModule(group: .stub)
 
     var body: some Scene {
         WindowGroup {
             NavigationStack {
-                addTransactionModule.rootView
+                groupModule.rootView
             }
         }
     }

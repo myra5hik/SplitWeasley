@@ -8,7 +8,15 @@
 import SwiftUI
 
 struct GroupTransactionsScreenView: View {
-    let balances: [MonetaryAmount]
+    // Data
+    private let balances: [MonetaryAmount]
+    // Actions
+    private let onTapOfAdd: (() -> Void)?
+
+    init(balances: [MonetaryAmount], onTapOfAdd: (() -> Void)? = nil) {
+        self.balances = balances
+        self.onTapOfAdd = onTapOfAdd
+    }
 
     var body: some View {
         applyingNavigationModifiers {
@@ -20,9 +28,20 @@ struct GroupTransactionsScreenView: View {
         }
     }
 
+    // MARK: Navigation and Toolbar
+
     private func applyingNavigationModifiers(_ view: () -> some View) -> some View {
         view()
             .navigationTitle("Trip to Turkey")
+            .toolbar { addToolbarButton }
+    }
+
+    private var addToolbarButton: some View {
+        let handler = onTapOfAdd ?? { }
+        
+        return Button(action: handler) {
+            Image(systemName: "plus")
+        }
     }
 }
 
