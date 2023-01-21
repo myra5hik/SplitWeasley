@@ -13,9 +13,7 @@ struct SplitWeasleyApp: App {
 
     var body: some Scene {
         WindowGroup {
-            NavigationStack {
-                groupModule.rootView
-            }
+            groupModule.rootView
         }
     }
 }

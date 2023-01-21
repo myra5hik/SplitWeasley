@@ -37,7 +37,10 @@ struct ConfugurableListRowView<LA: View, TA: View>: View {
                 VStack(alignment: .leading) {
                     Text(heading)
                     if let subheading = subheading {
-                        Text(subheading).font(.subheadline).foregroundColor(Color(uiColor: .systemGray))
+                        Text(subheading)
+                            .multilineTextAlignment(.leading)
+                            .font(.subheadline)
+                            .foregroundColor(Color(uiColor: .systemGray))
                     }
                 }
                 Spacer()
@@ -56,6 +59,12 @@ struct ConfugurableListRowView_Previews: PreviewProvider {
             ConfugurableListRowView(
                 heading: "Full",
                 subheading: "including subline",
+                leadingAccessory: { Circle().foregroundColor(.mint) },
+                trailingAccessory: { Image(systemName: "checkmark") }
+            )
+            ConfugurableListRowView(
+                heading: "Full",
+                subheading: "including a lengthy subline, the on of inadequate length, taking multiple rows",
                 leadingAccessory: { Circle().foregroundColor(.mint) },
                 trailingAccessory: { Image(systemName: "checkmark") }
             )

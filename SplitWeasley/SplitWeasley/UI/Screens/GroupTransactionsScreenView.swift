@@ -38,7 +38,7 @@ struct GroupTransactionsScreenView: View {
 
     private var addToolbarButton: some View {
         let handler = onTapOfAdd ?? { }
-        
+
         return Button(action: handler) {
             Image(systemName: "plus")
         }
