@@ -15,6 +15,7 @@ struct SplitTransaction: Identifiable, Hashable {
     let paidBy: [Person.ID: MonetaryAmount]
     let splits: [Person.ID: MonetaryAmount]
     let description: String
+    let category: TransactionCategory
     let dateAdded: Date
     let datePerformed: Date
 
@@ -26,6 +27,7 @@ struct SplitTransaction: Identifiable, Hashable {
         paidBy: [Person.ID: MonetaryAmount],
         splits: [Person.ID: MonetaryAmount],
         description: String,
+        category: TransactionCategory,
         dateAdded: Date,
         datePerformed: Date
     ) {
@@ -34,6 +36,7 @@ struct SplitTransaction: Identifiable, Hashable {
         self.paidBy = paidBy
         self.splits = splits
         self.description = description
+        self.category = category
         self.dateAdded = Date()
         self.datePerformed = datePerformed
     }
@@ -89,6 +92,7 @@ extension SplitTransaction {
         paidBy: [Person.ID: MonetaryAmount]? = nil,
         splits: [Person.ID: MonetaryAmount]? = nil,
         description: String? = nil,
+        category: TransactionCategory? = nil,
         dateAdded: Date? = nil,
         datePerformed: Date? = nil
     ) -> SplitTransaction? {
@@ -98,8 +102,84 @@ extension SplitTransaction {
             paidBy: paidBy ?? self.paidBy,
             splits: splits ?? self.splits,
             description: description ?? self.description,
+            category: category ?? self.category,
             dateAdded: dateAdded ?? self.dateAdded,
             datePerformed: datePerformed ?? self.datePerformed
         )
+    }
+}
+
+// MARK: - Stub Data
+
+extension SplitTransaction {
+    static var stub: [SplitTransaction] {
+        let group = SplitGroup.stub
+        let currentUser = group.members[0]
+        let secondUser = group.members[1]
+        let thirdUser = group.members[2]
+
+        let total = MonetaryAmount(currency: .eur, amount: 99)
+        let half = MonetaryAmount(currency: .eur, amount: 49.5)
+        let third = MonetaryAmount(currency: .eur, amount: 33)
+
+        let res: [SplitTransaction] = [
+            // Paid by current user and split for two
+            SplitTransaction(
+                group: group,
+                total: total,
+                paidBy: [currentUser.id: total],
+                splits: [currentUser.id: half, secondUser.id: half],
+                description: "Plane tickets NAP-IST",
+                category: .allCases.randomElement() ?? .undefined,
+                dateAdded: Date(),
+                datePerformed: Date()
+            ),
+            // Paid by current user and split for two
+            SplitTransaction(
+                group: group,
+                total: total,
+                paidBy: [currentUser.id: total],
+                splits: [currentUser.id: third, secondUser.id: third, thirdUser.id: third],
+                description: "Plane tickets NAP-IST",
+                category: .allCases.randomElement() ?? .undefined,
+                dateAdded: Date(),
+                datePerformed: Date()
+            ),
+            // Paid by current user and split for other users
+            SplitTransaction(
+                group: group,
+                total: total,
+                paidBy: [currentUser.id: total],
+                splits: [secondUser.id: half, thirdUser.id: half],
+                description: "Plane tickets NAP-IST",
+                category: .allCases.randomElement() ?? .undefined,
+                dateAdded: Date(),
+                datePerformed: Date()
+            ),
+            // Current user not involved
+            SplitTransaction(
+                group: group,
+                total: total,
+                paidBy: [secondUser.id: total],
+                splits: [secondUser.id: half, thirdUser.id: half],
+                description: "Plane tickets NAP-IST",
+                category: .allCases.randomElement() ?? .undefined,
+                dateAdded: Date(),
+                datePerformed: Date()
+            ),
+            // Paid by multiple people
+            SplitTransaction(
+                group: group,
+                total: total,
+                paidBy: [currentUser.id: half, secondUser.id: half],
+                splits: [currentUser.id: third, secondUser.id: third, thirdUser.id: third],
+                description: "Plane tickets NAP-IST",
+                category: .allCases.randomElement() ?? .undefined,
+                dateAdded: Date(),
+                datePerformed: Date()
+            )
+        ]
+
+        return res
     }
 }

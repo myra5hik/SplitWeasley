@@ -64,12 +64,17 @@ extension GroupTransactionsModule: IScreenFactory {
     // MARK: Make functions
 
     private func makeTransactionListScreen() -> some View {
-        return GroupTransactionsScreenView(balances: [], onTapOfAdd: { [weak self, group] in
-            guard let self = self else { return }
-            // Resets the view model to an empty one
-            self.addTransactionScreenViewModel = AddTransactionScreenViewModel(group: group)
-            self.router.push(.addTransactionScreen)
-        })
+        return GroupTransactionsScreenView(
+            balances: [MonetaryAmount(currency: .eur, amount: 123.45)],
+            transactions: SplitTransaction.stub,
+            currentUser: SplitGroup.stub.members[0].id,
+            onTapOfAdd: { [weak self, group] in
+                guard let self = self else { return }
+                // Resets the view model to an empty one
+                self.addTransactionScreenViewModel = AddTransactionScreenViewModel(group: group)
+                self.router.push(.addTransactionScreen)
+            }
+        )
     }
 
     private func makeTransactionScreen() -> some View {
