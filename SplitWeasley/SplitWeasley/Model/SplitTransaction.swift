@@ -95,8 +95,8 @@ extension SplitTransaction {
         category: TransactionCategory? = nil,
         dateAdded: Date? = nil,
         datePerformed: Date? = nil
-    ) -> SplitTransaction? {
-        .init(
+    ) -> SplitTransaction {
+        SplitTransaction(
             group: self.group,
             total: total ?? self.total,
             paidBy: paidBy ?? self.paidBy,
