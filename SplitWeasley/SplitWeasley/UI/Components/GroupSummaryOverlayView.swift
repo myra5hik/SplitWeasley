@@ -1,5 +1,5 @@
 //
-//  GroupSummaryLayoverView.swift
+//  GroupSummaryOverlayView.swift
 //  SplitWeasley
 //
 //  Created by Alexander Tokarev on 18/01/23.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct GroupSummaryLayoverView: View {
+struct GroupSummaryOverlayView: View {
     private let balances: [MonetaryAmount]
     private let onTapOfInfo: (() -> Void)?
 
@@ -77,18 +77,18 @@ struct GroupSummaryLayoverView: View {
     }
 }
 
-struct GroupSummaryLayoverView_Previews: PreviewProvider {
+struct GroupSummaryOverlayView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            GroupSummaryLayoverView(balances: [
+            GroupSummaryOverlayView(balances: [
                 .init(currency: .eur, amount: 102.12),
                 .init(currency: .krw, amount: -10_092_793),
                 .init(currency: .chf, amount: 23)
             ])
-            GroupSummaryLayoverView(balances: [
+            GroupSummaryOverlayView(balances: [
                 .init(currency: .jpy, amount: 193010)
             ])
-            GroupSummaryLayoverView(balances: [])
+            GroupSummaryOverlayView(balances: [])
         }
         .padding()
     }

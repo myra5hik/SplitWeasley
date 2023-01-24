@@ -41,7 +41,7 @@
 		B6D1E90829394AEE0040BA37 /* UnequalSharesSplitMembersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D1E90729394AEE0040BA37 /* UnequalSharesSplitMembersListView.swift */; };
 		B6D994B12979D9DE00EEB236 /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D994B02979D9DE00EEB236 /* TransactionCell.swift */; };
 		B6DB2DD329785299004E2B60 /* GroupTransactionsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DB2DD229785299004E2B60 /* GroupTransactionsScreenView.swift */; };
-		B6DB2DD529785574004E2B60 /* GroupSummaryLayoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DB2DD429785574004E2B60 /* GroupSummaryLayoverView.swift */; };
+		B6DB2DD529785574004E2B60 /* GroupSummaryOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DB2DD429785574004E2B60 /* GroupSummaryOverlayView.swift */; };
 		B6E68916293BF0DE008F0E77 /* TransactionCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E68915293BF0DE008F0E77 /* TransactionCategory.swift */; };
 /* End PBXBuildFile section */
 
@@ -81,7 +81,7 @@
 		B6D1E90729394AEE0040BA37 /* UnequalSharesSplitMembersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnequalSharesSplitMembersListView.swift; sourceTree = "<group>"; };
 		B6D994B02979D9DE00EEB236 /* TransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
 		B6DB2DD229785299004E2B60 /* GroupTransactionsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTransactionsScreenView.swift; sourceTree = "<group>"; };
-		B6DB2DD429785574004E2B60 /* GroupSummaryLayoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSummaryLayoverView.swift; sourceTree = "<group>"; };
+		B6DB2DD429785574004E2B60 /* GroupSummaryOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSummaryOverlayView.swift; sourceTree = "<group>"; };
 		B6E68915293BF0DE008F0E77 /* TransactionCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TransactionCategory.swift; path = SplitWeasley/Model/TransactionCategory.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -198,7 +198,7 @@
 			isa = PBXGroup;
 			children = (
 				B6D1E8FC2939065D0040BA37 /* SplitMembersLists */,
-				B6DB2DD429785574004E2B60 /* GroupSummaryLayoverView.swift */,
+				B6DB2DD429785574004E2B60 /* GroupSummaryOverlayView.swift */,
 				B67DE96E2925858C008C6400 /* PaidAndSplitBarView.swift */,
 				B6B0C2DA293E4CA7006EF2B6 /* TransactionCategorySelectionList.swift */,
 			);
@@ -342,7 +342,7 @@
 				B6D994B12979D9DE00EEB236 /* TransactionCell.swift in Sources */,
 				B67DE9742927E1BF008C6400 /* Person.swift in Sources */,
 				B6D1E900293908070040BA37 /* ExactAmountSplitMembersListView.swift in Sources */,
-				B6DB2DD529785574004E2B60 /* GroupSummaryLayoverView.swift in Sources */,
+				B6DB2DD529785574004E2B60 /* GroupSummaryOverlayView.swift in Sources */,
 				B63747D1292E771900A50615 /* ExactAmountSplitStrategy.swift in Sources */,
 				B67DE97E2928005A008C6400 /* MonetaryAmount.swift in Sources */,
 				B6740C78293A59640045BE93 /* PlusMinusSplitStrategy.swift in Sources */,

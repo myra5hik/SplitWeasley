@@ -56,6 +56,7 @@ struct TransactionCell: View {
     }
 
     private var subheading: String {
+        guard balance != nil else { return "You were not involved" }
         let totalFormatted = total.formatted()
 
         switch paidBy {
@@ -68,8 +69,7 @@ struct TransactionCell: View {
             let percentageFormatted = currentUserSplitShare.formatted(.percent.precision(.fractionLength(0...1)))
             return "\(name) paid \(totalFormatted), lending you \(percentageFormatted)"
         case .multiplePeople:
-            let percentageFormatted = currentUserSplitShare.formatted(.percent.precision(.fractionLength(0...1)))
-            return "Several people paid \(totalFormatted), your share is \(percentageFormatted)"
+            return "Several people paid \(totalFormatted)"
         }
     }
 }

@@ -23,4 +23,12 @@ struct Person: Identifiable, Hashable {
         if let lastName = lastName { res += " "; res += lastName }
         return res
     }
+
+    var shortenedFullName: String {
+        var res = firstName
+        if let lastName = lastName, let firstLetter = lastName.first {
+            res += " \(firstLetter)."
+        }
+        return res
+    }
 }

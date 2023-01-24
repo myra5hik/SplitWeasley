@@ -29,16 +29,20 @@ struct GroupTransactionsScreenView: View {
     }
 
     var body: some View {
-        applyingNavigationModifiers {
-            ScrollView {
-                LazyVStack {
-                    GroupSummaryLayoverView(balances: balances).padding()
-                    ForEach(transactions) { transaction in
-                        cell(for: transaction)
-                    }
-                }
+        ScrollView {
+            LazyVStack {
+                // Summary
+                GroupSummaryOverlayView(balances: balances)
+                    .padding([.horizontal, .top])
+                // Transactions
+                ForEach(transactions, content: { cell(for: $0) })
+                    .padding(.horizontal)
+                    // Extra padding to align balance text vs. the summary overlay
+                    .padding(.trailing, 6)
             }
         }
+        .navigationTitle("Trip to Turkey")
+        .toolbar { addToolbarButton }
     }
 
     // MARK: Components
@@ -71,27 +75,23 @@ struct GroupTransactionsScreenView: View {
 
     private func paidByDescriptor(for transaction: SplitTransaction) -> TransactionCell.PaidByDescriptor? {
         guard transaction.paidBy.keys.count > 0 else { assertionFailure(); return nil }
-        if transaction.paidBy.keys.count == 1 {
-            guard let payee = transaction.paidBy.keys.first else { assertionFailure(); return nil }
-            if payee == currentUser { return .currentUser }
-            // TODO: Resolve other's name 
+        // Multiple people
+        if transaction.paidBy.keys.count > 1 { return .multiplePeople }
+        // Current user
+        guard let payee = transaction.paidBy.keys.first else { assertionFailure(); return nil }
+        if payee == currentUser { return .currentUser }
+        // Other person
+        guard let other = transaction.group.members.first(where: { $0.id == payee }) else {
+            assertionFailure()
             return .other(name: "Other person")
-        } else {
-            return .multiplePeople
         }
+        return .other(name: other.shortenedFullName)
     }
 
     // MARK: Navigation and Toolbar
 
-    private func applyingNavigationModifiers(_ view: () -> some View) -> some View {
-        view()
-            .navigationTitle("Trip to Turkey")
-            .toolbar { addToolbarButton }
-    }
-
     private var addToolbarButton: some View {
         let handler = onTapOfAdd ?? { }
-
         return Button(action: handler) {
             Image(systemName: "plus")
         }
@@ -105,9 +105,7 @@ struct GroupTransactionsScreenView_Previews: PreviewProvider {
         NavigationView {
             GroupTransactionsScreenView(
                 balances: [
-                    .init(currency: .eur, amount: 102.12),
-                    .init(currency: .chf, amount: 23),
-                    .init(currency: .krw, amount: -10_092_793)
+                    .init(currency: .eur, amount: 102.12)
                 ],
                 transactions: SplitTransaction.stub,
                 currentUser: SplitGroup.stub.members[0].id

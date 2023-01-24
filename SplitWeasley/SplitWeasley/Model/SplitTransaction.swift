@@ -112,7 +112,7 @@ extension SplitTransaction {
 // MARK: - Stub Data
 
 extension SplitTransaction {
-    static var stub: [SplitTransaction] {
+    static var stub: [SplitTransaction] = {
         let group = SplitGroup.stub
         let currentUser = group.members[0]
         let secondUser = group.members[1]
@@ -122,7 +122,7 @@ extension SplitTransaction {
         let half = MonetaryAmount(currency: .eur, amount: 49.5)
         let third = MonetaryAmount(currency: .eur, amount: 33)
 
-        let res: [SplitTransaction] = [
+        return [
             // Paid by current user and split for two
             SplitTransaction(
                 group: group,
@@ -156,6 +156,17 @@ extension SplitTransaction {
                 dateAdded: Date(),
                 datePerformed: Date()
             ),
+            // Paid by someone else and split incl. current user
+            SplitTransaction(
+                group: group,
+                total: total,
+                paidBy: [secondUser.id: total],
+                splits: [currentUser.id: half, thirdUser.id: half],
+                description: "Plane tickets NAP-IST",
+                category: .allCases.randomElement() ?? .undefined,
+                dateAdded: Date(),
+                datePerformed: Date()
+            ),
             // Current user not involved
             SplitTransaction(
                 group: group,
@@ -179,7 +190,5 @@ extension SplitTransaction {
                 datePerformed: Date()
             )
         ]
-
-        return res
-    }
+    }()
 }

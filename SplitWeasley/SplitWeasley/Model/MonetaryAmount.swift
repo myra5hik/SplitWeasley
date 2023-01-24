@@ -31,13 +31,9 @@ struct MonetaryAmount: Equatable, Hashable {
     }
 
     func formatted() -> String {
-        let nf = NumberFormatter()
-        nf.numberStyle = .currency
-        nf.currencyCode = self.currency.iso4217code
-        nf.locale = Locale.current
-        nf.maximumFractionDigits = currency.roundingScale
-        nf.minimumFractionDigits = currency.roundingScale
-
-        return nf.string(for: amount) ?? "\(currency.iso4217code)\(amount)"
+        return amount.formatted(
+            .currency(code: currency.iso4217code)
+            .precision(.fractionLength(0...currency.roundingScale))
+        )
     }
 }

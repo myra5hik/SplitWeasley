@@ -55,7 +55,7 @@ extension GroupTransactionsModule: IScreenFactory {
     func view(for destination: GroupTransactionsModule.RoutingDestination) -> AnyView {
         switch destination {
         case .transactionList: return makeTransactionListScreen().eraseToAnyView()
-        case .addTransactionScreen: return makeTransactionScreen().eraseToAnyView()
+        case .addTransactionScreen: return makeAddTransactionScreen().eraseToAnyView()
         case .categorySelector: return makeCategorySelectorScreen().eraseToAnyView()
         case .splitStrategySelector: return makeSplitStrategySelectorScreen().eraseToAnyView()
         }
@@ -77,7 +77,7 @@ extension GroupTransactionsModule: IScreenFactory {
         )
     }
 
-    private func makeTransactionScreen() -> some View {
+    private func makeAddTransactionScreen() -> some View {
         return AddTransactionScreenView(vm: addTransactionScreenViewModel, router: router)
     }
 
