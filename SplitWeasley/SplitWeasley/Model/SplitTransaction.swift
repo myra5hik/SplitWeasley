@@ -119,8 +119,15 @@ extension SplitTransaction {
         let thirdUser = group.members[2]
 
         let total = MonetaryAmount(currency: .eur, amount: 99)
-        let half = MonetaryAmount(currency: .eur, amount: 49.5)
-        let third = MonetaryAmount(currency: .eur, amount: 33)
+        let half = MonetaryAmount(currency: .eur, amount: total.amount / 2)
+        let third = MonetaryAmount(currency: .eur, amount: total.amount / 3)
+
+        let now = Date()
+        let nowMinusHour = now.addingTimeInterval(-60 * 60)
+        let nowMinusTwoHours = now.addingTimeInterval(-60 * 60 * 2)
+        let yesterday = now.addingTimeInterval(-60 * 60 * 24)
+        let yesterdayMinusHour = yesterday.addingTimeInterval(-60 * 60)
+        let dayBeforeYesterday = now.addingTimeInterval(-60 * 60 * 24 * 2)
 
         return [
             // Paid by current user and split for two
@@ -131,8 +138,8 @@ extension SplitTransaction {
                 splits: [currentUser.id: half, secondUser.id: half],
                 description: "Plane tickets NAP-IST",
                 category: .allCases.randomElement() ?? .undefined,
-                dateAdded: Date(),
-                datePerformed: Date()
+                dateAdded: now,
+                datePerformed: now
             ),
             // Paid by current user and split for two
             SplitTransaction(
@@ -142,8 +149,8 @@ extension SplitTransaction {
                 splits: [currentUser.id: third, secondUser.id: third, thirdUser.id: third],
                 description: "Plane tickets NAP-IST",
                 category: .allCases.randomElement() ?? .undefined,
-                dateAdded: Date(),
-                datePerformed: Date()
+                dateAdded: nowMinusHour,
+                datePerformed: nowMinusHour
             ),
             // Paid by current user and split for other users
             SplitTransaction(
@@ -153,8 +160,8 @@ extension SplitTransaction {
                 splits: [secondUser.id: half, thirdUser.id: half],
                 description: "Plane tickets NAP-IST",
                 category: .allCases.randomElement() ?? .undefined,
-                dateAdded: Date(),
-                datePerformed: Date()
+                dateAdded: nowMinusTwoHours,
+                datePerformed: nowMinusTwoHours
             ),
             // Paid by someone else and split incl. current user
             SplitTransaction(
@@ -164,8 +171,8 @@ extension SplitTransaction {
                 splits: [currentUser.id: half, thirdUser.id: half],
                 description: "Plane tickets NAP-IST",
                 category: .allCases.randomElement() ?? .undefined,
-                dateAdded: Date(),
-                datePerformed: Date()
+                dateAdded: yesterday,
+                datePerformed: yesterday
             ),
             // Current user not involved
             SplitTransaction(
@@ -175,8 +182,8 @@ extension SplitTransaction {
                 splits: [secondUser.id: half, thirdUser.id: half],
                 description: "Plane tickets NAP-IST",
                 category: .allCases.randomElement() ?? .undefined,
-                dateAdded: Date(),
-                datePerformed: Date()
+                dateAdded: yesterdayMinusHour,
+                datePerformed: yesterdayMinusHour
             ),
             // Paid by multiple people
             SplitTransaction(
@@ -186,8 +193,8 @@ extension SplitTransaction {
                 splits: [currentUser.id: third, secondUser.id: third, thirdUser.id: third],
                 description: "Plane tickets NAP-IST",
                 category: .allCases.randomElement() ?? .undefined,
-                dateAdded: Date(),
-                datePerformed: Date()
+                dateAdded: dayBeforeYesterday,
+                datePerformed: dayBeforeYesterday
             )
         ]
     }()

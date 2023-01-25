@@ -9,8 +9,8 @@ import SwiftUI
 
 struct GroupTransactionsScreenView: View {
     // Data
-    private let balances: [MonetaryAmount]
-    private let transactions: [SplitTransaction]
+    @State private var balances: [MonetaryAmount]
+    @State private var groupings: [Date: [SplitTransaction]]
     // Dependencies
     private let currentUser: Person.ID
     // Actions
@@ -22,25 +22,39 @@ struct GroupTransactionsScreenView: View {
         currentUser: Person.ID,
         onTapOfAdd: (() -> Void)? = nil
     ) {
-        self.balances = balances
-        self.transactions = transactions
+        self._balances = .init(initialValue: balances)
         self.currentUser = currentUser
         self.onTapOfAdd = onTapOfAdd
+        // Populates groupings
+        var res = [Date: [SplitTransaction]]()
+        // Groups into a dictionary, one array per a day
+        for transaction in transactions {
+            let roundedDate = Calendar.current.startOfDay(for: transaction.datePerformed)
+            res[roundedDate, default: []].append(transaction)
+        }
+        // Sorts transactions latest to top
+        for (key, array) in res {
+            res[key] = array.sorted(by: { $0.datePerformed >= $1.datePerformed })
+        }
+        self._groupings = .init(initialValue: res)
     }
 
     var body: some View {
-        ScrollView {
-            LazyVStack {
-                // Summary
-                GroupSummaryOverlayView(balances: balances)
-                    .padding([.horizontal, .top])
-                // Transactions
-                ForEach(transactions, content: { cell(for: $0) })
-                    .padding(.horizontal)
-                    // Extra padding to align balance text vs. the summary overlay
-                    .padding(.trailing, 6)
+        ScrollableLazyVStack {
+            // Summary
+            GroupSummaryOverlayView(balances: balances)
+                .padding(.vertical, 6)
+            // Transactions
+            ForEach(groupings.sorted(by: { $0.key >= $1.key }), id: \.key) { (date, transactions) in
+                Section(content: {
+                    ForEach(transactions) { cell(for: $0) }
+                }, header: {
+                    header(for: date)
+                })
             }
         }
+        .padding(.horizontal)
+        // Navigation
         .navigationTitle("Trip to Turkey")
         .toolbar { addToolbarButton }
     }
@@ -68,7 +82,18 @@ struct GroupTransactionsScreenView: View {
             paidBy: paidByDescriptor,
             currentUserSplitShare: splitShare
         )
+        .frame(height: 50)
+        .padding(.top, 12)
         .eraseToAnyView()
+    }
+
+    private func header(for date: Date) -> some View {
+        let dateFormatted = date.formatted(.dateTime.weekday(.wide).day().month())
+        
+        return Text(dateFormatted.uppercased())
+            .font(.subheadline)
+            .foregroundColor(Color(uiColor: .systemGray))
+            .padding(.top)
     }
 
     // MARK: View Helpers

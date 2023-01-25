@@ -24,7 +24,6 @@ struct TransactionCell: View {
             trailingAccessory: { balanceTextView },
             action: nil
         )
-        .frame(height: 65)
     }
 
     // MARK: Components

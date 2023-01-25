@@ -39,6 +39,7 @@
 		B6D1E90229390C090040BA37 /* PercentageSplitMembersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D1E90129390C090040BA37 /* PercentageSplitMembersListView.swift */; };
 		B6D1E904293917E20040BA37 /* UnequalSharesSplitStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D1E903293917E20040BA37 /* UnequalSharesSplitStrategy.swift */; };
 		B6D1E90829394AEE0040BA37 /* UnequalSharesSplitMembersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D1E90729394AEE0040BA37 /* UnequalSharesSplitMembersListView.swift */; };
+		B6D4285B29816293009DE040 /* ScrollableLazyVStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D4285A29816293009DE040 /* ScrollableLazyVStack.swift */; };
 		B6D994B12979D9DE00EEB236 /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D994B02979D9DE00EEB236 /* TransactionCell.swift */; };
 		B6DB2DD329785299004E2B60 /* GroupTransactionsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DB2DD229785299004E2B60 /* GroupTransactionsScreenView.swift */; };
 		B6DB2DD529785574004E2B60 /* GroupSummaryOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DB2DD429785574004E2B60 /* GroupSummaryOverlayView.swift */; };
@@ -79,6 +80,7 @@
 		B6D1E90129390C090040BA37 /* PercentageSplitMembersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PercentageSplitMembersListView.swift; sourceTree = "<group>"; };
 		B6D1E903293917E20040BA37 /* UnequalSharesSplitStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnequalSharesSplitStrategy.swift; sourceTree = "<group>"; };
 		B6D1E90729394AEE0040BA37 /* UnequalSharesSplitMembersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnequalSharesSplitMembersListView.swift; sourceTree = "<group>"; };
+		B6D4285A29816293009DE040 /* ScrollableLazyVStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableLazyVStack.swift; sourceTree = "<group>"; };
 		B6D994B02979D9DE00EEB236 /* TransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
 		B6DB2DD229785299004E2B60 /* GroupTransactionsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTransactionsScreenView.swift; sourceTree = "<group>"; };
 		B6DB2DD429785574004E2B60 /* GroupSummaryOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSummaryOverlayView.swift; sourceTree = "<group>"; };
@@ -226,6 +228,7 @@
 				B67DE982292AE025008C6400 /* ConfugurableListRowView.swift */,
 				B63747D2292E813C00A50615 /* NumericInputView.swift */,
 				B6D994B02979D9DE00EEB236 /* TransactionCell.swift */,
+				B6D4285A29816293009DE040 /* ScrollableLazyVStack.swift */,
 			);
 			path = Elements;
 			sourceTree = "<group>";
@@ -355,6 +358,7 @@
 				B67DE98C292D77DD008C6400 /* LimitedFractionDigitInputProxy.swift in Sources */,
 				B63747CF292E733700A50615 /* EqualSharesSplitStrategy.swift in Sources */,
 				B67DE96B2925852B008C6400 /* AddTransactionScreenView.swift in Sources */,
+				B6D4285B29816293009DE040 /* ScrollableLazyVStack.swift in Sources */,
 				B67ABB3929365A8400E8BC62 /* PercentageSplitStrategy.swift in Sources */,
 				B6B0C2DB293E4CA7006EF2B6 /* TransactionCategorySelectionList.swift in Sources */,
 				B67DE97C2927EBDC008C6400 /* Currency.swift in Sources */,
