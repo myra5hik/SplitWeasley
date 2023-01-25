@@ -18,7 +18,7 @@
 		B67DE958292583F0008C6400 /* SplitWeasleyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE957292583F0008C6400 /* SplitWeasleyApp.swift */; };
 		B67DE95C292583F1008C6400 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B67DE95B292583F1008C6400 /* Assets.xcassets */; };
 		B67DE95F292583F1008C6400 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B67DE95E292583F1008C6400 /* Preview Assets.xcassets */; };
-		B67DE96B2925852B008C6400 /* TransactionScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE96A2925852B008C6400 /* TransactionScreenView.swift */; };
+		B67DE96B2925852B008C6400 /* AddTransactionScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE96A2925852B008C6400 /* AddTransactionScreenView.swift */; };
 		B67DE96F2925858C008C6400 /* PaidAndSplitBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE96E2925858C008C6400 /* PaidAndSplitBarView.swift */; };
 		B67DE97129258B32008C6400 /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE97029258B32008C6400 /* RoundButton.swift */; };
 		B67DE9742927E1BF008C6400 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE9732927E1BF008C6400 /* Person.swift */; };
@@ -31,7 +31,7 @@
 		B67DE987292C479A008C6400 /* Decimal+Rounded.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE986292C479A008C6400 /* Decimal+Rounded.swift */; };
 		B67DE98C292D77DD008C6400 /* LimitedFractionDigitInputProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DE98B292D77DD008C6400 /* LimitedFractionDigitInputProxy.swift */; };
 		B68B840E2965F91900E4C3FA /* PresentingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68B840D2965F91900E4C3FA /* PresentingView.swift */; };
-		B68B841329672DF900E4C3FA /* AddTransactionModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68B841229672DF900E4C3FA /* AddTransactionModule.swift */; };
+		B68B841329672DF900E4C3FA /* GroupTransactionsModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68B841229672DF900E4C3FA /* GroupTransactionsModule.swift */; };
 		B68B8415296C5E5C00E4C3FA /* View+Erasure.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68B8414296C5E5B00E4C3FA /* View+Erasure.swift */; };
 		B6B0C2DB293E4CA7006EF2B6 /* TransactionCategorySelectionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B0C2DA293E4CA7006EF2B6 /* TransactionCategorySelectionList.swift */; };
 		B6D1E8FE293906760040BA37 /* EqualSharesSplitMembersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D1E8FD293906760040BA37 /* EqualSharesSplitMembersListView.swift */; };
@@ -39,6 +39,10 @@
 		B6D1E90229390C090040BA37 /* PercentageSplitMembersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D1E90129390C090040BA37 /* PercentageSplitMembersListView.swift */; };
 		B6D1E904293917E20040BA37 /* UnequalSharesSplitStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D1E903293917E20040BA37 /* UnequalSharesSplitStrategy.swift */; };
 		B6D1E90829394AEE0040BA37 /* UnequalSharesSplitMembersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D1E90729394AEE0040BA37 /* UnequalSharesSplitMembersListView.swift */; };
+		B6D4285B29816293009DE040 /* ScrollableLazyVStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D4285A29816293009DE040 /* ScrollableLazyVStack.swift */; };
+		B6D994B12979D9DE00EEB236 /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D994B02979D9DE00EEB236 /* TransactionCell.swift */; };
+		B6DB2DD329785299004E2B60 /* GroupTransactionsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DB2DD229785299004E2B60 /* GroupTransactionsScreenView.swift */; };
+		B6DB2DD529785574004E2B60 /* GroupSummaryOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DB2DD429785574004E2B60 /* GroupSummaryOverlayView.swift */; };
 		B6E68916293BF0DE008F0E77 /* TransactionCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E68915293BF0DE008F0E77 /* TransactionCategory.swift */; };
 /* End PBXBuildFile section */
 
@@ -55,7 +59,7 @@
 		B67DE957292583F0008C6400 /* SplitWeasleyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitWeasleyApp.swift; sourceTree = "<group>"; };
 		B67DE95B292583F1008C6400 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B67DE95E292583F1008C6400 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		B67DE96A2925852B008C6400 /* TransactionScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionScreenView.swift; sourceTree = "<group>"; };
+		B67DE96A2925852B008C6400 /* AddTransactionScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTransactionScreenView.swift; sourceTree = "<group>"; };
 		B67DE96E2925858C008C6400 /* PaidAndSplitBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaidAndSplitBarView.swift; sourceTree = "<group>"; };
 		B67DE97029258B32008C6400 /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		B67DE9732927E1BF008C6400 /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
@@ -68,7 +72,7 @@
 		B67DE986292C479A008C6400 /* Decimal+Rounded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decimal+Rounded.swift"; sourceTree = "<group>"; };
 		B67DE98B292D77DD008C6400 /* LimitedFractionDigitInputProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitedFractionDigitInputProxy.swift; sourceTree = "<group>"; };
 		B68B840D2965F91900E4C3FA /* PresentingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentingView.swift; sourceTree = "<group>"; };
-		B68B841229672DF900E4C3FA /* AddTransactionModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTransactionModule.swift; sourceTree = "<group>"; };
+		B68B841229672DF900E4C3FA /* GroupTransactionsModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTransactionsModule.swift; sourceTree = "<group>"; };
 		B68B8414296C5E5B00E4C3FA /* View+Erasure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Erasure.swift"; sourceTree = "<group>"; };
 		B6B0C2DA293E4CA7006EF2B6 /* TransactionCategorySelectionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCategorySelectionList.swift; sourceTree = "<group>"; };
 		B6D1E8FD293906760040BA37 /* EqualSharesSplitMembersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EqualSharesSplitMembersListView.swift; sourceTree = "<group>"; };
@@ -76,6 +80,10 @@
 		B6D1E90129390C090040BA37 /* PercentageSplitMembersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PercentageSplitMembersListView.swift; sourceTree = "<group>"; };
 		B6D1E903293917E20040BA37 /* UnequalSharesSplitStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnequalSharesSplitStrategy.swift; sourceTree = "<group>"; };
 		B6D1E90729394AEE0040BA37 /* UnequalSharesSplitMembersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnequalSharesSplitMembersListView.swift; sourceTree = "<group>"; };
+		B6D4285A29816293009DE040 /* ScrollableLazyVStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableLazyVStack.swift; sourceTree = "<group>"; };
+		B6D994B02979D9DE00EEB236 /* TransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
+		B6DB2DD229785299004E2B60 /* GroupTransactionsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTransactionsScreenView.swift; sourceTree = "<group>"; };
+		B6DB2DD429785574004E2B60 /* GroupSummaryOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSummaryOverlayView.swift; sourceTree = "<group>"; };
 		B6E68915293BF0DE008F0E77 /* TransactionCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TransactionCategory.swift; path = SplitWeasley/Model/TransactionCategory.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -181,7 +189,8 @@
 		B67DE96C29258552008C6400 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				B67DE96A2925852B008C6400 /* TransactionScreenView.swift */,
+				B6DB2DD229785299004E2B60 /* GroupTransactionsScreenView.swift */,
+				B67DE96A2925852B008C6400 /* AddTransactionScreenView.swift */,
 				B67DE97F292AB36A008C6400 /* SplitOptionsScreenView.swift */,
 			);
 			path = Screens;
@@ -191,6 +200,7 @@
 			isa = PBXGroup;
 			children = (
 				B6D1E8FC2939065D0040BA37 /* SplitMembersLists */,
+				B6DB2DD429785574004E2B60 /* GroupSummaryOverlayView.swift */,
 				B67DE96E2925858C008C6400 /* PaidAndSplitBarView.swift */,
 				B6B0C2DA293E4CA7006EF2B6 /* TransactionCategorySelectionList.swift */,
 			);
@@ -217,6 +227,8 @@
 				B67DE97029258B32008C6400 /* RoundButton.swift */,
 				B67DE982292AE025008C6400 /* ConfugurableListRowView.swift */,
 				B63747D2292E813C00A50615 /* NumericInputView.swift */,
+				B6D994B02979D9DE00EEB236 /* TransactionCell.swift */,
+				B6D4285A29816293009DE040 /* ScrollableLazyVStack.swift */,
 			);
 			path = Elements;
 			sourceTree = "<group>";
@@ -241,7 +253,7 @@
 		B68B841129672DD400E4C3FA /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				B68B841229672DF900E4C3FA /* AddTransactionModule.swift */,
+				B68B841229672DF900E4C3FA /* GroupTransactionsModule.swift */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -330,8 +342,10 @@
 			files = (
 				B67DE9782927EAE8008C6400 /* SplitGroup.swift in Sources */,
 				B67DE987292C479A008C6400 /* Decimal+Rounded.swift in Sources */,
+				B6D994B12979D9DE00EEB236 /* TransactionCell.swift in Sources */,
 				B67DE9742927E1BF008C6400 /* Person.swift in Sources */,
 				B6D1E900293908070040BA37 /* ExactAmountSplitMembersListView.swift in Sources */,
+				B6DB2DD529785574004E2B60 /* GroupSummaryOverlayView.swift in Sources */,
 				B63747D1292E771900A50615 /* ExactAmountSplitStrategy.swift in Sources */,
 				B67DE97E2928005A008C6400 /* MonetaryAmount.swift in Sources */,
 				B6740C78293A59640045BE93 /* PlusMinusSplitStrategy.swift in Sources */,
@@ -343,7 +357,8 @@
 				B67DE958292583F0008C6400 /* SplitWeasleyApp.swift in Sources */,
 				B67DE98C292D77DD008C6400 /* LimitedFractionDigitInputProxy.swift in Sources */,
 				B63747CF292E733700A50615 /* EqualSharesSplitStrategy.swift in Sources */,
-				B67DE96B2925852B008C6400 /* TransactionScreenView.swift in Sources */,
+				B67DE96B2925852B008C6400 /* AddTransactionScreenView.swift in Sources */,
+				B6D4285B29816293009DE040 /* ScrollableLazyVStack.swift in Sources */,
 				B67ABB3929365A8400E8BC62 /* PercentageSplitStrategy.swift in Sources */,
 				B6B0C2DB293E4CA7006EF2B6 /* TransactionCategorySelectionList.swift in Sources */,
 				B67DE97C2927EBDC008C6400 /* Currency.swift in Sources */,
@@ -351,9 +366,10 @@
 				B6D1E904293917E20040BA37 /* UnequalSharesSplitStrategy.swift in Sources */,
 				B6D1E90829394AEE0040BA37 /* UnequalSharesSplitMembersListView.swift in Sources */,
 				B60A23AD29654D2B00A703B3 /* Router.swift in Sources */,
+				B6DB2DD329785299004E2B60 /* GroupTransactionsScreenView.swift in Sources */,
 				B68B8415296C5E5C00E4C3FA /* View+Erasure.swift in Sources */,
 				B6D1E8FE293906760040BA37 /* EqualSharesSplitMembersListView.swift in Sources */,
-				B68B841329672DF900E4C3FA /* AddTransactionModule.swift in Sources */,
+				B68B841329672DF900E4C3FA /* GroupTransactionsModule.swift in Sources */,
 				B67DE983292AE025008C6400 /* ConfugurableListRowView.swift in Sources */,
 				B68B840E2965F91900E4C3FA /* PresentingView.swift in Sources */,
 				B6D1E90229390C090040BA37 /* PercentageSplitMembersListView.swift in Sources */,

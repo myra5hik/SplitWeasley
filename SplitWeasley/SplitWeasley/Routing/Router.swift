@@ -29,7 +29,9 @@ protocol IRouter: ObservableObject {
 
 protocol IScreenFactory: AnyObject {
     associatedtype RD: IRoutingDestination
-    func view(for: RD) -> AnyView
+    associatedtype V: View
+
+    func view(for: RD) -> V
 }
 
 // MARK: - Router Implementation
