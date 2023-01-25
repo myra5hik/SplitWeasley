@@ -15,6 +15,25 @@ struct TransactionCell: View {
     let paidBy: PaidByDescriptor
     /// From 0.0 to 1.0 meaning 0% to 100%
     let currentUserSplitShare: Decimal
+    let onTap: (() -> Void)?
+
+    init(
+        description: String,
+        category: TransactionCategory,
+        total: MonetaryAmount,
+        balance: MonetaryAmount?,
+        paidBy: PaidByDescriptor,
+        currentUserSplitShare: Decimal,
+        onTap: (() -> Void)? = nil
+    ) {
+        self.description = description
+        self.category = category
+        self.total = total
+        self.balance = balance
+        self.paidBy = paidBy
+        self.currentUserSplitShare = currentUserSplitShare
+        self.onTap = onTap
+    }
 
     var body: some View {
         ConfugurableListRowView(
@@ -22,7 +41,7 @@ struct TransactionCell: View {
             subheading: subheading,
             leadingAccessory: { icon },
             trailingAccessory: { balanceTextView },
-            action: nil
+            action: onTap
         )
     }
 

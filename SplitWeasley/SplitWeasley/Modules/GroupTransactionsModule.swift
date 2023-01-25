@@ -39,25 +39,32 @@ final class GroupTransactionsModule: IGroupTransactionsModule {
 // MARK: - Routing
 
 extension GroupTransactionsModule {
-    enum RoutingDestination: String, Identifiable, IRoutingDestination {
-        var id: String { self.rawValue }
-
+    enum RoutingDestination: IRoutingDestination {
         case transactionList
         case addTransactionScreen
         case categorySelector
         case splitStrategySelector
+        case transactionDetailView(id: SplitTransaction.ID)
     }
+}
+
+extension GroupTransactionsModule.RoutingDestination: Identifiable {
+    var id: String { "\(self)" }
 }
 
 // MARK: - IScreenFactory conformance
 
 extension GroupTransactionsModule: IScreenFactory {
-    func view(for destination: GroupTransactionsModule.RoutingDestination) -> AnyView {
+    typealias RD = RoutingDestination
+
+    @ViewBuilder
+    func view(for destination: GroupTransactionsModule.RoutingDestination) -> some View {
         switch destination {
-        case .transactionList: return makeTransactionListScreen().eraseToAnyView()
-        case .addTransactionScreen: return makeAddTransactionScreen().eraseToAnyView()
-        case .categorySelector: return makeCategorySelectorScreen().eraseToAnyView()
-        case .splitStrategySelector: return makeSplitStrategySelectorScreen().eraseToAnyView()
+        case .transactionList: makeTransactionListScreen()
+        case .addTransactionScreen: makeAddTransactionScreen()
+        case .categorySelector: makeCategorySelectorScreen()
+        case .splitStrategySelector: makeSplitStrategySelectorScreen()
+        case .transactionDetailView(id: let id): makeTransactionDetailScreen(id: id)
         }
     }
 
@@ -73,6 +80,9 @@ extension GroupTransactionsModule: IScreenFactory {
                 // Resets the view model to an empty one
                 self.addTransactionScreenViewModel = AddTransactionScreenViewModel(group: group)
                 self.router.push(.addTransactionScreen)
+            },
+            onTapOfDetail: { [weak self] transactionId in
+                self?.router.push(.transactionDetailView(id: transactionId))
             }
         )
     }
@@ -105,5 +115,9 @@ extension GroupTransactionsModule: IScreenFactory {
             onDismiss: { [weak self] in self?.router.dismiss() },
             onDone: { [weak self] in self?.addTransactionScreenViewModel.splitStrategy = $0; self?.router.dismiss() }
         )
+    }
+
+    private func makeTransactionDetailScreen(id: SplitTransaction.ID) -> some View {
+        Text("Transaction Detail Screen Stub\nID = \(id)")
     }
 }

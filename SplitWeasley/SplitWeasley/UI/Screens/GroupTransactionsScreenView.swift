@@ -15,16 +15,19 @@ struct GroupTransactionsScreenView: View {
     private let currentUser: Person.ID
     // Actions
     private let onTapOfAdd: (() -> Void)?
+    private let onTapOfDetail: ((SplitTransaction.ID) -> Void)?
 
     init(
         balances: [MonetaryAmount],
         transactions: [SplitTransaction],
         currentUser: Person.ID,
-        onTapOfAdd: (() -> Void)? = nil
+        onTapOfAdd: (() -> Void)? = nil,
+        onTapOfDetail: ((SplitTransaction.ID) -> Void)? = nil
     ) {
         self._balances = .init(initialValue: balances)
         self.currentUser = currentUser
         self.onTapOfAdd = onTapOfAdd
+        self.onTapOfDetail = onTapOfDetail
         // Populates groupings
         var res = [Date: [SplitTransaction]]()
         // Groups into a dictionary, one array per a day
@@ -43,6 +46,7 @@ struct GroupTransactionsScreenView: View {
         ScrollableLazyVStack {
             // Summary
             GroupSummaryOverlayView(balances: balances)
+                .padding(.horizontal)
                 .padding(.vertical, 6)
             // Transactions
             ForEach(groupings.sorted(by: { $0.key >= $1.key }), id: \.key) { (date, transactions) in
@@ -53,7 +57,6 @@ struct GroupTransactionsScreenView: View {
                 })
             }
         }
-        .padding(.horizontal)
         // Navigation
         .navigationTitle("Trip to Turkey")
         .toolbar { addToolbarButton }
@@ -80,16 +83,18 @@ struct GroupTransactionsScreenView: View {
             total: transaction.total,
             balance: transaction.balance(of: currentUser),
             paidBy: paidByDescriptor,
-            currentUserSplitShare: splitShare
+            currentUserSplitShare: splitShare,
+            onTap: { onTapOfDetail?(transaction.id) }
         )
         .frame(height: 50)
+        .padding(.horizontal)
         .padding(.top, 12)
         .eraseToAnyView()
     }
 
     private func header(for date: Date) -> some View {
         let dateFormatted = date.formatted(.dateTime.weekday(.wide).day().month())
-        
+
         return Text(dateFormatted.uppercased())
             .font(.subheadline)
             .foregroundColor(Color(uiColor: .systemGray))
