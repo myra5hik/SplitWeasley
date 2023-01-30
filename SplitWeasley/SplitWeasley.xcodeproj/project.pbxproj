@@ -40,6 +40,9 @@
 		B6D1E904293917E20040BA37 /* UnequalSharesSplitStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D1E903293917E20040BA37 /* UnequalSharesSplitStrategy.swift */; };
 		B6D1E90829394AEE0040BA37 /* UnequalSharesSplitMembersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D1E90729394AEE0040BA37 /* UnequalSharesSplitMembersListView.swift */; };
 		B6D4285B29816293009DE040 /* ScrollableLazyVStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D4285A29816293009DE040 /* ScrollableLazyVStack.swift */; };
+		B6D4285E2988651A009DE040 /* CategoryIconFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D4285D2988651A009DE040 /* CategoryIconFactory.swift */; };
+		B6D42860298869B5009DE040 /* FactoryProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D4285F298869B5009DE040 /* FactoryProtocols.swift */; };
+		B6D4286229886AD9009DE040 /* CurrencyIconFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D4286129886AD9009DE040 /* CurrencyIconFactory.swift */; };
 		B6D994B12979D9DE00EEB236 /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D994B02979D9DE00EEB236 /* TransactionCell.swift */; };
 		B6DB2DD329785299004E2B60 /* GroupTransactionsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DB2DD229785299004E2B60 /* GroupTransactionsScreenView.swift */; };
 		B6DB2DD529785574004E2B60 /* GroupSummaryOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DB2DD429785574004E2B60 /* GroupSummaryOverlayView.swift */; };
@@ -81,6 +84,9 @@
 		B6D1E903293917E20040BA37 /* UnequalSharesSplitStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnequalSharesSplitStrategy.swift; sourceTree = "<group>"; };
 		B6D1E90729394AEE0040BA37 /* UnequalSharesSplitMembersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnequalSharesSplitMembersListView.swift; sourceTree = "<group>"; };
 		B6D4285A29816293009DE040 /* ScrollableLazyVStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableLazyVStack.swift; sourceTree = "<group>"; };
+		B6D4285D2988651A009DE040 /* CategoryIconFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryIconFactory.swift; sourceTree = "<group>"; };
+		B6D4285F298869B5009DE040 /* FactoryProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactoryProtocols.swift; sourceTree = "<group>"; };
+		B6D4286129886AD9009DE040 /* CurrencyIconFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyIconFactory.swift; sourceTree = "<group>"; };
 		B6D994B02979D9DE00EEB236 /* TransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
 		B6DB2DD229785299004E2B60 /* GroupTransactionsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTransactionsScreenView.swift; sourceTree = "<group>"; };
 		B6DB2DD429785574004E2B60 /* GroupSummaryOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSummaryOverlayView.swift; sourceTree = "<group>"; };
@@ -173,6 +179,7 @@
 				B67DE96C29258552008C6400 /* Screens */,
 				B67DE96D29258575008C6400 /* Components */,
 				B67DE981292ADFE0008C6400 /* Elements */,
+				B6D4285C2988636C009DE040 /* Factories */,
 				B67DE98A292D7755008C6400 /* Helpers */,
 			);
 			path = UI;
@@ -270,6 +277,16 @@
 			path = SplitMembersLists;
 			sourceTree = "<group>";
 		};
+		B6D4285C2988636C009DE040 /* Factories */ = {
+			isa = PBXGroup;
+			children = (
+				B6D4285F298869B5009DE040 /* FactoryProtocols.swift */,
+				B6D4285D2988651A009DE040 /* CategoryIconFactory.swift */,
+				B6D4286129886AD9009DE040 /* CurrencyIconFactory.swift */,
+			);
+			path = Factories;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -359,14 +376,17 @@
 				B63747CF292E733700A50615 /* EqualSharesSplitStrategy.swift in Sources */,
 				B67DE96B2925852B008C6400 /* AddTransactionScreenView.swift in Sources */,
 				B6D4285B29816293009DE040 /* ScrollableLazyVStack.swift in Sources */,
+				B6D4285E2988651A009DE040 /* CategoryIconFactory.swift in Sources */,
 				B67ABB3929365A8400E8BC62 /* PercentageSplitStrategy.swift in Sources */,
 				B6B0C2DB293E4CA7006EF2B6 /* TransactionCategorySelectionList.swift in Sources */,
+				B6D4286229886AD9009DE040 /* CurrencyIconFactory.swift in Sources */,
 				B67DE97C2927EBDC008C6400 /* Currency.swift in Sources */,
 				B6E68916293BF0DE008F0E77 /* TransactionCategory.swift in Sources */,
 				B6D1E904293917E20040BA37 /* UnequalSharesSplitStrategy.swift in Sources */,
 				B6D1E90829394AEE0040BA37 /* UnequalSharesSplitMembersListView.swift in Sources */,
 				B60A23AD29654D2B00A703B3 /* Router.swift in Sources */,
 				B6DB2DD329785299004E2B60 /* GroupTransactionsScreenView.swift in Sources */,
+				B6D42860298869B5009DE040 /* FactoryProtocols.swift in Sources */,
 				B68B8415296C5E5C00E4C3FA /* View+Erasure.swift in Sources */,
 				B6D1E8FE293906760040BA37 /* EqualSharesSplitMembersListView.swift in Sources */,
 				B68B841329672DF900E4C3FA /* GroupTransactionsModule.swift in Sources */,
