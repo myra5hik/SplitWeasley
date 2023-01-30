@@ -11,6 +11,8 @@ enum TransactionCategory: String, CaseIterable, Hashable, Identifiable, Codable 
     // Identifiable conformance
     var id: String { self.rawValue }
 
+    // Undefined
+    case undefined
     // Entertainment
     case games
     case movies
@@ -41,11 +43,29 @@ enum TransactionCategory: String, CaseIterable, Hashable, Identifiable, Codable 
     case medicalExpenses
     case taxes
     case otherLife
-    // Undefined
-    case undefined
+    // Transportation
+    case bicycle
+    case busOrTrain
+    case car
+    case gasOrFuel
+    case hotel
+    case parking
+    case plane
+    case taxi
+    case otherTransportation
+    // Utilities
+    case cleaning
+    case electricity
+    case heatOrGas
+    case trash
+    case televisionOrPhoneOrInternet
+    case otherUtilities
 
     var grouping: Grouping {
         switch self {
+        // Undefined
+        case .undefined:
+            return .undefined
         // Entertainment
         case .games, .movies, .music, .sports, .otherEntertainment:
             return .entertainment
@@ -55,16 +75,22 @@ enum TransactionCategory: String, CaseIterable, Hashable, Identifiable, Codable 
         // Home
         case .electronics, .furniture, .householdSupplies, .maintenance, .mortgage, .pets, .rent, .services, .otherHome:
             return .home
-        // Undefined
-        case .undefined:
-            return .undefined
+        // Life
         case .childcare, .clothing, .education, .gifts, .insurance, .medicalExpenses, .taxes, .otherLife:
             return .life
+        // Transportation
+        case .bicycle, .busOrTrain, .car, .gasOrFuel, .hotel, .parking, .plane, .taxi, .otherTransportation:
+            return .transportation
+        // Utilities
+        case .cleaning, .electricity, .heatOrGas, .trash, .televisionOrPhoneOrInternet, .otherUtilities:
+            return .utilities
         }
     }
 
     var icon: Image {
         switch self {
+        // Undefined
+        case .undefined: return Self.otherIcon
         // Entertainment
         case .games: return Image(systemName: "gamecontroller.fill")
         case .movies: return Image(systemName: "popcorn.fill")
@@ -95,8 +121,23 @@ enum TransactionCategory: String, CaseIterable, Hashable, Identifiable, Codable 
         case .medicalExpenses: return Image(systemName: "medical.thermometer.fill")
         case .taxes: return Image(systemName: "building.columns.fill")
         case .otherLife: return Image(systemName: "heart.fill")
-        // Undefined
-        case .undefined: return Self.otherIcon
+        // Transportation
+        case .bicycle: return Image(systemName: "bicycle")
+        case .busOrTrain: return Image(systemName: "train.side.front.car")
+        case .car: return Image(systemName: "car.fill")
+        case .gasOrFuel: return Image(systemName: "fuelpump.fill")
+        case .hotel: return Image(systemName: "building.2.fill")
+        case .parking: return Image(systemName: "parkingsign.circle.fill")
+        case .plane: return Image(systemName: "airplane")
+        case .taxi: return Image(systemName: "t.circle.fill")
+        case .otherTransportation: return Image(systemName: "arrow.left.arrow.right")
+        // Utilities
+        case .cleaning: return Image(systemName: "bubbles.and.sparkles.fill")
+        case .electricity: return Image(systemName: "bolt.fill")
+        case .heatOrGas: return Image(systemName: "flame")
+        case .trash: return Image(systemName: "trash")
+        case .televisionOrPhoneOrInternet: return Image(systemName: "wifi")
+        case .otherUtilities: return Image(systemName: "lightbulb.2.fill")
         }
     }
 
@@ -120,10 +161,19 @@ enum TransactionCategory: String, CaseIterable, Hashable, Identifiable, Codable 
         var res = [""]
         for c in caseString {
             if c.isUppercase { res.append("") }
-            res[res.endIndex - 1].append(String(c))
+            res[res.endIndex - 1].append(String(c).lowercased())
+        }
+        // Makes strings capitalized
+        for i in res.indices {
+            let str = res[i]
+            if str == "and" || str == "or" {
+                res[i] = res[i].lowercased()
+            } else {
+                res[i] = res[i].capitalized
+            }
         }
 
-        return String(res.map({ $0.capitalized }).joined(separator: " "))
+        return res.joined(separator: " ")
     }
 }
 
@@ -138,6 +188,8 @@ extension TransactionCategory {
         case food
         case home
         case life
+        case transportation
+        case utilities
 
         var color: Color {
             switch self {
@@ -146,6 +198,8 @@ extension TransactionCategory {
             case .food: return Color(uiColor: .systemGreen).opacity(0.75)
             case .home: return Color(uiColor: .systemYellow).opacity(0.75)
             case .life: return Color(uiColor: .systemOrange).opacity(0.75)
+            case .transportation: return Color(uiColor: .systemPink).opacity(0.75)
+            case .utilities: return Color(uiColor: .systemBlue).opacity(0.75)
             }
         }
     }
