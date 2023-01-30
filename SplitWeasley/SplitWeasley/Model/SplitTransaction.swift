@@ -136,8 +136,8 @@ extension SplitTransaction {
                 total: total,
                 paidBy: [currentUser.id: total],
                 splits: [currentUser.id: half, secondUser.id: half],
-                description: "Plane tickets NAP-IST",
-                category: .allCases.randomElement() ?? .undefined,
+                description: "Jazz Club Tickets",
+                category: .music,
                 dateAdded: now,
                 datePerformed: now
             ),
@@ -147,8 +147,8 @@ extension SplitTransaction {
                 total: total,
                 paidBy: [currentUser.id: total],
                 splits: [currentUser.id: third, secondUser.id: third, thirdUser.id: third],
-                description: "Plane tickets NAP-IST",
-                category: .allCases.randomElement() ?? .undefined,
+                description: "Lunch in the city center",
+                category: .diningOut,
                 dateAdded: nowMinusHour,
                 datePerformed: nowMinusHour
             ),
@@ -158,8 +158,8 @@ extension SplitTransaction {
                 total: total,
                 paidBy: [currentUser.id: total],
                 splits: [secondUser.id: half, thirdUser.id: half],
-                description: "Plane tickets NAP-IST",
-                category: .allCases.randomElement() ?? .undefined,
+                description: "SIM Cards",
+                category: .televisionOrPhoneOrInternet,
                 dateAdded: nowMinusTwoHours,
                 datePerformed: nowMinusTwoHours
             ),
@@ -169,10 +169,20 @@ extension SplitTransaction {
                 total: total,
                 paidBy: [secondUser.id: total],
                 splits: [currentUser.id: half, thirdUser.id: half],
-                description: "Plane tickets NAP-IST",
-                category: .allCases.randomElement() ?? .undefined,
+                description: "Taxi from the airport",
+                category: .taxi,
                 dateAdded: yesterday,
                 datePerformed: yesterday
+            ),
+            SplitTransaction(
+                group: group,
+                total: total,
+                paidBy: [secondUser.id: total],
+                splits: [currentUser.id: half, thirdUser.id: half],
+                description: "Snacks in the airport",
+                category: .diningOut,
+                dateAdded: yesterdayMinusHour,
+                datePerformed: yesterdayMinusHour
             ),
             // Current user not involved
             SplitTransaction(
@@ -180,78 +190,11 @@ extension SplitTransaction {
                 total: total,
                 paidBy: [secondUser.id: total],
                 splits: [secondUser.id: half, thirdUser.id: half],
-                description: "Plane tickets NAP-IST",
-                category: .allCases.randomElement() ?? .undefined,
-                dateAdded: yesterdayMinusHour,
-                datePerformed: yesterdayMinusHour
-            ),
-            // Paid by multiple people
-            SplitTransaction(
-                group: group,
-                total: total,
-                paidBy: [currentUser.id: half, secondUser.id: half],
-                splits: [currentUser.id: third, secondUser.id: third, thirdUser.id: third],
-                description: "Plane tickets NAP-IST",
-                category: .allCases.randomElement() ?? .undefined,
+                description: "Hotel 'The White Lotus'",
+                category: .hotel,
                 dateAdded: dayBeforeYesterday,
                 datePerformed: dayBeforeYesterday
             ),
-            // Repeated
-            // Paid by current user and split for two
-            SplitTransaction(
-                group: group,
-                total: total,
-                paidBy: [currentUser.id: total],
-                splits: [currentUser.id: half, secondUser.id: half],
-                description: "Plane tickets NAP-IST",
-                category: .allCases.randomElement() ?? .undefined,
-                dateAdded: now,
-                datePerformed: now
-            ),
-            // Paid by current user and split for two
-            SplitTransaction(
-                group: group,
-                total: total,
-                paidBy: [currentUser.id: total],
-                splits: [currentUser.id: third, secondUser.id: third, thirdUser.id: third],
-                description: "Plane tickets NAP-IST",
-                category: .allCases.randomElement() ?? .undefined,
-                dateAdded: nowMinusHour,
-                datePerformed: nowMinusHour
-            ),
-            // Paid by current user and split for other users
-            SplitTransaction(
-                group: group,
-                total: total,
-                paidBy: [currentUser.id: total],
-                splits: [secondUser.id: half, thirdUser.id: half],
-                description: "Plane tickets NAP-IST",
-                category: .allCases.randomElement() ?? .undefined,
-                dateAdded: nowMinusTwoHours,
-                datePerformed: nowMinusTwoHours
-            ),
-            // Paid by someone else and split incl. current user
-            SplitTransaction(
-                group: group,
-                total: total,
-                paidBy: [secondUser.id: total],
-                splits: [currentUser.id: half, thirdUser.id: half],
-                description: "Plane tickets NAP-IST",
-                category: .allCases.randomElement() ?? .undefined,
-                dateAdded: yesterday,
-                datePerformed: yesterday
-            ),
-            // Current user not involved
-            SplitTransaction(
-                group: group,
-                total: total,
-                paidBy: [secondUser.id: total],
-                splits: [secondUser.id: half, thirdUser.id: half],
-                description: "Plane tickets NAP-IST",
-                category: .allCases.randomElement() ?? .undefined,
-                dateAdded: yesterdayMinusHour,
-                datePerformed: yesterdayMinusHour
-            ),
             // Paid by multiple people
             SplitTransaction(
                 group: group,
@@ -259,7 +202,7 @@ extension SplitTransaction {
                 paidBy: [currentUser.id: half, secondUser.id: half],
                 splits: [currentUser.id: third, secondUser.id: third, thirdUser.id: third],
                 description: "Plane tickets NAP-IST",
-                category: .allCases.randomElement() ?? .undefined,
+                category: .plane,
                 dateAdded: dayBeforeYesterday,
                 datePerformed: dayBeforeYesterday
             )
