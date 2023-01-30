@@ -43,6 +43,7 @@
 		B6D4285E2988651A009DE040 /* CategoryIconFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D4285D2988651A009DE040 /* CategoryIconFactory.swift */; };
 		B6D42860298869B5009DE040 /* FactoryProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D4285F298869B5009DE040 /* FactoryProtocols.swift */; };
 		B6D4286229886AD9009DE040 /* CurrencyIconFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D4286129886AD9009DE040 /* CurrencyIconFactory.swift */; };
+		B6D42864298874DF009DE040 /* AppIcon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6D42863298874DF009DE040 /* AppIcon.xcassets */; };
 		B6D994B12979D9DE00EEB236 /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D994B02979D9DE00EEB236 /* TransactionCell.swift */; };
 		B6DB2DD329785299004E2B60 /* GroupTransactionsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DB2DD229785299004E2B60 /* GroupTransactionsScreenView.swift */; };
 		B6DB2DD529785574004E2B60 /* GroupSummaryOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DB2DD429785574004E2B60 /* GroupSummaryOverlayView.swift */; };
@@ -87,6 +88,7 @@
 		B6D4285D2988651A009DE040 /* CategoryIconFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryIconFactory.swift; sourceTree = "<group>"; };
 		B6D4285F298869B5009DE040 /* FactoryProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactoryProtocols.swift; sourceTree = "<group>"; };
 		B6D4286129886AD9009DE040 /* CurrencyIconFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyIconFactory.swift; sourceTree = "<group>"; };
+		B6D42863298874DF009DE040 /* AppIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = AppIcon.xcassets; path = "../../../../../Downloads/AppIcons-2/AppIcon.xcassets"; sourceTree = "<group>"; };
 		B6D994B02979D9DE00EEB236 /* TransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
 		B6DB2DD229785299004E2B60 /* GroupTransactionsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTransactionsScreenView.swift; sourceTree = "<group>"; };
 		B6DB2DD429785574004E2B60 /* GroupSummaryOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSummaryOverlayView.swift; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 		B67DE965292584DB008C6400 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B6D42863298874DF009DE040 /* AppIcon.xcassets */,
 				B67DE95B292583F1008C6400 /* Assets.xcassets */,
 			);
 			path = Resources;
@@ -346,6 +349,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B67DE95F292583F1008C6400 /* Preview Assets.xcassets in Resources */,
+				B6D42864298874DF009DE040 /* AppIcon.xcassets in Resources */,
 				B67DE95C292583F1008C6400 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -526,6 +530,8 @@
 				DEVELOPMENT_TEAM = V4YFFJ2V7Y;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = SplitWeasley;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -558,6 +564,8 @@
 				DEVELOPMENT_TEAM = V4YFFJ2V7Y;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = SplitWeasley;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
