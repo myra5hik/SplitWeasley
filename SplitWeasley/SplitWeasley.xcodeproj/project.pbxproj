@@ -42,6 +42,7 @@
 		B6D4285B29816293009DE040 /* ScrollableLazyVStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D4285A29816293009DE040 /* ScrollableLazyVStack.swift */; };
 		B6D4285E2988651A009DE040 /* CategoryIconFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D4285D2988651A009DE040 /* CategoryIconFactory.swift */; };
 		B6D42860298869B5009DE040 /* FactoryProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D4285F298869B5009DE040 /* FactoryProtocols.swift */; };
+		B6D4286229886AD9009DE040 /* CurrencyIconFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D4286129886AD9009DE040 /* CurrencyIconFactory.swift */; };
 		B6D994B12979D9DE00EEB236 /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D994B02979D9DE00EEB236 /* TransactionCell.swift */; };
 		B6DB2DD329785299004E2B60 /* GroupTransactionsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DB2DD229785299004E2B60 /* GroupTransactionsScreenView.swift */; };
 		B6DB2DD529785574004E2B60 /* GroupSummaryOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DB2DD429785574004E2B60 /* GroupSummaryOverlayView.swift */; };
@@ -85,6 +86,7 @@
 		B6D4285A29816293009DE040 /* ScrollableLazyVStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableLazyVStack.swift; sourceTree = "<group>"; };
 		B6D4285D2988651A009DE040 /* CategoryIconFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryIconFactory.swift; sourceTree = "<group>"; };
 		B6D4285F298869B5009DE040 /* FactoryProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactoryProtocols.swift; sourceTree = "<group>"; };
+		B6D4286129886AD9009DE040 /* CurrencyIconFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyIconFactory.swift; sourceTree = "<group>"; };
 		B6D994B02979D9DE00EEB236 /* TransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
 		B6DB2DD229785299004E2B60 /* GroupTransactionsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTransactionsScreenView.swift; sourceTree = "<group>"; };
 		B6DB2DD429785574004E2B60 /* GroupSummaryOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSummaryOverlayView.swift; sourceTree = "<group>"; };
@@ -280,6 +282,7 @@
 			children = (
 				B6D4285F298869B5009DE040 /* FactoryProtocols.swift */,
 				B6D4285D2988651A009DE040 /* CategoryIconFactory.swift */,
+				B6D4286129886AD9009DE040 /* CurrencyIconFactory.swift */,
 			);
 			path = Factories;
 			sourceTree = "<group>";
@@ -376,6 +379,7 @@
 				B6D4285E2988651A009DE040 /* CategoryIconFactory.swift in Sources */,
 				B67ABB3929365A8400E8BC62 /* PercentageSplitStrategy.swift in Sources */,
 				B6B0C2DB293E4CA7006EF2B6 /* TransactionCategorySelectionList.swift in Sources */,
+				B6D4286229886AD9009DE040 /* CurrencyIconFactory.swift in Sources */,
 				B67DE97C2927EBDC008C6400 /* Currency.swift in Sources */,
 				B6E68916293BF0DE008F0E77 /* TransactionCategory.swift in Sources */,
 				B6D1E904293917E20040BA37 /* UnequalSharesSplitStrategy.swift in Sources */,

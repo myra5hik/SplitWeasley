@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum Currency: Hashable, CaseIterable {
+enum Currency: String, Hashable, CaseIterable {
     case usd
     case eur
     case jpy
@@ -30,7 +30,7 @@ enum Currency: Hashable, CaseIterable {
 // MARK: - Identifiable
 
 extension Currency: Identifiable {
-    var id: Self { self }
+    var id: String { self.rawValue }
 }
 
 // MARK: - Codes
@@ -94,29 +94,8 @@ extension Currency {
     }
 }
 
+// MARK: - IIconDescribable Conformance
 
-// MARK: - Icons
-
-extension Currency {
-    var iconString: String {
-        switch self {
-        case .usd: return "dollarsign"
-        case .eur: return "eurosign"
-        case .jpy: return "yensign"
-        case .gbp: return "sterlingsign"
-        case .cny: return "yensign"
-        case .aud: return "australsign"
-        case .cad: return "dollarsign"
-        case .chf: return "francsign"
-        case .hkd: return "dollarsign"
-        case .sgd: return "dollarsign"
-        case .rub: return "rublesign"
-        case .brl: return "brazilianrealsign"
-        case .inr: return "indianrupeesign"
-        case .krw: return "wonsign"
-        case .mxn: return "pesosign"
-        case .uah: return "hryvniasign"
-        case .btc: return "bitcoinsign"
-        }
-    }
+extension Currency: IIconDescribable {
+    static let iconFactory = CurrencyIconFactory()
 }

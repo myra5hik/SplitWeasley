@@ -108,7 +108,7 @@ private extension AddTransactionScreenView {
 
     var amountInputRowView: some View {
         let currencyButton = RoundButton(bodyFill: .white) {
-            Image(systemName: vm.amount.currency.iconString)
+            vm.amount.currency.icon
                 .font(.title)
                 .fontWeight(.medium)
         }
@@ -121,7 +121,7 @@ private extension AddTransactionScreenView {
                     guard let vm = vm else { return }
                     vm.amount = vm.amount.with(currency: currency)
                 },
-                label: { Label(currency.name, systemImage: currency.iconString) }
+                label: { Label(title: { Text(currency.name) }, icon: { currency.icon }) }
             )
         }
 
