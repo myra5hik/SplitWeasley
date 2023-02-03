@@ -14,6 +14,7 @@ protocol ITransactionsService {
 
     func subscribe(to: SplitGroup.ID) -> ObservableBox
     func add(transaction: SplitTransaction)
+    func remove(transaction: SplitTransaction)
 }
 
 // MARK: - TransactionsService implementation
@@ -54,19 +55,28 @@ extension TransactionsService: ITransactionsService {
     func add(transaction: SplitTransaction) {
         let groupId = transaction.group.id
         transactions[groupId]?.append(transaction)
-        if let subscription = subscriptions[groupId] {
-            update(box: subscription.capture, with: transactions[groupId] ?? [])
-        }
-        sanitizeSubscriptions()
+        updateIfNeeded(groupId)
+    }
+
+    func remove(transaction: SplitTransaction) {
+        let groupId = transaction.group.id
+        guard let i = transactions[groupId]?.firstIndex(where: { $0.id == transaction.id }) else { return }
+        transactions[groupId]?.remove(at: i)
+        updateIfNeeded(groupId)
     }
 }
 
-// MARK: - Data Transformations
+// MARK: - Subscribers' updates
 
 private extension TransactionsService {
-    func update(box: ObservableTransactionsBox?, with transactions: [SplitTransaction]) {
-        guard let box = box else { return }
+    func updateIfNeeded(_ groupId: SplitGroup.ID) {
+        sanitizeSubscriptions()
+        guard let box = subscriptions[groupId]?.capture else { return }
+        let transactions = transactions[groupId] ?? []
+        update(box: box, with: transactions)
+    }
 
+    func update(box: ObservableTransactionsBox, with transactions: [SplitTransaction]) {
         Task(priority: .userInitiated) { [weak self] in
             guard let groupings = await self?.calculateGroupings(transactions) else { return }
             guard let balances = await self?.calculateBalances(transactions) else { return }
@@ -78,7 +88,11 @@ private extension TransactionsService {
             }
         }
     }
+}
 
+// MARK: - Data Transformations
+
+private extension TransactionsService {
     func calculateGroupings(_ transactions: [SplitTransaction]) async -> [Date: [SplitTransaction]] {
         var res = [Date: [SplitTransaction]]()
         // Groups into a dictionary, one array per a day
@@ -132,6 +146,7 @@ final class StubTransactionsService: ITransactionsService {
     }
 
     func add(transaction: SplitTransaction) { }
+    func remove(transaction: SplitTransaction) { }
 }
 
 // MARK: - ObservableTransactionsBox
