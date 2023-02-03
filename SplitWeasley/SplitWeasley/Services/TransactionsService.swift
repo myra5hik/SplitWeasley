@@ -68,12 +68,20 @@ extension TransactionsService: ITransactionsService {
 private extension TransactionsService {
     func update(box: ObservableTransactionsBox?, with transactions: [SplitTransaction]) {
         guard let box = box else { return }
-        box.transactions = transactions
-        box.groupings = calculateGroupings(transactions)
-        box.balances = calculateBalances(transactions)
+
+        Task(priority: .userInitiated) { [weak self] in
+            guard let groupings = await self?.calculateGroupings(transactions) else { return }
+            guard let balances = await self?.calculateBalances(transactions) else { return }
+
+            DispatchQueue.main.async {
+                box.transactions = transactions
+                box.groupings = groupings
+                box.balances = balances
+            }
+        }
     }
 
-    func calculateGroupings(_ transactions: [SplitTransaction]) -> [Date: [SplitTransaction]] {
+    func calculateGroupings(_ transactions: [SplitTransaction]) async -> [Date: [SplitTransaction]] {
         var res = [Date: [SplitTransaction]]()
         // Groups into a dictionary, one array per a day
         for transaction in transactions {
@@ -87,7 +95,7 @@ private extension TransactionsService {
         return res
     }
 
-    func calculateBalances(_ transactions: [SplitTransaction]) -> [Person.ID: [MonetaryAmount]] {
+    func calculateBalances(_ transactions: [SplitTransaction]) async -> [Person.ID: [MonetaryAmount]] {
         var res = [Person.ID: [Currency: MonetaryAmount]]()
 
         for transaction in transactions {
