@@ -7,8 +7,6 @@
 
 import Foundation
 
-// TODO: Move to background queue
-
 // MARK: - ITransactionsService Protocol
 
 protocol ITransactionsService {
