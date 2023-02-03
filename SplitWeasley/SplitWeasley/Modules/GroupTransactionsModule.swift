@@ -24,6 +24,7 @@ final class GroupTransactionsModule: IGroupTransactionsModule {
     var rootView: AnyView { presentingView.eraseToAnyView() }
     // Private
     private var addTransactionScreenViewModel: AddTransactionScreenViewModel
+    private let service = TransactionsService()
     private let router = R()
     private var presentingView: PresentingView<R, GroupTransactionsModule>!
     // Data
@@ -72,8 +73,8 @@ extension GroupTransactionsModule: IScreenFactory {
 
     private func makeTransactionListScreen() -> some View {
         return GroupTransactionsScreenView(
-            balances: [MonetaryAmount(currency: .eur, amount: 123.45)],
-            transactions: SplitTransaction.stub,
+            group: SplitGroup.stub,
+            transactionsService: service,
             currentUser: SplitGroup.stub.members[0].id,
             onTapOfAdd: { [weak self, group] in
                 guard let self = self else { return }

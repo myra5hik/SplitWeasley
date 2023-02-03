@@ -7,49 +7,38 @@
 
 import SwiftUI
 
-struct GroupTransactionsScreenView: View {
+struct GroupTransactionsScreenView<S: ITransactionsService>: View {
     // Data
-    @State private var balances: [MonetaryAmount]
-    @State private var groupings: [Date: [SplitTransaction]]
+    @ObservedObject private var subscription: S.ObservableBox
     // Dependencies
+    private let service: S
     private let currentUser: Person.ID
     // Actions
     private let onTapOfAdd: (() -> Void)?
     private let onTapOfDetail: ((SplitTransaction.ID) -> Void)?
 
     init(
-        balances: [MonetaryAmount],
-        transactions: [SplitTransaction],
+        group: SplitGroup,
+        transactionsService: S,
         currentUser: Person.ID,
         onTapOfAdd: (() -> Void)? = nil,
         onTapOfDetail: ((SplitTransaction.ID) -> Void)? = nil
     ) {
-        self._balances = .init(initialValue: balances)
+        self.service = transactionsService
+        self.subscription = service.subscribe(to: group.id)
         self.currentUser = currentUser
         self.onTapOfAdd = onTapOfAdd
         self.onTapOfDetail = onTapOfDetail
-        // Populates groupings
-        var res = [Date: [SplitTransaction]]()
-        // Groups into a dictionary, one array per a day
-        for transaction in transactions {
-            let roundedDate = Calendar.current.startOfDay(for: transaction.datePerformed)
-            res[roundedDate, default: []].append(transaction)
-        }
-        // Sorts transactions latest to top
-        for (key, array) in res {
-            res[key] = array.sorted(by: { $0.datePerformed >= $1.datePerformed })
-        }
-        self._groupings = .init(initialValue: res)
     }
 
     var body: some View {
         ScrollableLazyVStack {
             // Summary
-            GroupSummaryOverlayView(balances: balances)
+            GroupSummaryOverlayView(balances: subscription.balances[currentUser] ?? [])
                 .padding(.horizontal)
                 .padding(.vertical, 6)
             // Transactions
-            ForEach(groupings.sorted(by: { $0.key >= $1.key }), id: \.key) { (date, transactions) in
+            ForEach(subscription.groupings.sorted(by: { $0.key >= $1.key }), id: \.key) { (date, transactions) in
                 Section(content: {
                     ForEach(transactions) { cell(for: $0) }
                 }, header: {
@@ -134,10 +123,8 @@ struct GroupTransactionsScreenView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             GroupTransactionsScreenView(
-                balances: [
-                    .init(currency: .eur, amount: 102.12)
-                ],
-                transactions: SplitTransaction.stub,
+                group: SplitGroup.stub,
+                transactionsService: StubTransactionsService(),
                 currentUser: SplitGroup.stub.members[0].id
             )
         }
