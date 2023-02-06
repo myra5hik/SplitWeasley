@@ -20,11 +20,13 @@ protocol IGroupTransactionsModule {
 ///
 final class GroupTransactionsModule: IGroupTransactionsModule {
     private typealias R = Router<RoutingDestination>
+    private typealias VM = AddTransactionScreenViewModel<TransactionsService, StubUserService>
     // Public
     var rootView: AnyView { presentingView.eraseToAnyView() }
     // Private
-    private var addTransactionScreenViewModel: AddTransactionScreenViewModel<TransactionsService>
-    private let service = TransactionsService()
+    private var addTransactionScreenViewModel: VM
+    private let transactionsService = TransactionsService()
+    private let userService = StubUserService()
     private let router = R()
     private var presentingView: PresentingView<R, GroupTransactionsModule>!
     // Data
@@ -34,8 +36,8 @@ final class GroupTransactionsModule: IGroupTransactionsModule {
         self.group = group
         self.addTransactionScreenViewModel = AddTransactionScreenViewModel(
             group: group,
-            currentUser: group.members[0].id,
-            transactionService: service
+            transactionService: transactionsService,
+            userService: userService
         )
         self.presentingView = PresentingView(router: router, factory: self, root: .transactionList)
     }
@@ -78,15 +80,15 @@ extension GroupTransactionsModule: IScreenFactory {
     private func makeTransactionListScreen() -> some View {
         return GroupTransactionsScreenView(
             group: group,
-            transactionsService: service,
-            currentUser: SplitGroup.stub.members[0].id,
+            transactionsService: transactionsService,
+            userService: userService,
             onTapOfAdd: { [weak self, group] in
                 guard let self = self else { return }
                 // Resets the view model to an empty one
                 self.addTransactionScreenViewModel = AddTransactionScreenViewModel(
                     group: group,
-                    currentUser: group.members[0].id,
-                    transactionService: self.service
+                    transactionService: self.transactionsService,
+                    userService: self.userService
                 )
                 self.router.push(.addTransactionScreen)
             },

@@ -147,7 +147,7 @@ private extension AddTransactionScreenView {
         let action = { vm.saveTransaction(); router.pop() }
         let button = Button("Save", action: action).fontWeight(.semibold)
             .disabled(!vm.isLogicallyConsistent)
-        
+
         return button
     }
 }
@@ -167,7 +167,7 @@ protocol IAddTransactionScreenViewModel: ObservableObject {
     func saveTransaction()
 }
 
-final class AddTransactionScreenViewModel<TS: ITransactionsService>: ObservableObject {
+final class AddTransactionScreenViewModel<TS: ITransactionsService, US: IUserService>: ObservableObject {
     // Data
     @Published var date = Date()
     @Published var transactionCategory: TransactionCategory = .undefined
@@ -179,17 +179,18 @@ final class AddTransactionScreenViewModel<TS: ITransactionsService>: ObservableO
         splitGroup: SplitGroup.stub,
         total: MonetaryAmount(currency: .eur)
     )
+    private var currentUser: Person.ID { userService.currentUser.id }
     // Dependencies
-    private let service: TS
-    private let currentUser: Person.ID
+    private let transactionsService: TS
+    private let userService: US
 
-    init(group: SplitGroup, currentUser: Person.ID, transactionService: TS) {
+    init(group: SplitGroup, transactionService: TS, userService: US) {
         self._splitStrategy = .init(wrappedValue: EqualSharesSplitStrategy(
             splitGroup: group,
             total: MonetaryAmount(currency: .eur))
         )
-        self.currentUser = currentUser
-        self.service = transactionService
+        self.transactionsService = transactionService
+        self.userService = userService
     }
 }
 
@@ -201,7 +202,7 @@ extension AddTransactionScreenViewModel: IAddTransactionScreenViewModel {
     func saveTransaction() {
         let transaction = makeTransaction()
         guard transaction.isLogicallyConsistent else { return }
-        service.add(transaction: transaction)
+        transactionsService.add(transaction: transaction)
     }
 }
 
@@ -226,8 +227,8 @@ struct TransactionScreenView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = AddTransactionScreenViewModel(
             group: .stub,
-            currentUser: UUID(),
-            transactionService: StubTransactionsService()
+            transactionService: StubTransactionsService(),
+            userService: StubUserService()
         )
         let router = StubRouter<GroupTransactionsModule.RD>()
         return AddTransactionScreenView(vm: vm, router: router)

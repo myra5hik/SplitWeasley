@@ -7,26 +7,27 @@
 
 import SwiftUI
 
-struct GroupTransactionsScreenView<S: ITransactionsService>: View {
+struct GroupTransactionsScreenView<TS: ITransactionsService, US: IUserService>: View {
     // Data
-    @ObservedObject private var subscription: S.ObservableBox
+    @ObservedObject private var subscription: TS.ObservableBox
+    private var currentUser: Person.ID { userService.currentUser.id }
     // Dependencies
-    private let service: S
-    private let currentUser: Person.ID
+    private let transactionService: TS
+    private let userService: US
     // Actions
     private let onTapOfAdd: (() -> Void)?
     private let onTapOfDetail: ((SplitTransaction.ID) -> Void)?
 
     init(
         group: SplitGroup,
-        transactionsService: S,
-        currentUser: Person.ID,
+        transactionsService: TS,
+        userService: US,
         onTapOfAdd: (() -> Void)? = nil,
         onTapOfDetail: ((SplitTransaction.ID) -> Void)? = nil
     ) {
-        self.service = transactionsService
-        self.subscription = service.subscribe(to: group.id)
-        self.currentUser = currentUser
+        self.transactionService = transactionsService
+        self.subscription = transactionService.subscribe(to: group.id)
+        self.userService = userService
         self.onTapOfAdd = onTapOfAdd
         self.onTapOfDetail = onTapOfDetail
     }
@@ -125,7 +126,7 @@ struct GroupTransactionsScreenView_Previews: PreviewProvider {
             GroupTransactionsScreenView(
                 group: SplitGroup.stub,
                 transactionsService: StubTransactionsService(),
-                currentUser: SplitGroup.stub.members[0].id
+                userService: StubUserService()
             )
         }
     }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B60674EA29919B5800C6CA64 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60674E929919B5800C6CA64 /* UserService.swift */; };
 		B60A23AD29654D2B00A703B3 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60A23AC29654D2B00A703B3 /* Router.swift */; };
 		B6253A0D29354A9E0028EC7F /* SplitTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6253A0C29354A9E0028EC7F /* SplitTransaction.swift */; };
 		B63747CF292E733700A50615 /* EqualSharesSplitStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63747CE292E733700A50615 /* EqualSharesSplitStrategy.swift */; };
@@ -53,6 +54,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B60674E929919B5800C6CA64 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		B60A23AC29654D2B00A703B3 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		B6253A0C29354A9E0028EC7F /* SplitTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitTransaction.swift; sourceTree = "<group>"; };
 		B63747CE292E733700A50615 /* EqualSharesSplitStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EqualSharesSplitStrategy.swift; sourceTree = "<group>"; };
@@ -300,6 +302,7 @@
 			children = (
 				B6D42868298B0E96009DE040 /* Helpers */,
 				B6D42866298B0A45009DE040 /* TransactionsService.swift */,
+				B60674E929919B5800C6CA64 /* UserService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -422,6 +425,7 @@
 				B68B840E2965F91900E4C3FA /* PresentingView.swift in Sources */,
 				B6D1E90229390C090040BA37 /* PercentageSplitMembersListView.swift in Sources */,
 				B67DE985292AFE14008C6400 /* ISplitStrategy.swift in Sources */,
+				B60674EA29919B5800C6CA64 /* UserService.swift in Sources */,
 				B67DE96F2925858C008C6400 /* PaidAndSplitBarView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
