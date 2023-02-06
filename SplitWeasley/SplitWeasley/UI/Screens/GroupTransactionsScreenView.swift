@@ -67,8 +67,13 @@ struct GroupTransactionsScreenView<TS: ITransactionsService, US: IUserService>: 
             return split / transaction.total.amount
         }()
 
+        let description = {
+            if transaction.description.isEmpty { return "(No description provided)" }
+            return transaction.description
+        }()
+
         return TransactionCell(
-            description: transaction.description,
+            description: description,
             category: transaction.category,
             total: transaction.total,
             balance: transaction.balance(of: currentUser),
