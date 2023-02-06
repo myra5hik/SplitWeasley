@@ -88,9 +88,12 @@ struct GroupTransactionsScreenView<TS: ITransactionsService, US: IUserService>: 
     }
 
     private func header(for date: Date) -> some View {
-        let dateFormatted = date.formatted(.dateTime.weekday(.wide).day().month())
+        let text: String = {
+            if Calendar.current.isDateInToday(date) { return "Today" }
+            return date.formatted(.dateTime.weekday(.wide).day().month())
+        }()
 
-        return Text(dateFormatted.uppercased())
+        return Text(text.uppercased())
             .font(.subheadline)
             .foregroundColor(Color(uiColor: .systemGray))
             .padding(.top)
