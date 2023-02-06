@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B60674EA29919B5800C6CA64 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60674E929919B5800C6CA64 /* UserService.swift */; };
 		B60A23AD29654D2B00A703B3 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60A23AC29654D2B00A703B3 /* Router.swift */; };
 		B6253A0D29354A9E0028EC7F /* SplitTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6253A0C29354A9E0028EC7F /* SplitTransaction.swift */; };
 		B63747CF292E733700A50615 /* EqualSharesSplitStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63747CE292E733700A50615 /* EqualSharesSplitStrategy.swift */; };
@@ -44,6 +45,8 @@
 		B6D42860298869B5009DE040 /* FactoryProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D4285F298869B5009DE040 /* FactoryProtocols.swift */; };
 		B6D4286229886AD9009DE040 /* CurrencyIconFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D4286129886AD9009DE040 /* CurrencyIconFactory.swift */; };
 		B6D42864298874DF009DE040 /* AppIcon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6D42863298874DF009DE040 /* AppIcon.xcassets */; };
+		B6D42867298B0A45009DE040 /* TransactionsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D42866298B0A45009DE040 /* TransactionsService.swift */; };
+		B6D4286A298B0EA0009DE040 /* WeaklyCaptured.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D42869298B0EA0009DE040 /* WeaklyCaptured.swift */; };
 		B6D994B12979D9DE00EEB236 /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D994B02979D9DE00EEB236 /* TransactionCell.swift */; };
 		B6DB2DD329785299004E2B60 /* GroupTransactionsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DB2DD229785299004E2B60 /* GroupTransactionsScreenView.swift */; };
 		B6DB2DD529785574004E2B60 /* GroupSummaryOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DB2DD429785574004E2B60 /* GroupSummaryOverlayView.swift */; };
@@ -51,6 +54,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B60674E929919B5800C6CA64 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		B60A23AC29654D2B00A703B3 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		B6253A0C29354A9E0028EC7F /* SplitTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitTransaction.swift; sourceTree = "<group>"; };
 		B63747CE292E733700A50615 /* EqualSharesSplitStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EqualSharesSplitStrategy.swift; sourceTree = "<group>"; };
@@ -89,6 +93,8 @@
 		B6D4285F298869B5009DE040 /* FactoryProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactoryProtocols.swift; sourceTree = "<group>"; };
 		B6D4286129886AD9009DE040 /* CurrencyIconFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyIconFactory.swift; sourceTree = "<group>"; };
 		B6D42863298874DF009DE040 /* AppIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = AppIcon.xcassets; path = "../../../../../Downloads/AppIcons-2/AppIcon.xcassets"; sourceTree = "<group>"; };
+		B6D42866298B0A45009DE040 /* TransactionsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsService.swift; sourceTree = "<group>"; };
+		B6D42869298B0EA0009DE040 /* WeaklyCaptured.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeaklyCaptured.swift; sourceTree = "<group>"; };
 		B6D994B02979D9DE00EEB236 /* TransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
 		B6DB2DD229785299004E2B60 /* GroupTransactionsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTransactionsScreenView.swift; sourceTree = "<group>"; };
 		B6DB2DD429785574004E2B60 /* GroupSummaryOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSummaryOverlayView.swift; sourceTree = "<group>"; };
@@ -150,6 +156,7 @@
 				B67DE9682925850F008C6400 /* App */,
 				B67DE9722927E1B2008C6400 /* Model */,
 				B67DE96629258505008C6400 /* UI */,
+				B6D42865298B0A2F009DE040 /* Services */,
 				B60A23AB29654D1500A703B3 /* Routing */,
 				B68B841129672DD400E4C3FA /* Modules */,
 				B67DE989292C4BB7008C6400 /* Extensions */,
@@ -290,6 +297,24 @@
 			path = Factories;
 			sourceTree = "<group>";
 		};
+		B6D42865298B0A2F009DE040 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B6D42868298B0E96009DE040 /* Helpers */,
+				B6D42866298B0A45009DE040 /* TransactionsService.swift */,
+				B60674E929919B5800C6CA64 /* UserService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		B6D42868298B0E96009DE040 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				B6D42869298B0EA0009DE040 /* WeaklyCaptured.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -373,6 +398,7 @@
 				B6740C7A293A79D20045BE93 /* PlusMinusSplitMembersListView.swift in Sources */,
 				B67DE980292AB36A008C6400 /* SplitOptionsScreenView.swift in Sources */,
 				B67DE97129258B32008C6400 /* RoundButton.swift in Sources */,
+				B6D42867298B0A45009DE040 /* TransactionsService.swift in Sources */,
 				B6253A0D29354A9E0028EC7F /* SplitTransaction.swift in Sources */,
 				B63747D3292E813C00A50615 /* NumericInputView.swift in Sources */,
 				B67DE958292583F0008C6400 /* SplitWeasleyApp.swift in Sources */,
@@ -380,6 +406,7 @@
 				B63747CF292E733700A50615 /* EqualSharesSplitStrategy.swift in Sources */,
 				B67DE96B2925852B008C6400 /* AddTransactionScreenView.swift in Sources */,
 				B6D4285B29816293009DE040 /* ScrollableLazyVStack.swift in Sources */,
+				B6D4286A298B0EA0009DE040 /* WeaklyCaptured.swift in Sources */,
 				B6D4285E2988651A009DE040 /* CategoryIconFactory.swift in Sources */,
 				B67ABB3929365A8400E8BC62 /* PercentageSplitStrategy.swift in Sources */,
 				B6B0C2DB293E4CA7006EF2B6 /* TransactionCategorySelectionList.swift in Sources */,
@@ -398,6 +425,7 @@
 				B68B840E2965F91900E4C3FA /* PresentingView.swift in Sources */,
 				B6D1E90229390C090040BA37 /* PercentageSplitMembersListView.swift in Sources */,
 				B67DE985292AFE14008C6400 /* ISplitStrategy.swift in Sources */,
+				B60674EA29919B5800C6CA64 /* UserService.swift in Sources */,
 				B67DE96F2925858C008C6400 /* PaidAndSplitBarView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

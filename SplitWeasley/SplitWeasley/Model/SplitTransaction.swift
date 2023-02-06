@@ -47,6 +47,8 @@ struct SplitTransaction: Identifiable, Hashable {
 extension SplitTransaction {
     var isLogicallyConsistent: Bool {
         guard
+            // Checks total is non-zero
+            total.amount != 0,
             // Checks total is equal to the sum of members' shares
             splits.values.map({ $0.amount }).reduce(0, +) == total.amount,
             // Checks all amounts are in the same currency

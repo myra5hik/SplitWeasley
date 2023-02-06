@@ -12,7 +12,7 @@ struct GroupSummaryOverlayView: View {
     private let onTapOfInfo: (() -> Void)?
 
     init(balances: [MonetaryAmount], onTapOfInfo: (() -> Void)? = nil) {
-        self.balances = balances
+        self.balances = balances.filter({ $0.amount != 0.0 })
         self.onTapOfInfo = onTapOfInfo
     }
 

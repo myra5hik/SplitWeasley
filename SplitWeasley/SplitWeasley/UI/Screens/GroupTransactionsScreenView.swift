@@ -7,49 +7,39 @@
 
 import SwiftUI
 
-struct GroupTransactionsScreenView: View {
+struct GroupTransactionsScreenView<TS: ITransactionsService, US: IUserService>: View {
     // Data
-    @State private var balances: [MonetaryAmount]
-    @State private var groupings: [Date: [SplitTransaction]]
+    @ObservedObject private var subscription: TS.ObservableBox
+    private var currentUser: Person.ID { userService.currentUser.id }
     // Dependencies
-    private let currentUser: Person.ID
+    private let transactionService: TS
+    private let userService: US
     // Actions
     private let onTapOfAdd: (() -> Void)?
     private let onTapOfDetail: ((SplitTransaction.ID) -> Void)?
 
     init(
-        balances: [MonetaryAmount],
-        transactions: [SplitTransaction],
-        currentUser: Person.ID,
+        group: SplitGroup,
+        transactionsService: TS,
+        userService: US,
         onTapOfAdd: (() -> Void)? = nil,
         onTapOfDetail: ((SplitTransaction.ID) -> Void)? = nil
     ) {
-        self._balances = .init(initialValue: balances)
-        self.currentUser = currentUser
+        self.transactionService = transactionsService
+        self.subscription = transactionService.subscribe(to: group.id)
+        self.userService = userService
         self.onTapOfAdd = onTapOfAdd
         self.onTapOfDetail = onTapOfDetail
-        // Populates groupings
-        var res = [Date: [SplitTransaction]]()
-        // Groups into a dictionary, one array per a day
-        for transaction in transactions {
-            let roundedDate = Calendar.current.startOfDay(for: transaction.datePerformed)
-            res[roundedDate, default: []].append(transaction)
-        }
-        // Sorts transactions latest to top
-        for (key, array) in res {
-            res[key] = array.sorted(by: { $0.datePerformed >= $1.datePerformed })
-        }
-        self._groupings = .init(initialValue: res)
     }
 
     var body: some View {
         ScrollableLazyVStack {
             // Summary
-            GroupSummaryOverlayView(balances: balances)
+            GroupSummaryOverlayView(balances: subscription.balances[currentUser] ?? [])
                 .padding(.horizontal)
                 .padding(.vertical, 6)
             // Transactions
-            ForEach(groupings.sorted(by: { $0.key >= $1.key }), id: \.key) { (date, transactions) in
+            ForEach(subscription.groupings.sorted(by: { $0.key >= $1.key }), id: \.key) { (date, transactions) in
                 Section(content: {
                     ForEach(transactions) { cell(for: $0) }
                 }, header: {
@@ -77,8 +67,13 @@ struct GroupTransactionsScreenView: View {
             return split / transaction.total.amount
         }()
 
+        let description = {
+            if transaction.description.isEmpty { return "(No description provided)" }
+            return transaction.description
+        }()
+
         return TransactionCell(
-            description: transaction.description,
+            description: description,
             category: transaction.category,
             total: transaction.total,
             balance: transaction.balance(of: currentUser),
@@ -93,9 +88,12 @@ struct GroupTransactionsScreenView: View {
     }
 
     private func header(for date: Date) -> some View {
-        let dateFormatted = date.formatted(.dateTime.weekday(.wide).day().month())
+        let text: String = {
+            if Calendar.current.isDateInToday(date) { return "Today" }
+            return date.formatted(.dateTime.weekday(.wide).day().month())
+        }()
 
-        return Text(dateFormatted.uppercased())
+        return Text(text.uppercased())
             .font(.subheadline)
             .foregroundColor(Color(uiColor: .systemGray))
             .padding(.top)
@@ -134,11 +132,9 @@ struct GroupTransactionsScreenView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             GroupTransactionsScreenView(
-                balances: [
-                    .init(currency: .eur, amount: 102.12)
-                ],
-                transactions: SplitTransaction.stub,
-                currentUser: SplitGroup.stub.members[0].id
+                group: SplitGroup.stub,
+                transactionsService: StubTransactionsService(),
+                userService: StubUserService()
             )
         }
     }
