@@ -19,9 +19,13 @@ protocol IRouter: ObservableObject {
     var navigationPath: NavigationPath { get set }
     var presentedView: RD? { get set }
 
+    /// Pushes a destination onto the NavigationStack
     func push(_ destination: RD)
+    /// Pops a destination from the NavigationStack
     func pop()
+    /// Presents a destination modally
     func present(_ destination: RD)
+    /// Dismisses a modally presented destination
     func dismiss()
 }
 

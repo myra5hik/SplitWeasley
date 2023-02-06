@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - ITransactionsService Protocol
 
-protocol ITransactionsService {
+protocol ITransactionsService<ObservableBox> {
     associatedtype ObservableBox: IObservableTransactionsBox
 
     func subscribe(to: SplitGroup.ID) -> ObservableBox

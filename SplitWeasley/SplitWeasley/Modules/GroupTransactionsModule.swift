@@ -23,7 +23,7 @@ final class GroupTransactionsModule: IGroupTransactionsModule {
     // Public
     var rootView: AnyView { presentingView.eraseToAnyView() }
     // Private
-    private var addTransactionScreenViewModel: AddTransactionScreenViewModel
+    private var addTransactionScreenViewModel: AddTransactionScreenViewModel<TransactionsService>
     private let service = TransactionsService()
     private let router = R()
     private var presentingView: PresentingView<R, GroupTransactionsModule>!
@@ -32,7 +32,11 @@ final class GroupTransactionsModule: IGroupTransactionsModule {
 
     init(group: SplitGroup) {
         self.group = group
-        self.addTransactionScreenViewModel = AddTransactionScreenViewModel(group: group)
+        self.addTransactionScreenViewModel = AddTransactionScreenViewModel(
+            group: group,
+            currentUser: group.members[0].id,
+            transactionService: service
+        )
         self.presentingView = PresentingView(router: router, factory: self, root: .transactionList)
     }
 }
@@ -73,13 +77,17 @@ extension GroupTransactionsModule: IScreenFactory {
 
     private func makeTransactionListScreen() -> some View {
         return GroupTransactionsScreenView(
-            group: SplitGroup.stub,
+            group: group,
             transactionsService: service,
             currentUser: SplitGroup.stub.members[0].id,
             onTapOfAdd: { [weak self, group] in
                 guard let self = self else { return }
                 // Resets the view model to an empty one
-                self.addTransactionScreenViewModel = AddTransactionScreenViewModel(group: group)
+                self.addTransactionScreenViewModel = AddTransactionScreenViewModel(
+                    group: group,
+                    currentUser: group.members[0].id,
+                    transactionService: self.service
+                )
                 self.router.push(.addTransactionScreen)
             },
             onTapOfDetail: { [weak self] transactionId in

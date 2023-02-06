@@ -40,7 +40,7 @@ where R.RD == GroupTransactionsModule.RoutingDestination {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                Button("Save", action: { }).fontWeight(.semibold)
+                naviSaveButton
             }
         }
     }
@@ -142,11 +142,20 @@ private extension AddTransactionScreenView {
             amountInput
         }
     }
+
+    var naviSaveButton: some View {
+        let action = { vm.saveTransaction(); router.pop() }
+        let button = Button("Save", action: action).fontWeight(.semibold)
+            .disabled(!vm.isLogicallyConsistent)
+        
+        return button
+    }
 }
 
 // MARK: - ViewModel
 
 protocol IAddTransactionScreenViewModel: ObservableObject {
+    var isLogicallyConsistent: Bool { get }
     var date: Date { get set }
     var transactionCategory: TransactionCategory { get set }
     var transactionDescription: String { get set }
@@ -154,9 +163,11 @@ protocol IAddTransactionScreenViewModel: ObservableObject {
     var splitStrategy: any ISplitStrategy { get set }
     var payee: String { get }
     var splitWithin: String { get }
+
+    func saveTransaction()
 }
 
-final class AddTransactionScreenViewModel: ObservableObject {
+final class AddTransactionScreenViewModel<TS: ITransactionsService>: ObservableObject {
     // Data
     @Published var date = Date()
     @Published var transactionCategory: TransactionCategory = .undefined
@@ -168,25 +179,56 @@ final class AddTransactionScreenViewModel: ObservableObject {
         splitGroup: SplitGroup.stub,
         total: MonetaryAmount(currency: .eur)
     )
+    // Dependencies
+    private let service: TS
+    private let currentUser: Person.ID
 
-    init(group: SplitGroup) {
+    init(group: SplitGroup, currentUser: Person.ID, transactionService: TS) {
         self._splitStrategy = .init(wrappedValue: EqualSharesSplitStrategy(
             splitGroup: group,
             total: MonetaryAmount(currency: .eur))
         )
+        self.currentUser = currentUser
+        self.service = transactionService
     }
 }
 
 extension AddTransactionScreenViewModel: IAddTransactionScreenViewModel {
+    var isLogicallyConsistent: Bool { makeTransaction().isLogicallyConsistent }
     var payee: String { "you" }
     var splitWithin: String { splitStrategy.conciseHintDescription }
+
+    func saveTransaction() {
+        let transaction = makeTransaction()
+        guard transaction.isLogicallyConsistent else { return }
+        service.add(transaction: transaction)
+    }
+}
+
+extension AddTransactionScreenViewModel {
+    private func makeTransaction() -> SplitTransaction {
+        return SplitTransaction(
+            group: splitStrategy.splitGroup,
+            total: amount,
+            paidBy: [currentUser: amount],
+            splits: splitStrategy.splits,
+            description: transactionDescription,
+            category: transactionCategory,
+            dateAdded: Date(),
+            datePerformed: date
+        )
+    }
 }
 
 // MARK: - Previews
 
 struct TransactionScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        let vm = AddTransactionScreenViewModel(group: .stub)
+        let vm = AddTransactionScreenViewModel(
+            group: .stub,
+            currentUser: UUID(),
+            transactionService: StubTransactionsService()
+        )
         let router = StubRouter<GroupTransactionsModule.RD>()
         return AddTransactionScreenView(vm: vm, router: router)
     }

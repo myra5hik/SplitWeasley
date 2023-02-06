@@ -29,9 +29,24 @@ protocol ISplitStrategy: ObservableObject {
     // Init
     init(splitGroup: SplitGroup, total: MonetaryAmount)
 
-    // Data manipulations
+    // Data reads
     /// Returns the amount split towards the person passed as parameter.
     func amount(for personId: Person.ID) -> MonetaryAmount?
+    var splits: [Person.ID: MonetaryAmount] { get }
+
+    // Data manipulations
     /// Sets split parameter for the person
     func set(_ value: SplitParameter, for personId: Person.ID)
+}
+
+// MARK: - Default Implementation 
+
+extension ISplitStrategy {
+    var splits: [Person.ID: MonetaryAmount] {
+        var res = [Person.ID: MonetaryAmount]()
+        for personId in splitGroup.members.map(\.id) {
+            res[personId] = amount(for: personId)
+        }
+        return res
+    }
 }
