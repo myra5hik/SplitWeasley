@@ -41,13 +41,9 @@ where R.RD == GroupTransactionsModule.RoutingDestination {
             .navigationTitle("Add transaction")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .primaryAction) {
-                    naviSaveButton
-                }
+                ToolbarItem(placement: .primaryAction) { naviSaveButton }
             }
-            .onAppear {
-                focus = .description
-            }
+            .onAppear { focus = .description }
         }
         .scrollDisabled(true)
     }
@@ -82,16 +78,16 @@ private extension AddTransactionScreenView {
             splitAction: { [weak vm] in
                 guard (vm?.amount.amount ?? 0) > 0 else { return }
                 router.present(.splitStrategySelector)
-            }
+            },
+            payeeButtonActive: false,
+            splitButtonActive: vm.amount.amount != 0.0
         )
     }
 
     var descriptionInputRowView: some View {
         let categoryButton = RoundButton(
             bodyFill: vm.transactionCategory.backgroundColor,
-            action: {
-                router.present(.categorySelector)
-            }
+            action: { router.present(.categorySelector) }
         ) {
             vm.transactionCategory.icon
                 .resizable()

@@ -12,17 +12,23 @@ struct PaidAndSplitBarView: View {
     private let splitLabel: String
     private let payeeAction: (() -> Void)?
     private let splitAction: (() -> Void)?
+    private let payeeButtonActive: Bool
+    private let splitBubbonActive: Bool
 
     init(
         payeeLabel: String,
         splitLabel: String,
         payeeAction: (() -> Void)?,
-        splitAction: (() -> Void)?
+        splitAction: (() -> Void)?,
+        payeeButtonActive: Bool = true,
+        splitButtonActive: Bool = true
     ) {
         self.payeeLabel = payeeLabel
         self.splitLabel = splitLabel
         self.payeeAction = payeeAction
         self.splitAction = splitAction
+        self.payeeButtonActive = payeeButtonActive
+        self.splitBubbonActive = splitButtonActive
     }
 
     var body: some View {
@@ -30,11 +36,13 @@ struct PaidAndSplitBarView: View {
             Text("Paid by")
             Button(payeeLabel, action: payeeAction ?? { })
                 .buttonStyle(.bordered)
+                .disabled(!payeeButtonActive)
             Text("and split")
             Button(splitLabel, action: splitAction ?? { })
                 .buttonStyle(.bordered)
+                .disabled(!splitBubbonActive)
         }
-        .foregroundColor(Color(UIColor.label))
+        .tint(Color(uiColor: .label))
     }
 }
 
