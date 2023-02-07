@@ -8,27 +8,21 @@
 import SwiftUI
 
 final class CategoryIconFactory: IIconFactory {
-    typealias Model = TransactionCategory
-
-    private static var otherIcon: Image {
-        Image(systemName: "questionmark.folder.fill")
-    }
-
-    func icon(for category: Model) -> Image {
+    func icon(for category: TransactionCategory) -> Image {
         switch category {
         // Undefined
-        case .undefined: return Self.otherIcon
+        case .undefined: return Image(systemName: "list.clipboard")
         // Entertainment
         case .games: return Image(systemName: "gamecontroller.fill")
         case .movies: return Image(systemName: "popcorn.fill")
         case .music: return Image(systemName: "music.quarternote.3")
         case .sports: return Image(systemName: "tennisball.fill")
-        case .otherEntertainment: return Self.otherIcon
+        case .otherEntertainment: return Image(systemName: "theatermask.and.paintbrush.fill")
         // Food and Drink
         case .diningOut: return Image(systemName: "fork.knife")
         case .groceries: return Image(systemName: "basket.fill")
         case .liquor: return Image(systemName: "wineglass.fill")
-        case .otherFoodAndDrink: return Self.otherIcon
+        case .otherFoodAndDrink: return Image(systemName: "carrot.fill")
         // Home
         case .electronics: return Image(systemName: "tv")
         case .furniture: return Image(systemName: "sofa.fill")
@@ -68,17 +62,17 @@ final class CategoryIconFactory: IIconFactory {
         }
     }
 
-    func foregroundColor(for category: Model) -> Color {
+    func foregroundColor(for category: TransactionCategory) -> Color {
         return category.grouping == .undefined ? .black : .white
     }
 
-    func backgroundColor(for category: Model) -> Color {
+    func backgroundColor(for category: TransactionCategory) -> Color {
         return groupingColor(for: category.grouping)
     }
 
     private func groupingColor(for group: TransactionCategory.Grouping) -> Color {
         switch group {
-        case .undefined: return Color(.white).opacity(0.75)
+        case .undefined: return Color(.white)
         case .entertainment: return Color(uiColor: .systemPurple).opacity(0.75)
         case .food: return Color(uiColor: .systemGreen).opacity(0.75)
         case .home: return Color(uiColor: .systemYellow).opacity(0.75)
