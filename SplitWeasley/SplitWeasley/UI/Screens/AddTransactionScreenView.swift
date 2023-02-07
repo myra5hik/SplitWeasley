@@ -11,6 +11,8 @@ struct AddTransactionScreenView<VM: IAddTransactionScreenViewModel, R: IRouter>:
 where R.RD == GroupTransactionsModule.RoutingDestination {
     // View model
     @ObservedObject private var vm: VM
+    // Focus
+    @FocusState private var focus: AddTransactionScreenFocusState?
     // Router
     private let router: R
     // Constants
@@ -23,30 +25,35 @@ where R.RD == GroupTransactionsModule.RoutingDestination {
     }
     // MARK: Body
     var body: some View {
-        VStack {
+        ScrollView {
             VStack {
-                Spacer()
-                datePicker
-                Spacer()
-                mainInputViews
-                Spacer()
-                paidAndSplitBar
-                Spacer()
+                VStack {
+                    Spacer()
+                    datePicker
+                    Spacer()
+                    mainInputViews
+                    Spacer()
+                    paidAndSplitBar
+                    Spacer()
+                }
+                .frame(height: 400)
             }
-            .frame(height: 400)
-            Spacer()
-        }
-        .navigationTitle("Add transaction")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                naviSaveButton
+            .navigationTitle("Add transaction")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    naviSaveButton
+                }
+            }
+            .onAppear {
+                focus = .description
             }
         }
+        .scrollDisabled(true)
     }
 }
 
-// MARK: - Components
+// MARK: - View Components
 
 private extension AddTransactionScreenView {
     var datePicker: some View {
@@ -97,8 +104,9 @@ private extension AddTransactionScreenView {
         let descriptionInputField = TextField("Description", text: $vm.transactionDescription, axis: .vertical)
             .font(.title2)
             .lineLimit(2)
-            .keyboardType(.asciiCapable)
             .padding(.leading)
+            .keyboardType(.asciiCapable)
+            .focused($focus, equals: .description)
 
         return HStack {
             categoryButton
@@ -133,9 +141,10 @@ private extension AddTransactionScreenView {
             roundingScale: vm.amount.currency.roundingScale,
             placeholder: "0.0 \(vm.amount.currency.iso4217code)"
         )
-        .keyboardType(.decimalPad)
         .font(.largeTitle.weight(.semibold))
         .padding(.leading)
+        .keyboardType(.decimalPad)
+        .focused($focus, equals: .amount)
 
         return HStack {
             Menu(content: { currencyOptions }, label: { currencyButton })
@@ -152,10 +161,19 @@ private extension AddTransactionScreenView {
     }
 }
 
-// MARK: - ViewModel
+// MARK: - FocusState
+
+extension AddTransactionScreenView {
+    enum AddTransactionScreenFocusState: String, Hashable {
+        case description
+        case amount
+    }
+}
+
+// MARK: - IAddTransactionScreenViewModel Protocol
 
 protocol IAddTransactionScreenViewModel: ObservableObject {
-    var isLogicallyConsistent: Bool { get }
+    // Data
     var date: Date { get set }
     var transactionCategory: TransactionCategory { get set }
     var transactionDescription: String { get set }
@@ -163,9 +181,12 @@ protocol IAddTransactionScreenViewModel: ObservableObject {
     var splitStrategy: any ISplitStrategy { get set }
     var payee: String { get }
     var splitWithin: String { get }
-
+    // Transitions
+    var isLogicallyConsistent: Bool { get }
     func saveTransaction()
 }
+
+// MARK: - ViewModel Implementation
 
 final class AddTransactionScreenViewModel<TS: ITransactionsService, US: IUserService>: ObservableObject {
     // Data
@@ -194,6 +215,8 @@ final class AddTransactionScreenViewModel<TS: ITransactionsService, US: IUserSer
     }
 }
 
+// MARK: - ViewModel IAddTransactionScreenViewModel Conformance
+
 extension AddTransactionScreenViewModel: IAddTransactionScreenViewModel {
     var isLogicallyConsistent: Bool { makeTransaction().isLogicallyConsistent }
     var payee: String { "you" }
@@ -205,6 +228,8 @@ extension AddTransactionScreenViewModel: IAddTransactionScreenViewModel {
         transactionsService.add(transaction: transaction)
     }
 }
+
+// MARK: - ViewModel Helpers
 
 extension AddTransactionScreenViewModel {
     private func makeTransaction() -> SplitTransaction {
