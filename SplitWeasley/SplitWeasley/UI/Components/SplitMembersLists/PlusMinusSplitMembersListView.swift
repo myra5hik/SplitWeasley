@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PlusMinusSplitMembersListView<S: IPlusMinusSplitStrategy>: View {
     @ObservedObject private var strategy: S
+    @FocusState var focusCell: Person.ID?
     private var currency: Currency { strategy.total.currency }
 
     init(strategy: S) {
@@ -17,18 +18,19 @@ struct PlusMinusSplitMembersListView<S: IPlusMinusSplitStrategy>: View {
 
     var body: some View {
         List {
-            Section {
-                ForEach(strategy.splitGroup.members, id: \.id) { member in
-                    ConfugurableListRowView(
-                        heading: member.fullName,
-                        subheading: makeSubheading(memberId: member.id),
-                        leadingAccessory: { Circle().foregroundColor(.blue) },
-                        trailingAccessory: { makeTrailingView(memberId: member.id) },
-                        action: { strategy.toggleInvolvement(for: member.id) }
-                    )
-                    .frame(height: 38)
-//                    .animation(.linear(duration: 0.1), value: strategy.adjustments[member.id] == nil)
+            let membersEnumerated = Array(strategy.splitGroup.members.enumerated())
+            ForEach(membersEnumerated, id: \.element.id) { (i, member) in
+                ConfugurableListRowView(
+                    heading: member.fullName,
+                    subheading: makeSubheading(memberId: member.id),
+                    leadingAccessory: { Circle().foregroundColor(.blue) },
+                    trailingAccessory: { makeTrailingView(memberId: member.id, rowNum: i) },
+                    action: { handleCellTapped(memberId: member.id) }
+                )
+                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                    makeSwipeActionToggleInvolvementButton(memberId: member.id)
                 }
+                .frame(height: 38)
             }
         }
         .listStyle(.plain)
@@ -50,21 +52,25 @@ struct PlusMinusSplitMembersListView<S: IPlusMinusSplitStrategy>: View {
         return res
     }
 
-    private func makeTrailingView(memberId: Person.ID) -> some View {
-        HStack {
-            if strategy.amount(for: memberId) != nil {
-                makeInputView(memberId: memberId)
-                Image(systemName: "checkmark.circle.fill").foregroundColor(.accentColor)
+    @ViewBuilder
+    private func makeTrailingView(memberId: Person.ID, rowNum: Int) -> some View {
+        if strategy.amount(for: memberId) != nil {
+            HStack {
+                makeAmountInputView(id: memberId)
+                makeCheckboxView(memberId: memberId)
             }
+            // Following modifiers prioritise layout of input views over other labels
+            .frame(minWidth: 50, maxWidth: .infinity)
+            .fixedSize()
+        } else {
+            EmptyView()
         }
-        .frame(minWidth: 50, maxWidth: .infinity)
-        .fixedSize()
     }
 
-    private func makeInputView(memberId: Person.ID) -> some View {
+    private func makeAmountInputView(id: Person.ID) -> some View {
         let binding = Binding(
-            get: { strategy.adjustments[memberId]?.amount ?? 0.0 },
-            set: { strategy.set(MonetaryAmount(currency: currency, amount: $0), for: memberId) }
+            get: { [weak strategy] in strategy?.adjustments[id]?.amount ?? 0.0 },
+            set: { [weak strategy] in strategy?.set(MonetaryAmount(currency: currency, amount: $0), for: id) }
         )
         return NumericInputView(
             binding,
@@ -72,6 +78,34 @@ struct PlusMinusSplitMembersListView<S: IPlusMinusSplitStrategy>: View {
             placeholder: "\(MonetaryAmount(currency: currency).formatted())"
         )
         .multilineTextAlignment(.trailing)
+        .focused($focusCell, equals: id)
+    }
+
+    private func makeCheckboxView(memberId: Person.ID) -> some View {
+        Image(systemName: "checkmark.circle.fill").foregroundColor(.accentColor)
+            .onTapGesture { strategy.toggleInvolvement(for: memberId) }
+    }
+
+    private func makeSwipeActionToggleInvolvementButton(memberId: Person.ID) -> some View {
+        let isInvolved = strategy.adjustments[memberId] != nil
+        return Button(action: {
+            strategy.toggleInvolvement(for: memberId)
+        }, label: {
+            if isInvolved {
+                Label("Exclude", systemImage: "person.fill.xmark")
+            } else {
+                Label("Include", systemImage: "person.fill.checkmark")
+            }
+        })
+        .tint(isInvolved ? Color(uiColor: .systemOrange) : Color(uiColor: .systemTeal))
+    }
+
+    private func handleCellTapped(memberId: Person.ID) {
+        if strategy.adjustments[memberId] == nil {
+            // User is not involved and has no input view visible -> first toggle involvement
+            strategy.toggleInvolvement(for: memberId)
+        }
+        focusCell = memberId
     }
 }
 
