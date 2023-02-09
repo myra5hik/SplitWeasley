@@ -7,11 +7,14 @@
 
 import SwiftUI
 
-struct UnequalSharesSplitMembersListView<S: IUnequalSharesSplitStrategy>: View {
+struct UnequalSharesSplitMembersListView<S: IUnequalSharesSplitStrategy, PPS: IProfilePictureService>: View {
     @ObservedObject private var strategy: S
+    // Dependencies
+    private let service: PPS
 
-    init(strategy: S) {
+    init(strategy: S, profilePictureService: PPS) {
         self.strategy = strategy
+        self.service = profilePictureService
     }
 
     var body: some View {
@@ -21,7 +24,7 @@ struct UnequalSharesSplitMembersListView<S: IUnequalSharesSplitStrategy>: View {
                     ConfugurableListRowView(
                         heading: member.fullName,
                         subheading: strategy.amount(for: member.id)?.formatted() ?? "not involved",
-                        leadingAccessory: { Circle().foregroundColor(.blue) },
+                        leadingAccessory: { ProfilePicture(service: service, personId: member.id) },
                         trailingAccessory: { makeInputView(memberId: member.id) }
                     )
                     .frame(height: 38)
@@ -48,9 +51,12 @@ struct UnequalSharesSplitMembersListView<S: IUnequalSharesSplitStrategy>: View {
 
 struct UnequalSharesSplitMembersListView_Previews: PreviewProvider {
     static var previews: some View {
-        UnequalSharesSplitMembersListView(strategy: UnequalSharesSplitStrategy(
-            splitGroup: SplitGroup.stub,
-            total: MonetaryAmount(currency: .eur, amount: 100.0))
+        UnequalSharesSplitMembersListView(
+            strategy: UnequalSharesSplitStrategy(
+                splitGroup: SplitGroup.stub,
+                total: MonetaryAmount(currency: .eur, amount: 100.0)
+            ),
+            profilePictureService: StubProfilePictureService()
         )
     }
 }

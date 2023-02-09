@@ -24,6 +24,7 @@ final class StubProfilePictureService: IProfilePictureService {
     ]
 
     private var cache = [Person.ID: UIImage]()
+    private var currentTasks = [Person.ID: Task<UIImage?, Never>]()
 
     func picture(for personId: Person.ID) async -> UIImage? {
         if let cached = cache[personId] { return cached }
@@ -31,11 +32,22 @@ final class StubProfilePictureService: IProfilePictureService {
     }
 
     private func pseudoLoad(id: Person.ID) async -> UIImage? {
-        guard !Self.stubPictures.isEmpty else { return nil }
-        let picture = Self.stubPictures.removeFirst()
-        let delay = UInt32.random(in: 1...3)
-//        sleep(delay)
-        cache[id] = picture
-        return picture
+        if let executed = currentTasks[id] { return try? await executed.result.get() }
+
+        let task = Task(priority: .userInitiated) { [weak self] in
+            guard !Self.stubPictures.isEmpty else { return UIImage?.none }
+            let picture = Self.stubPictures.removeFirst()
+            let delay = Duration(
+                secondsComponent: Int64.random(in: 1 ... 2),
+                attosecondsComponent: Int64.random(in: -9_999_999 ... 9_999_999)
+            )
+            try? await Task.sleep(for: delay)
+            self?.cache[id] = picture
+            currentTasks[id] = nil
+            return picture
+        }
+
+        currentTasks[id] = task
+        return await task.value
     }
 }

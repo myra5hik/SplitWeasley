@@ -27,6 +27,7 @@ final class GroupTransactionsModule: IGroupTransactionsModule {
     private var addTransactionScreenViewModel: VM
     private let transactionsService = TransactionsService()
     private let userService = StubUserService()
+    private let profilePictureService = StubProfilePictureService()
     private let router = R()
     private var presentingView: PresentingView<R, GroupTransactionsModule>!
     // Data
@@ -123,6 +124,7 @@ extension GroupTransactionsModule: IScreenFactory {
             splitGroup: SplitGroup.stub,
             total: addTransactionScreenViewModel.amount,
             initialState: addTransactionScreenViewModel.splitStrategy,
+            profilePictureService: profilePictureService,
             onDismiss: { [weak self] in self?.router.dismiss() },
             onDone: { [weak self] in self?.addTransactionScreenViewModel.splitStrategy = $0; self?.router.dismiss() }
         )

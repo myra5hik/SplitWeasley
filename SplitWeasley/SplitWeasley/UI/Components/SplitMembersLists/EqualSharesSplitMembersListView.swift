@@ -7,11 +7,13 @@
 
 import SwiftUI
 
-struct EqualSharesSplitMembersListView<S: IEqualSharesSplitStrategy>: View {
+struct EqualSharesSplitMembersListView<S: IEqualSharesSplitStrategy, PPS: IProfilePictureService>: View {
     @ObservedObject private var strategy: S
+    private let service: PPS
 
-    init(strategy: S) {
+    init(strategy: S, profilePictureService: PPS) {
         self.strategy = strategy
+        self.service = profilePictureService
     }
 
     var body: some View {
@@ -19,7 +21,7 @@ struct EqualSharesSplitMembersListView<S: IEqualSharesSplitStrategy>: View {
             ConfugurableListRowView(
                 heading: member.fullName,
                 subheading: strategy.amount(for: member.id)?.formatted() ?? "not involved",
-                leadingAccessory: { Circle().foregroundColor(.blue) },
+                leadingAccessory: { ProfilePicture(service: service, personId: member.id) },
                 trailingAccessory: {
                     if strategy.isIncluded[member.id] ?? false {
                         Image(systemName: "checkmark")
@@ -38,9 +40,11 @@ struct EqualSharesSplitMembersListView<S: IEqualSharesSplitStrategy>: View {
 
 struct EqualSharesSplitMembersListView_Previews: PreviewProvider {
     static var previews: some View {
-        EqualSharesSplitMembersListView(strategy: EqualSharesSplitStrategy(
-            splitGroup: SplitGroup.stub,
-            total: MonetaryAmount(currency: .eur, amount: 10.0))
+        EqualSharesSplitMembersListView(
+            strategy: EqualSharesSplitStrategy(
+                splitGroup: SplitGroup.stub,
+                total: MonetaryAmount(currency: .eur, amount: 10.0)
+            ), profilePictureService: StubProfilePictureService()
         )
     }
 }
