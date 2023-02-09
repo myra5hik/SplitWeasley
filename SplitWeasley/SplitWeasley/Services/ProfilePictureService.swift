@@ -9,8 +9,8 @@ import UIKit
 
 // MARK: - IProfilePictureService Protocol
 
-protocol IProfilePictureService {
-    func picture(for: Person.ID) async -> UIImage?
+protocol IProfilePictureService: AnyObject {
+    func picture(for: Person.ID) async throws -> UIImage?
 }
 
 // MARK: - Stub Implementation
@@ -31,9 +31,10 @@ final class StubProfilePictureService: IProfilePictureService {
     }
 
     private func pseudoLoad(id: Person.ID) async -> UIImage? {
-        let picture = Self.stubPictures.randomElement() ?? nil
+        guard !Self.stubPictures.isEmpty else { return nil }
+        let picture = Self.stubPictures.removeFirst()
         let delay = UInt32.random(in: 1...3)
-        sleep(delay)
+//        sleep(delay)
         cache[id] = picture
         return picture
     }

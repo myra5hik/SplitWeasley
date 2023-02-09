@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LoadableImage<E: Error>: View {
-    let loadable: Loadable<UIImage, E>
+    let loadable: Loadable<UIImage?, E>
 
     var body: some View {
         presentedView(loadable)
@@ -17,10 +17,10 @@ struct LoadableImage<E: Error>: View {
     }
 
     @ViewBuilder
-    private func presentedView(_ loadable: Loadable<UIImage, E>) -> some View {
+    private func presentedView(_ loadable: Loadable<UIImage?, E>) -> some View {
         switch loadable {
         case .loaded(let image):
-            Image(uiImage: image)
+            Image(uiImage: image ?? .init())
                 .resizable()
                 .aspectRatio(contentMode: .fill)
         case .loading:
@@ -41,6 +41,9 @@ struct LoadableImage_Previews: PreviewProvider {
                 .frame(width: 100, height: 100)
                 .clipped()
             LoadableImage<URLError>(loadable: .error(.init(.badURL)))
+                .frame(width: 100, height: 100)
+                .clipped()
+            LoadableImage<URLError>(loadable: .loaded(nil))
                 .frame(width: 100, height: 100)
                 .clipped()
         }
