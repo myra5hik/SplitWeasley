@@ -24,13 +24,14 @@ final class GroupTransactionsModule: IGroupTransactionsModule {
     // Public
     var rootView: AnyView { presentingView.eraseToAnyView() }
     // Private
+    private let group: SplitGroup
     private var addTransactionScreenViewModel: VM
+    private var presentingView: PresentingView<R, GroupTransactionsModule>!
+    // Dependencies
     private let transactionsService = TransactionsService()
     private let userService = StubUserService()
+    private let profilePictureService = StubAsyncProfilePictureService()
     private let router = R()
-    private var presentingView: PresentingView<R, GroupTransactionsModule>!
-    // Data
-    private let group: SplitGroup
 
     init(group: SplitGroup) {
         self.group = group
@@ -123,6 +124,7 @@ extension GroupTransactionsModule: IScreenFactory {
             splitGroup: SplitGroup.stub,
             total: addTransactionScreenViewModel.amount,
             initialState: addTransactionScreenViewModel.splitStrategy,
+            profilePictureService: profilePictureService,
             onDismiss: { [weak self] in self?.router.dismiss() },
             onDone: { [weak self] in self?.addTransactionScreenViewModel.splitStrategy = $0; self?.router.dismiss() }
         )

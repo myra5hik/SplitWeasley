@@ -7,12 +7,15 @@
 
 import SwiftUI
 
-struct ExactAmountSplitMembersListView<S: IExactAmountSplitStrategy>: View {
+struct ExactAmountSplitMembersListView<S: IExactAmountSplitStrategy, PPS: IProfilePictureService>: View {
     @ObservedObject private var strategy: S
     @FocusState private var focus: Person.ID?
+    // Dependencies
+    private let service: PPS
 
-    init(strategy: S) {
+    init(strategy: S, profilePictureService: PPS) {
         self.strategy = strategy
+        self.service = profilePictureService
     }
 
     var body: some View {
@@ -22,7 +25,7 @@ struct ExactAmountSplitMembersListView<S: IExactAmountSplitStrategy>: View {
                     ConfugurableListRowView(
                         heading: member.fullName,
                         subheading: makeSubheading(memberId: member.id),
-                        leadingAccessory: { Circle().foregroundColor(.blue) },
+                        leadingAccessory: { ProfilePicture(service: service, personId: member.id) },
                         trailingAccessory: { makeInputView(memberId: member.id) },
                         action: { focus = member.id } // On tap on the cell, focuses onto TextField
                     )
@@ -73,9 +76,12 @@ struct ExactAmountSplitMembersListView<S: IExactAmountSplitStrategy>: View {
 
 struct ExactAmountSplitMembersListView_Previews: PreviewProvider {
     static var previews: some View {
-        ExactAmountSplitMembersListView(strategy: ExactAmountSplitStrategy(
-            splitGroup: SplitGroup.stub,
-            total: MonetaryAmount(currency: .eur, amount: 10.0))
+        ExactAmountSplitMembersListView(
+                strategy: ExactAmountSplitStrategy(
+                    splitGroup: SplitGroup.stub,
+                    total: MonetaryAmount(currency: .eur, amount: 10.0)
+                ),
+                profilePictureService: StubSyncProfilePictureService()
         )
     }
 }

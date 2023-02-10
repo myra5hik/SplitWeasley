@@ -16,8 +16,10 @@ struct SplitGroup: Identifiable, Hashable {
 
 extension SplitGroup {
     static var stub = SplitGroup(id: UUID(), members: [
-        Person(id: UUID(), firstName: "Alex"),
-        Person(id: UUID(), firstName: "John", lastName: "Appleseed"),
-        Person(id: UUID(), firstName: "The Dude")
+        Person(id: UUID(), firstName: "Alex", lastName: "Tokarev"),
+        Person(id: UUID(), firstName: "Alena"),
+        Person(id: UUID(), firstName: "Ilia", lastName: "Appleseed"),
+        Person(id: UUID(), firstName: "Darina"),
+        Person(id: UUID(), firstName: "Oleg")
     ])
 }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SplitOptionsScreenView: View {
+struct SplitOptionsScreenView<PPS: IProfilePictureService>: View {
     // State
     @State private var pickerSelection: PickerSelection = .equalShares
     // Split parameters
@@ -16,6 +16,8 @@ struct SplitOptionsScreenView: View {
     @StateObject private var percentageSplitStrategy: PercentageSplitStrategy
     @StateObject private var unequalSharesSplitStrategy: UnequalSharesSplitStrategy
     @StateObject private var plusMinusSplitStrategy: PlusMinusSplitStrategy
+    // Dependencies
+    private let service: PPS
     // Actions
     private let onDismiss: (() -> Void)?
     private let onDone: ((any ISplitStrategy) -> Void)?
@@ -24,6 +26,7 @@ struct SplitOptionsScreenView: View {
         splitGroup: SplitGroup,
         total: MonetaryAmount,
         initialState: (any ISplitStrategy)? = nil,
+        profilePictureService: PPS,
         onDismiss: (() -> Void)? = nil,
         onDone: ((any ISplitStrategy) -> Void)? = nil
     ) {
@@ -42,6 +45,8 @@ struct SplitOptionsScreenView: View {
         self._plusMinusSplitStrategy = StateObject(
             wrappedValue: PlusMinusSplitStrategy(splitGroup: splitGroup, total: total)
         )
+        // Dependencies
+        self.service = profilePictureService
         // Actions
         self.onDismiss = onDismiss
         self.onDone = onDone
@@ -118,11 +123,31 @@ private extension SplitOptionsScreenView {
     var splitGroupMembersListView: some View {
         VStack {
             switch pickerSelection {
-            case .equalShares: EqualSharesSplitMembersListView(strategy: equalSharesSplitStrategy)
-            case .exactAmount: ExactAmountSplitMembersListView(strategy: exactAmountSplitStrategy)
-            case .percent: PercentageSplitMembersListView(strategy: percentageSplitStrategy)
-            case .unequalShares: UnequalSharesSplitMembersListView(strategy: unequalSharesSplitStrategy)
-            case .plusMinus: PlusMinusSplitMembersListView(strategy: plusMinusSplitStrategy)
+            case .equalShares:
+                EqualSharesSplitMembersListView(
+                    strategy: equalSharesSplitStrategy,
+                    profilePictureService: service
+                )
+            case .exactAmount:
+                ExactAmountSplitMembersListView(
+                    strategy: exactAmountSplitStrategy,
+                    profilePictureService: service
+                )
+            case .percent:
+                PercentageSplitMembersListView(
+                    strategy: percentageSplitStrategy,
+                    profilePictureService: service
+                )
+            case .unequalShares:
+                UnequalSharesSplitMembersListView(
+                    strategy: unequalSharesSplitStrategy,
+                    profilePictureService: service
+                )
+            case .plusMinus:
+                PlusMinusSplitMembersListView(
+                    strategy: plusMinusSplitStrategy,
+                    profilePictureService: service
+                )
             }
             Spacer()
         }
@@ -176,7 +201,8 @@ struct SplitOptionsScreen_Previews: PreviewProvider {
     static var previews: some View {
         SplitOptionsScreenView(
             splitGroup: SplitGroup.stub,
-            total: MonetaryAmount(currency: .eur, amount: 10.0)
+            total: MonetaryAmount(currency: .eur, amount: 10.0),
+            profilePictureService: StubSyncProfilePictureService()
         )
     }
 }

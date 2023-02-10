@@ -7,13 +7,16 @@
 
 import SwiftUI
 
-struct PlusMinusSplitMembersListView<S: IPlusMinusSplitStrategy>: View {
+struct PlusMinusSplitMembersListView<S: IPlusMinusSplitStrategy, PPS: IProfilePictureService>: View {
     @ObservedObject private var strategy: S
     @FocusState var focusCell: Person.ID?
     private var currency: Currency { strategy.total.currency }
+    // Dependencies
+    private let service: PPS
 
-    init(strategy: S) {
+    init(strategy: S, profilePictureService: PPS) {
         self.strategy = strategy
+        self.service = profilePictureService
     }
 
     var body: some View {
@@ -23,7 +26,7 @@ struct PlusMinusSplitMembersListView<S: IPlusMinusSplitStrategy>: View {
                 ConfugurableListRowView(
                     heading: member.fullName,
                     subheading: makeSubheading(memberId: member.id),
-                    leadingAccessory: { Circle().foregroundColor(.blue) },
+                    leadingAccessory: { ProfilePicture(service: service, personId: member.id) },
                     trailingAccessory: { makeTrailingView(memberId: member.id, rowNum: i) },
                     action: { handleCellTapped(memberId: member.id) }
                 )
@@ -113,9 +116,12 @@ struct PlusMinusSplitMembersListView<S: IPlusMinusSplitStrategy>: View {
 
 struct PlusMinusSplitMembersListView_Previews: PreviewProvider {
     static var previews: some View {
-        PlusMinusSplitMembersListView(strategy: PlusMinusSplitStrategy(
-            splitGroup: SplitGroup.stub,
-            total: MonetaryAmount(currency: .eur, amount: 100.0))
+        PlusMinusSplitMembersListView(
+            strategy: PlusMinusSplitStrategy(
+                splitGroup: SplitGroup.stub,
+                total: MonetaryAmount(currency: .eur, amount: 100.0)
+            ),
+            profilePictureService: StubSyncProfilePictureService()
         )
     }
 }

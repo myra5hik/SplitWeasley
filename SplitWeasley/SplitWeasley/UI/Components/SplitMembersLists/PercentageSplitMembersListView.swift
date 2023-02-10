@@ -7,12 +7,15 @@
 
 import SwiftUI
 
-struct PercentageSplitMembersListView<S: IPercentageSplitStrategy>: View {
+struct PercentageSplitMembersListView<S: IPercentageSplitStrategy, PPS: IProfilePictureService>: View {
     @ObservedObject private var strategy: S
     @FocusState private var focus: Person.ID?
+    // Dependencies
+    private let service: PPS
 
-    init(strategy: S) {
+    init(strategy: S, profilePictureService: PPS) {
         self.strategy = strategy
+        self.service = profilePictureService
     }
 
     var body: some View {
@@ -22,7 +25,7 @@ struct PercentageSplitMembersListView<S: IPercentageSplitStrategy>: View {
                     ConfugurableListRowView(
                         heading: member.fullName,
                         subheading: strategy.amount(for: member.id)?.formatted() ?? "",
-                        leadingAccessory: { Circle().foregroundColor(.blue) },
+                        leadingAccessory: { ProfilePicture(service: service, personId: member.id) },
                         trailingAccessory: { makeInputView(memberId: member.id) },
                         action: { focus = member.id } // On tap on the cell, focuses onto TextField
                     )
@@ -58,9 +61,12 @@ struct PercentageSplitMembersListView<S: IPercentageSplitStrategy>: View {
 
 struct PercentageSplitMembersListView_Previews: PreviewProvider {
     static var previews: some View {
-        PercentageSplitMembersListView(strategy: PercentageSplitStrategy(
-            splitGroup: SplitGroup.stub,
-            total: MonetaryAmount(currency: .eur, amount: 10.0))
+        PercentageSplitMembersListView(
+            strategy: PercentageSplitStrategy(
+                splitGroup: SplitGroup.stub,
+                total: MonetaryAmount(currency: .eur, amount: 10.0)
+            ),
+            profilePictureService: StubSyncProfilePictureService()
         )
     }
 }
