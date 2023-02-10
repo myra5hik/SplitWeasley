@@ -26,7 +26,7 @@ final class StubAsyncProfilePictureService: IProfilePictureService {
         UIImage(named: "StubPic4")
     ]
 
-    private var cache = [Person.ID: UIImage]()
+    private var cache = [Person.ID: UIImage?]()
     private var currentTasks = [Person.ID: Task<UIImage?, Never>]()
 
     func picture(for personId: Person.ID) async -> UIImage? {
@@ -38,8 +38,7 @@ final class StubAsyncProfilePictureService: IProfilePictureService {
         if let executed = currentTasks[id] { return try? await executed.result.get() }
 
         let task = Task(priority: .userInitiated) { [weak self] in
-            guard !Self.stubPictures.isEmpty else { return UIImage?.none }
-            let picture = Self.stubPictures.removeFirst()
+            let picture = !Self.stubPictures.isEmpty ? Self.stubPictures.removeFirst() : nil
             let delay = Duration(
                 secondsComponent: Int64.random(in: 1 ... 2),
                 attosecondsComponent: Int64.random(in: -9_999_999 ... 9_999_999)

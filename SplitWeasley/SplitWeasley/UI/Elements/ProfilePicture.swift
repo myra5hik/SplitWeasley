@@ -20,15 +20,28 @@ struct ProfilePicture<S: IProfilePictureService>: View {
     }
 
     var body: some View {
-        LoadableImage(loadable: loadable)
+        presentedView
             .clipShape(Circle())
             .task { await requestPicture() }
+    }
+
+    @ViewBuilder
+    var presentedView: some View {
+        if case .loaded(let loaded) = loadable, loaded == nil {
+            Image(systemName: "person.fill")
+                .resizable()
+                .scaleEffect(x: 0.5, y: 0.5)
+                .foregroundColor(Color(uiColor: .systemBackground))
+                .background(Color(uiColor: .systemGray2))
+        } else {
+            LoadableImage(loadable: loadable)
+        }
     }
 
     private func requestPicture() async {
         do {
             guard let picture = try await service.picture(for: personId) else {
-                loadable = .loaded(UIImage(systemName: "person.fill")); return
+                loadable = .loaded(nil); return
             }
             loadable = .loaded(picture)
         } catch {
@@ -41,7 +54,18 @@ struct ProfilePicture<S: IProfilePictureService>: View {
 
 struct ProfilePicture_Previews: PreviewProvider {
     static var previews: some View {
-        ProfilePicture(service: StubSyncProfilePictureService(), personId: SplitGroup.stub.members[0].id)
-            .frame(width: 150, height: 150)
+        let service = StubAsyncProfilePictureService()
+        VStack {
+            ProfilePicture(service: service, personId: SplitGroup.stub.members[0].id)
+                .frame(width: 150, height: 150)
+            ProfilePicture(service: service, personId: SplitGroup.stub.members[1].id)
+                .frame(width: 150, height: 150)
+            ProfilePicture(service: service, personId: SplitGroup.stub.members[2].id)
+                .frame(width: 150, height: 150)
+            ProfilePicture(service: service, personId: SplitGroup.stub.members[3].id)
+                .frame(width: 150, height: 150)
+            ProfilePicture(service: service, personId: UUID())
+                .frame(width: 150, height: 150)
+        }
     }
 }
