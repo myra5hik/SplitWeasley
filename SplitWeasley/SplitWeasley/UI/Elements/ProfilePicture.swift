@@ -41,7 +41,7 @@ struct ProfilePicture<S: IProfilePictureService>: View {
 
 struct ProfilePicture_Previews: PreviewProvider {
     static var previews: some View {
-        ProfilePicture(service: StubProfilePictureService(), personId: SplitGroup.stub.members[0].id)
+        ProfilePicture(service: StubSyncProfilePictureService(), personId: SplitGroup.stub.members[0].id)
             .frame(width: 150, height: 150)
     }
 }

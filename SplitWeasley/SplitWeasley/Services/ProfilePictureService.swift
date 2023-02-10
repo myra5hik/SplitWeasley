@@ -13,9 +13,12 @@ protocol IProfilePictureService: AnyObject {
     func picture(for: Person.ID) async throws -> UIImage?
 }
 
-// MARK: - Stub Implementation
+// MARK: - Stub Implementation Async
 
-final class StubProfilePictureService: IProfilePictureService {
+///
+/// Provides stubbed data in a async manner, simulating data loaded over network.
+///
+final class StubAsyncProfilePictureService: IProfilePictureService {
     static private var stubPictures = [
         UIImage(named: "StubPic1"),
         UIImage(named: "StubPic2"),
@@ -49,5 +52,23 @@ final class StubProfilePictureService: IProfilePictureService {
 
         currentTasks[id] = task
         return await task.value
+    }
+}
+
+// MARK: - Stub Implementation Sync
+
+///
+/// Provides stubbed data in a sync manner, to be used in Previews.
+///
+final class StubSyncProfilePictureService: IProfilePictureService {
+    static private var stubPictures = [
+        UIImage(named: "StubPic1"),
+        UIImage(named: "StubPic2"),
+        UIImage(named: "StubPic3"),
+        UIImage(named: "StubPic4")
+    ]
+
+    func picture(for: Person.ID) async throws -> UIImage? {
+        return Self.stubPictures.randomElement() ?? .init()
     }
 }

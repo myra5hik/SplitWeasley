@@ -27,7 +27,7 @@ final class GroupTransactionsModule: IGroupTransactionsModule {
     private var addTransactionScreenViewModel: VM
     private let transactionsService = TransactionsService()
     private let userService = StubUserService()
-    private let profilePictureService = StubProfilePictureService()
+    private let profilePictureService = StubAsyncProfilePictureService()
     private let router = R()
     private var presentingView: PresentingView<R, GroupTransactionsModule>!
     // Data

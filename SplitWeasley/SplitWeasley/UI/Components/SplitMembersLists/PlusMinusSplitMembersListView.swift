@@ -121,7 +121,7 @@ struct PlusMinusSplitMembersListView_Previews: PreviewProvider {
                 splitGroup: SplitGroup.stub,
                 total: MonetaryAmount(currency: .eur, amount: 100.0)
             ),
-            profilePictureService: StubProfilePictureService()
+            profilePictureService: StubSyncProfilePictureService()
         )
     }
 }

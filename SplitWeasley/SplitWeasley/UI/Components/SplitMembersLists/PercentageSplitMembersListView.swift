@@ -66,7 +66,7 @@ struct PercentageSplitMembersListView_Previews: PreviewProvider {
                 splitGroup: SplitGroup.stub,
                 total: MonetaryAmount(currency: .eur, amount: 10.0)
             ),
-            profilePictureService: StubProfilePictureService()
+            profilePictureService: StubSyncProfilePictureService()
         )
     }
 }
