@@ -25,27 +25,26 @@ where R.RD == GroupTransactionsModule.RoutingDestination {
     }
     // MARK: Body
     var body: some View {
-        ScrollView {
+        ScrollableLazyVStack {
             VStack {
-                VStack {
-                    Spacer()
-                    datePicker
-                    Spacer()
-                    mainInputViews
-                    Spacer()
-                    paidAndSplitBar
-                    Spacer()
-                }
-                .frame(height: 400)
+                Spacer()
+                datePicker
+                Spacer()
+                mainInputViews
+                Spacer()
+                paidAndSplitBar
+                Spacer()
             }
-            .navigationTitle("Add transaction")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .primaryAction) { naviSaveButton }
-            }
-            .onAppear { focus = .description }
+            .frame(height: 400)
         }
+        .onAppear { focus = .description }
         .scrollDisabled(true)
+        // NavigationBar
+        .navigationTitle("Add transaction")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) { naviSaveButton }
+        }
     }
 }
 
@@ -72,14 +71,14 @@ private extension AddTransactionScreenView {
 
     var paidAndSplitBar: some View {
         PaidAndSplitBarView(
-            payeeLabel: vm.payee,
+            payeeLabel: vm.payeeLabel,
             splitLabel: vm.splitWithin,
-            payeeAction: nil,
+            payeeAction: { router.present(.payeeSelector) },
             splitAction: { [weak vm] in
                 guard (vm?.amount.amount ?? 0) > 0 else { return }
                 router.present(.splitStrategySelector)
             },
-            payeeButtonActive: false,
+            payeeButtonActive: true,
             splitButtonActive: vm.amount.amount != 0.0
         )
     }
@@ -175,7 +174,9 @@ protocol IAddTransactionScreenViewModel: ObservableObject {
     var transactionDescription: String { get set }
     var amount: MonetaryAmount { get set }
     var splitStrategy: any ISplitStrategy { get set }
-    var payee: String { get }
+    var payee: Person { get set }
+    // PaidAndSplitBarView convenience values
+    var payeeLabel: String { get }
     var splitWithin: String { get }
     // Transitions
     var isLogicallyConsistent: Bool { get }
@@ -196,6 +197,7 @@ final class AddTransactionScreenViewModel<TS: ITransactionsService, US: IUserSer
         splitGroup: SplitGroup.stub,
         total: MonetaryAmount(currency: .eur)
     )
+    @Published var payee: Person
     private var currentUser: Person.ID { userService.currentUser.id }
     // Dependencies
     private let transactionsService: TS
@@ -208,6 +210,7 @@ final class AddTransactionScreenViewModel<TS: ITransactionsService, US: IUserSer
         )
         self.transactionsService = transactionService
         self.userService = userService
+        self.payee = userService.currentUser
     }
 }
 
@@ -215,7 +218,7 @@ final class AddTransactionScreenViewModel<TS: ITransactionsService, US: IUserSer
 
 extension AddTransactionScreenViewModel: IAddTransactionScreenViewModel {
     var isLogicallyConsistent: Bool { makeTransaction().isLogicallyConsistent }
-    var payee: String { "you" }
+    var payeeLabel: String { payee.id == currentUser ? "you" : payee.shortenedFullName }
     var splitWithin: String { splitStrategy.conciseHintDescription }
 
     func saveTransaction() {
@@ -232,7 +235,7 @@ extension AddTransactionScreenViewModel {
         return SplitTransaction(
             group: splitStrategy.splitGroup,
             total: amount,
-            paidBy: [currentUser: amount],
+            paidBy: [payee.id: amount],
             splits: splitStrategy.splits,
             description: transactionDescription,
             category: transactionCategory,

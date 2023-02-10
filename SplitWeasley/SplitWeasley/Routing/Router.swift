@@ -49,6 +49,7 @@ final class Router<RD: IRoutingDestination>: IRouter {
     }
 
     func pop() {
+        guard !navigationPath.isEmpty else { return }
         navigationPath.removeLast()
     }
 

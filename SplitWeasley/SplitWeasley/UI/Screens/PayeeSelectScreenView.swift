@@ -13,13 +13,13 @@ struct PayeeSelectScreenView<PPS: IProfilePictureService>: View {
     // Dependencies
     private let service: PPS
     // Actions
-    private let onSelect: ((Person.ID) -> Void)?
+    private let onSelect: ((Person) -> Void)?
     private let onCancel: (() -> Void)?
 
     init(
         group: SplitGroup,
         service: PPS,
-        onSelect: ((Person.ID) -> Void)? = nil,
+        onSelect: ((Person) -> Void)? = nil,
         onTapOfCancel: (() -> Void)? = nil
     ) {
         self.group = group
@@ -35,7 +35,7 @@ struct PayeeSelectScreenView<PPS: IProfilePictureService>: View {
                     heading: payee.fullName,
                     subheading: nil,
                     leadingAccessory: { ProfilePicture(service: service, personId: payee.id) },
-                    action: { onSelect?(payee.id) }
+                    action: { onSelect?(payee) }
                 )
             }
             .navigationTitle("Select Person Paying")

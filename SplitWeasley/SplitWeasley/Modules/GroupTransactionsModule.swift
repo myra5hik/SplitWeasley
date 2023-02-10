@@ -52,6 +52,7 @@ extension GroupTransactionsModule {
         case addTransactionScreen
         case categorySelector
         case splitStrategySelector
+        case payeeSelector
         case transactionDetailView(id: SplitTransaction.ID)
     }
 }
@@ -72,6 +73,7 @@ extension GroupTransactionsModule: IScreenFactory {
         case .addTransactionScreen: makeAddTransactionScreen()
         case .categorySelector: makeCategorySelectorScreen()
         case .splitStrategySelector: makeSplitStrategySelectorScreen()
+        case .payeeSelector: makePayeeSelectorScreen()
         case .transactionDetailView(id: let id): makeTransactionDetailScreen(id: id)
         }
     }
@@ -127,6 +129,15 @@ extension GroupTransactionsModule: IScreenFactory {
             profilePictureService: profilePictureService,
             onDismiss: { [weak self] in self?.router.dismiss() },
             onDone: { [weak self] in self?.addTransactionScreenViewModel.splitStrategy = $0; self?.router.dismiss() }
+        )
+    }
+
+    private func makePayeeSelectorScreen() -> some View {
+        return PayeeSelectScreenView(
+            group: group,
+            service: profilePictureService,
+            onSelect: { [weak self] in self?.addTransactionScreenViewModel.payee = $0; self?.router.dismiss() },
+            onTapOfCancel: { [weak self] in self?.router.dismiss() }
         )
     }
 
