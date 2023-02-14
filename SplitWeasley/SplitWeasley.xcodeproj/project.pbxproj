@@ -14,6 +14,7 @@
 		B60674F229955A2F00C6CA64 /* Loadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60674F129955A2F00C6CA64 /* Loadable.swift */; };
 		B60674F429955A6800C6CA64 /* LoadableImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60674F329955A6800C6CA64 /* LoadableImage.swift */; };
 		B60674F629955EC800C6CA64 /* ProfilePicture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60674F529955EC800C6CA64 /* ProfilePicture.swift */; };
+		B60674FA2996AEA700C6CA64 /* PayeeSelectScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60674F92996AEA700C6CA64 /* PayeeSelectScreenView.swift */; };
 		B60A23AD29654D2B00A703B3 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60A23AC29654D2B00A703B3 /* Router.swift */; };
 		B6253A0D29354A9E0028EC7F /* SplitTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6253A0C29354A9E0028EC7F /* SplitTransaction.swift */; };
 		B63747CF292E733700A50615 /* EqualSharesSplitStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63747CE292E733700A50615 /* EqualSharesSplitStrategy.swift */; };
@@ -66,6 +67,7 @@
 		B60674F129955A2F00C6CA64 /* Loadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loadable.swift; sourceTree = "<group>"; };
 		B60674F329955A6800C6CA64 /* LoadableImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadableImage.swift; sourceTree = "<group>"; };
 		B60674F529955EC800C6CA64 /* ProfilePicture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePicture.swift; sourceTree = "<group>"; };
+		B60674F92996AEA700C6CA64 /* PayeeSelectScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayeeSelectScreenView.swift; sourceTree = "<group>"; };
 		B60A23AC29654D2B00A703B3 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		B6253A0C29354A9E0028EC7F /* SplitTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitTransaction.swift; sourceTree = "<group>"; };
 		B63747CE292E733700A50615 /* EqualSharesSplitStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EqualSharesSplitStrategy.swift; sourceTree = "<group>"; };
@@ -220,6 +222,7 @@
 				B6DB2DD229785299004E2B60 /* GroupTransactionsScreenView.swift */,
 				B67DE96A2925852B008C6400 /* AddTransactionScreenView.swift */,
 				B67DE97F292AB36A008C6400 /* SplitOptionsScreenView.swift */,
+				B60674F92996AEA700C6CA64 /* PayeeSelectScreenView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -403,6 +406,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B67DE9782927EAE8008C6400 /* SplitGroup.swift in Sources */,
+				B60674FA2996AEA700C6CA64 /* PayeeSelectScreenView.swift in Sources */,
 				B67DE987292C479A008C6400 /* Decimal+Rounded.swift in Sources */,
 				B6D994B12979D9DE00EEB236 /* TransactionCell.swift in Sources */,
 				B67DE9742927E1BF008C6400 /* Person.swift in Sources */,
