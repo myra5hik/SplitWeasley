@@ -19,7 +19,7 @@ Not intended for real-life usage, it is filled with stubbed data and has no back
   
   - Additional splits information in the transcation cells:
   
-    <img src="https://user-images.githubusercontent.com/80918676/215535712-94e7c616-2711-4f2a-aa8d-5097013cc782.png" width="25%" height="25%" />
+    ![Cells](https://github.com/myra5hik/SplitWeasley/assets/80918676/275c297a-81fc-47c5-9d01-dde135a844da)
 
 ## Implementation Details
 
