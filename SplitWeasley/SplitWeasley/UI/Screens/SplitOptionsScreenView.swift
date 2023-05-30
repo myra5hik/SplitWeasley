@@ -109,12 +109,9 @@ private extension SplitOptionsScreenView {
             RoundedRectangle(cornerRadius: 6)
                 .foregroundColor(Color(uiColor: .tertiarySystemFill))
             VStack {
-                if let strategy = strategyForPickerSelection() {
-                    Text(strategy.hintHeader).font(.headline)
-                    Text(strategy.hintDescription).font(.subheadline)
-                } else {
-                    EmptyView()
-                }
+                let strategy = strategyForPickerSelection()
+                Text(strategy.hintHeader).font(.headline)
+                Text(strategy.hintDescription).font(.subheadline)
             }
         }
         .frame(height: 60)
