@@ -7,10 +7,6 @@ Not intended for real-life usage, it is filled with stubbed data and has no back
 ## Redesign choices
 
 - Mostly native components
-- Light / Dark themes supported
-
-    <img src="https://user-images.githubusercontent.com/80918676/215535712-94e7c616-2711-4f2a-aa8d-5097013cc782.png" width="25%" height="25%" /> <img src="https://user-images.githubusercontent.com/80918676/215537763-194d473f-cbe7-44de-b15b-9c2f63634432.png" width="25%" height="25%" />
-
 - Extended functionality and improved UX:
 
   - Additional dynamic information on the amounts charged when editing a transaction's split parameters:
@@ -20,6 +16,10 @@ Not intended for real-life usage, it is filled with stubbed data and has no back
   - Additional splits information in the transcation cells:
   
     ![Cells](https://github.com/myra5hik/SplitWeasley/assets/80918676/275c297a-81fc-47c5-9d01-dde135a844da)
+    
+- Light / Dark appearances supported
+
+    ![Light Dark Mode](https://github.com/myra5hik/SplitWeasley/assets/80918676/e501e84a-bb0e-400f-b223-72742d483ff1)
 
 ## Implementation Details
 
