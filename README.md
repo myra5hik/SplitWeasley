@@ -23,6 +23,7 @@ Not intended for real-life usage, it is filled with stubbed data and has no back
 
 ## Implementation Details
 
+###
 ### Strategy Pattern for Different Splitting Logics
 
 Different strategy implementations enable a variety of ways to split monetary amounts, providing flexibility and extensibility of transaction splitting logics without coupling with UI layer.
@@ -74,6 +75,7 @@ struct SplitOptionsScreenView<...>: View {
 }
 ```
 
+###
 ### Routing 
 
 Generic [Routing](https://github.com/myra5hik/SplitWeasley/tree/main/SplitWeasley/SplitWeasley/Routing) is implemented to decouple views.
@@ -118,4 +120,42 @@ final class GroupTransactionsModule: IGroupTransactionsModule {
 
 ```swift
 router.present(.splitStrategySelector)
+```
+
+###
+### Handling Monetary Amount Inputs 
+
+The `NumericInputView` is designed for numeric inputs and is bound to the provided source of truth. It allows the input of:
+- Solely numeric values.
+- Values up to the specified fractional digit limit (0, 0.00, 0.0000, etc.), which is useful for different currencies.
+- No more than one separator symbol within the number, among other corner cases.
+It also accepts a `suffixView` parameter, which can be used, for example, to display a currency icon.
+
+```swift
+struct NumericInputView<LFDIP: ILimitedFractionDigitInputProxy, SV: View>: View {
+    // State
+    @ObservedObject private var inputProxy: LFDIP
+    private let placeholder: String
+    private let suffixView: () -> (SV)
+    // Binding to the source of truth
+    @Binding private var boundTo: Decimal
+    // ...
+}
+```
+
+The view delegates the respective logic to `LimitedFractionDigitInputProxy`, which is designed for binding TextFields to an underlying numeric value without the need to use formatters, thereby providing optimal UX. The proxy exposes bindable get/set accessors for both `String` and `Decimal`, maintaining an appropriate state for both variables, regardless of the direction of mutation. SwiftUI's `TextField` can then be bound to the `String`, and the `Decimal` can be used for further business logic.
+
+- It limits the input to a specified number of decimal places (`roundingScale`).
+- It allows trailing zeros and a trailing decimal separator in appropriate cases, up to the specified rounding scale.
+- It permits a single leading zero for fractional numbers less than one.
+- Manages other corner cases.
+
+```swift
+protocol ILimitedFractionDigitInputProxy: ObservableObject {
+    var amountAsString: String { get set }
+    var amountAsDecimal: Decimal { get set }
+    var roundingScale: Int { get set }
+
+    init(roundingScale: Int, initialValue: Decimal)
+}
 ```
