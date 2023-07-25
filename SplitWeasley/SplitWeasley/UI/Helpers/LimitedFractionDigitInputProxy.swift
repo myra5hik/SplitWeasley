@@ -44,7 +44,7 @@ final class LimitedFractionDigitInputProxy: ObservableObject {
     }
 }
 
-// MARK: - IMonetaryAmountInputProxy conformance
+// MARK: - ILimitedFractionDigitInputProxy conformance
 
 extension LimitedFractionDigitInputProxy: ILimitedFractionDigitInputProxy {
     var amountAsString: String {
