@@ -125,7 +125,7 @@ router.present(.splitStrategySelector)
 ###
 ### Handling Monetary Amount Inputs 
 
-The `NumericInputView` is designed for numeric inputs and is bound to the provided source of truth. It allows the input of:
+The [NumericInputView](https://github.com/myra5hik/SplitWeasley/blob/main/SplitWeasley/SplitWeasley/UI/Elements/NumericInputView.swift) is designed for numeric inputs and is bound to the provided source of truth. It allows the input of:
 - Solely numeric values.
 - Values up to the specified fractional digit limit (0, 0.00, 0.0000, etc.), which is useful for different currencies.
 - No more than one separator symbol within the number, among other corner cases.
@@ -143,7 +143,7 @@ struct NumericInputView<LFDIP: ILimitedFractionDigitInputProxy, SV: View>: View 
 }
 ```
 
-The view delegates the respective logic to `LimitedFractionDigitInputProxy`, which is designed for binding TextFields to an underlying numeric value without the need to use formatters, thereby providing optimal UX. The proxy exposes bindable get/set accessors for both `String` and `Decimal`, maintaining an appropriate state for both variables, regardless of the direction of mutation. SwiftUI's `TextField` can then be bound to the `String`, and the `Decimal` can be used for further business logic.
+The view delegates the respective logic to [LimitedFractionDigitInputProxy](https://github.com/myra5hik/SplitWeasley/blob/main/SplitWeasley/SplitWeasley/UI/Helpers/LimitedFractionDigitInputProxy.swift), which is designed for binding TextFields to an underlying numeric value without the need to use formatters, thereby providing optimal UX. The proxy exposes bindable get/set accessors for both `String` and `Decimal`, maintaining an appropriate state for both variables, regardless of the direction of mutation. SwiftUI's `TextField` can then be bound to the `String`, and the `Decimal` can be used for further business logic.
 
 - It limits the input to a specified number of decimal places (`roundingScale`).
 - It allows trailing zeros and a trailing decimal separator in appropriate cases, up to the specified rounding scale.
